@@ -1,15 +1,13 @@
 {
   "name": "regional-indicator-translator",
-  "version": "1.0.0",
   "description": "Translates text to regional indicator emoji",
+  "version": "0.0.0",
   "main": "bot.js",
+  "author": "Kruce B.",
   "scripts": {
     "start": "node bot.js"
-  }
-  "author": "Kruce",
+  },
   "dependencies": {
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "winston": "^3.2.1",
     "discord.js": "11.1.0",
     "request": "2.81.0"
   }
