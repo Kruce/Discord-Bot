@@ -2,6 +2,10 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
+client.on('ready', () => {
+    console.log('I am ready!');
+});
+
 client.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
@@ -37,11 +41,11 @@ client.on('message', function (user, userID, channelID, message, evt) {
                         returnMessage += currentCharacter;
                     }
                 }
-                bot.sendMessage({
+                client.sendMessage({
                     to: channelID,
                     message: user + ": " + returnMessage
                 });
-                bot.deleteMessage({
+                client.deleteMessage({
                     channelID: channelID,
                     messageID: evt.d.id
                   }, function (err) {
