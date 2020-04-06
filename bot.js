@@ -1,4 +1,4 @@
-var Discord = require('discord.js');
+var Discord = require('discord.io');
 var bot = new Discord.Client({
    token: process.env.BOT_TOKEN,
    autorun: true
