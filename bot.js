@@ -1,11 +1,9 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-
-client.on('ready', () => {
-    console.log('Ready!');
+var Discord = require('discord.js');
+var bot = new Discord.Client({
+   token: process.env.BOT_TOKEN,
+   autorun: true
 });
-
-client.on('message', function (user, userID, channelID, message, evt) {
+bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
@@ -40,19 +38,17 @@ client.on('message', function (user, userID, channelID, message, evt) {
                         returnMessage += currentCharacter;
                     }
                 }
-                client.sendMessage({
+                bot.sendMessage({
                     to: channelID,
                     message: user + ": " + returnMessage
                 });
-                client.deleteMessage({
+                bot.deleteMessage({
                     channelID: channelID,
                     messageID: evt.d.id
                   }, function (err) {
                     console.log(err)
                   });
             break;
-            // Just add any case commands if you want to..
          }
      }
 });
-client.login(process.env.BOT_TOKEN);
