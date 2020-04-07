@@ -19,6 +19,11 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     {
                         returnMessage += ":regional_indicator_" + currentCharacter.toLowerCase() + ": ";
                     } 
+                    else if(currentCharacter.match(/\d+/)) 
+                    {
+                        var numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+                        returnMessage += ":" + numbers[parseInt(currentCharacter)] + ": ";
+                    }
                     else if(currentCharacter == ' ') 
                     {
                         returnMessage += '  ';
