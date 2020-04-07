@@ -17,29 +17,26 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     var currentCharacter = userMessage.charAt(i);
                     if (currentCharacter.match(/[a-z]/i)) 
                     {
-                        returnMessage += ":regional_indicator_" + currentCharacter.toLowerCase() + ": ";
+                        returnMessage += ":regional_indicator_" + currentCharacter.toLowerCase() + ":";
                     } 
                     else if(currentCharacter.match(/\d+/)) 
                     {
                         var numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-                        returnMessage += ":" + numbers[parseInt(currentCharacter)] + ": ";
-                    }
-                    else if(currentCharacter == ' ') 
-                    {
-                        returnMessage += '  ';
+                        returnMessage += ":" + numbers[parseInt(currentCharacter)] + ":";
                     }
                     else if(currentCharacter == '?') 
                     {
-                        returnMessage += ":grey_question: ";
+                        returnMessage += ":grey_question:";
                     }
                     else if(currentCharacter == '!') 
                     {
-                        returnMessage += ":grey_exclamation: ";
+                        returnMessage += ":grey_exclamation:";
                     }
                     else 
                     {
                         returnMessage += currentCharacter;
                     }
+                    returnMessage += " ";
                 }
                 bot.sendMessage({
                     to: channelID,
