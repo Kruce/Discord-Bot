@@ -11,6 +11,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
         switch(cmd) {
             case 'rit':
                 var userMessage = message.split("!rit").pop();
+                var numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
                 var returnMessage = "";
                 for (var i = 0; i < userMessage.length; i++) 
                 {
@@ -21,7 +22,6 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     } 
                     else if(currentCharacter.match(/\d+/)) 
                     {
-                        var numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
                         returnMessage += ":" + numbers[parseInt(currentCharacter)] + ":";
                     }
                     else if(currentCharacter == '?') 
@@ -36,7 +36,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     {
                         returnMessage += currentCharacter;
                     }
-                    returnMessage += " ";
+                    returnMessage += " "; //Added space to display emoji correctly for mobile users
                 }
                 bot.sendMessage({
                     to: channelID,
