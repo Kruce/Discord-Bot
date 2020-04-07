@@ -36,15 +36,15 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                         returnMessage += currentCharacter;
                     }
                 }
+                bot.sendMessage({
+                    to: channelID,
+                    message: user + ": " + returnMessage
+                });
                 bot.deleteMessage({
                     channelID: channelID,
                     messageID: evt.d.id
                   }, function (err) {
                     console.log(err)
-                });
-                bot.sendMessage({
-                    to: channelID,
-                    message: user + ": " + returnMessage
                 });
             break;
          }
