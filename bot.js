@@ -38,11 +38,14 @@ client.on('message', msg => {
         msg.channel.send(msg.member.displayName + " " + returnMessage);
         break;
       case 'rc':
+        var currentDisplayColor = msg.member.displayHexColor;
         var role = msg.member.roles.color;
-        if (role.name !== "@everyone") {
+        if (role.name != null && role.name != "@everyone") {
           role.setColor(userMessage)
             .then(updated => console.log(`Set color of role to ${updated.color}`))
-            .catch(console.error);
+            .catch(function(){
+              role.setColor(displayHexColor);
+            });
         }
         break;
     }
