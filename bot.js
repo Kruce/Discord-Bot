@@ -35,7 +35,7 @@ client.on('message', msg => {
           returnMessage += " "; //Added space to display emoji correctly for mobile users
         }
         msg.delete({timeout:1});
-        msg.channel.send(msg.member.displayName + ": " + returnMessage);
+        msg.channel.send(msg.member.displayName + " " + returnMessage);
         break;
     }
   }
