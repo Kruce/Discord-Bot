@@ -43,8 +43,10 @@ client.on('message', msg => {
         if (role.name && role.name != "@everyone" && role.name != "Server Booster") {
           role.setColor(userMessage)
             .then(updated => console.log(`Set color of role to ${updated.color}`))
-            .catch(console.error)
-            .finally(role.setColor(currDisplayColor));
+            .catch(function(){
+              console.error;
+              role.setColor(currDisplayColor);
+            });
         }
         break;
     }
