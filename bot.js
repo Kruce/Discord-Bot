@@ -37,6 +37,12 @@ client.on('message', msg => {
         msg.delete({timeout:1});
         msg.channel.send(msg.member.displayName + " " + returnMessage);
         break;
+      case 'rc':
+        var role = msg.member.roles.color;
+        role.setColor(userMessage)
+          .then(updated => console.log(`Set color of role to ${updated.color}`))
+          .catch(console.error);
+        break;
     }
   }
 });
