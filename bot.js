@@ -38,15 +38,11 @@ client.on('message', msg => {
         msg.channel.send(msg.member.displayName + " " + returnMessage);
         break;
       case 'rc':
-        var currDisplayColor = msg.member.displayHexColor;
         var role = msg.member.roles.color;
-        if (role.name && role.name != "@everyone" && role.name != "Server Booster") {
+        if (role && role.name && role.name != "@everyone" && role.name != "Server Booster" && userMessage.match(/#([a-f0-9]{3}){1,2}\b/i)) {
           role.setColor(userMessage)
-            .then(updated => console.log(`Set color of role to ${updated.color}`))
-            .catch(function(){
-              console.error;
-              role.setColor(currDisplayColor);
-            });
+            .then(updated => console.log(`Set color of role ${updated.name} to ${updated.color}`))
+            .catch(console.error);
         }
         break;
     }
