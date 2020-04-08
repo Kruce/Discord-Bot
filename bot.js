@@ -12,7 +12,7 @@ client.on('message', msg => {
     args = args.splice(1);
     var userMessage = args.join(' ');
     switch (cmd) {
-      case 'ritt':
+      case 'rit':
         var numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
         var returnMessage = "";
         for (var i = 0; i < userMessage.length; i++) {
