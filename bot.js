@@ -39,9 +39,11 @@ client.on('message', msg => {
         break;
       case 'rc':
         var role = msg.member.roles.color;
-        role.setColor(userMessage)
-          .then(updated => console.log(`Set color of role to ${updated.color}`))
-          .catch(console.error);
+        if (role.name !== "@everyone") {
+          role.setColor(userMessage)
+            .then(updated => console.log(`Set color of role to ${updated.color}`))
+            .catch(console.error);
+        }
         break;
     }
   }
