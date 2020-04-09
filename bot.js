@@ -13,7 +13,7 @@ client.on(`message`, msg => {
     args = args.splice(1);
     var message = args.join(` `);
     switch (cmd) {
-      case `ritt`: {
+      case `rit`: {
         let numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
         let returnMessage = ``;
         for (var i = 0; i < message.length; i++) {
@@ -45,7 +45,7 @@ client.on(`message`, msg => {
           });
         break;
       }
-      case `rcc`: {
+      case `rc`: {
         let role = msg.member.roles.color || msg.member.roles.highest;
         let forbiddenRoles = [`@everyone`, `Server Booster`];
         if (role && role.name && !forbiddenRoles.includes(role.name)) {
