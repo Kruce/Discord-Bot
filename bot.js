@@ -60,10 +60,10 @@ client.on(`message`, msg => {
               colorObj = TinyColor.random();
             }
             else {
-              colorObj = TinyColor(message);
+              colorObj = TinyColor(messageUpper);
             }
-            //if the colorObj is not valid, or if it is valid but not very readable generate a better color.
-            while (!colorObj.isValid || (colorObj.isValid && TinyColor.mostReadable(`#36393F`, [`#99aab5`, colorObj.toHexString()]).toHexString() == `#99aab5`)) {
+            //if the colorObj is not valid, or if it is valid but not very readable when compared to discord's background color, generate a new color until one is found.
+            while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 2)) {
               colorObj = TinyColor.random();
             }
             color = colorObj.toHexString();
