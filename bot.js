@@ -12,11 +12,11 @@ client.on('message', msg => {
     args = args.splice(1);
     var userMessage = args.join(' ');
     switch (cmd) {
-      case 'rit':
-        var numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-        var returnMessage = "";
+      case 'rit': {
+        let numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        let returnMessage = "";
         for (var i = 0; i < userMessage.length; i++) {
-          var currentCharacter = userMessage.charAt(i);
+          let currentCharacter = userMessage.charAt(i);
           if (currentCharacter.match(/[a-z]/i)) { //match alpha characters regardless of case
             returnMessage += ":regional_indicator_" + currentCharacter.toLowerCase() + ":";
           }
@@ -43,16 +43,19 @@ client.on('message', msg => {
             console.log("error sending message for: " + msg.guild.name + " ID: " + msg.guild.id);
           });
         break;
-      case 'rc':
-        var role = msg.member.roles.color;
-        if (role && role.name && role.name != "@everyone" && role.name != "Server Booster" && userMessage.match(/#([a-f0-9]{3}){1,2}\b/i)) { //match only if hex value
-          role.setColor(userMessage)
-            .then(updated => console.log(`Set color of role ${updated.name} to ${updated.color}`))
-            .catch(e => {
-              console.log("error setting color: " + msg.guild.name + " ID: " + msg.guild.id);
-            });
+      }
+      case 'rc': {
+        let role = msg.member.roles.color || msg.member.roles.highest;
+        let forbiddenRoles = ['@everyone', 'Server Booster'];
+        if (role && role.name && !forbiddenRoles.includes(role.name)) {
+            role.setColor(userMessage)
+              .then(updatedRole => console.log(`Set color of role ${updatedRole.name} to ${updatedRole.color}`))
+              .catch(e => {
+                console.log("error setting color: " + msg.guild.name + " ID: " + msg.guild.id);
+              });
         }
         break;
+      }
     }
   }
 });
