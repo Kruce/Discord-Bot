@@ -10,13 +10,13 @@ client.on('message', msg => {
     var args = msg.content.substring(1).split(' ');
     var cmd = args[0];
     args = args.splice(1);
-    var userMessage = args.join(' ');
+    var message = args.join(' ');
     switch (cmd) {
       case 'rit': {
         let numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
         let returnMessage = "";
-        for (var i = 0; i < userMessage.length; i++) {
-          let currentCharacter = userMessage.charAt(i);
+        for (var i = 0; i < message.length; i++) {
+          let currentCharacter = message.charAt(i);
           if (currentCharacter.match(/[a-z]/i)) { //match alpha characters regardless of case
             returnMessage += ":regional_indicator_" + currentCharacter.toLowerCase() + ":";
           }
@@ -48,11 +48,18 @@ client.on('message', msg => {
         let role = msg.member.roles.color || msg.member.roles.highest;
         let forbiddenRoles = ['@everyone', 'Server Booster'];
         if (role && role.name && !forbiddenRoles.includes(role.name)) {
-            role.setColor(userMessage)
-              .then(updatedRole => console.log(`Set color of role ${updatedRole.name} to ${updatedRole.color}`))
-              .catch(e => {
-                console.log("error setting color: " + msg.guild.name + " ID: " + msg.guild.id);
-              });
+          message = message.toUpperCase();
+          if (!message.match(/#([a-f0-9]{3}){1,2}\b/i)) {
+            let validColors = ['DEFAULT', 'WHITE', 'AQUA', 'GREEN', 'BLUE', 'YELLOW', 'PURPLE', 'LUMINOUS_VIVID_PINK', 'GOLD', 'ORANGE', 'RED', 'GREY', 'DARKER_GREY', 'NAVY', 'DARK_AQUA', 'DARK_GREEN', 'DARK_BLUE', 'DARK_PURPLE', 'DARK_VIVID_PINK', 'DARK_GOLD', 'DARK_ORANGE', 'DARK_RED', 'DARK_GREY', 'LIGHT_GREY', 'DARK_NAVY', 'RANDOM'];
+            if (!validColors.includes(message)) {
+              message = "RANDOM";
+            }
+          }
+          role.setColor(message)
+            .then(updatedRole => console.log(`Set color of role ${updatedRole.name} to ${updatedRole.color}`))
+            .catch(e => {
+              console.log("error setting color: " + msg.guild.name + " ID: " + msg.guild.id);
+            });
         }
         break;
       }
