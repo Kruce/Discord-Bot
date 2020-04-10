@@ -46,39 +46,53 @@ client.on(`message`, msg => {
           });
         break;
       }
-      case `rc`: {
-        let role = msg.member.roles.color || msg.member.roles.highest;
-        let forbiddenRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles cannot be changed
-        if (role && role.id && !forbiddenRoleIds.includes(role.id)) {
-          let color = `DEFAULT`;
-          let messageUpper = message.toUpperCase();
-          if (messageUpper != color) {
-            let colorObj;
-            if (messageUpper == `RANDOM`) {
-              colorObj = TinyColor.random();
-            }
-            else {
-              colorObj = TinyColor(messageUpper);
-            }
-            //if the colorObj is not valid, or if it is valid but not very readable when compared to discord's background color, generate a new color until one is found.
-            while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 1)) {
-              colorObj = TinyColor.random();
-            }
-            color = colorObj.toHexString();
+      case `c`: {
+        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles are restricted from color change
+        let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first();
+        let color = `DEFAULT`;
+        let messageUpper = message.toUpperCase();
+        if (messageUpper != color) { //unless default, generate color from user's input
+          let colorObj;
+          if (messageUpper == `RANDOM`) {
+            colorObj = TinyColor.random();
           }
+          else {
+            colorObj = TinyColor(messageUpper);
+          }
+          while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 1)) { //if the colorObj is not valid, or if it is valid but not very readable when compared to discord's background color, generate a new color until one is found.
+            colorObj = TinyColor.random();
+          }
+          color = colorObj.toHexString();
+        }
+        if (!role) { //create role if one does not exist and assing it to our local role variable
+          role = await msg.guild.roles
+            .create({
+              data: {
+                name: msg.member.displayName,
+                color: color
+              },
+              reason: `!rc user did not have a role when trying to access command.`,
+            })
+            .then(function (r) {
+              msg.member.roles.add(r); //add new role to user
+              return r; //let our promise return new role
+            })
+            .catch(e => {
+              console.log(`!rc error creating role for: ${msg.guild.name} id: ${msg.guild.id}`);
+            })
+            .finally(() => console.log(`new role created and added to ${msg.member.displayName}.`));
+        }
+        else { //otherwise update current role color
           role.setColor(color)
             .then(role => console.log(`!rc successfully set color of role ${role.name} to ${role.color}`))
             .catch(e => {
               console.log(`!rc error setting color: ${msg.guild.name} for id: ${msg.guild.id}`);
             });
         }
-        break;
-      }
-      case `ow`: {
-        msg.channel.send(Overwatch.GetRoles(message))
-          .catch(e => {
-            console.log(`!ow error sending message for: ` + msg.guild.name + ` ID: ` + msg.guild.id);
-          });
+        let restrictedPosition = msg.member.roles.cache.find(r => r.id == restrictedRoleIds[1]).rawPosition; //the absolute position that all roles should be above (Server Booster currently)
+        if (role && role.rawPosition && role.rawPosition <= restrictedPosition) { //make sure role is above the restricted position
+          role.setPosition(++restrictedPosition);
+        }
         break;
       }
     }
