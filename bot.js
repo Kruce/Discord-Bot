@@ -7,7 +7,7 @@ client.on(`ready`, () => {
   console.log(`logged in as ${client.user.tag}!`);
 });
 
-client.on(`message`, msg => {
+client.on(`message`, async msg => {
   if (msg.content.substring(0, 1) == `!`) {
     var args = msg.content.substring(1).split(` `);
     var cmd = args[0];
@@ -47,7 +47,7 @@ client.on(`message`, msg => {
         break;
       }
       case `c`: {
-        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles are restricted from color change
+        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
         let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first();
         let color = `DEFAULT`;
         let messageUpper = message.toUpperCase();
@@ -93,6 +93,13 @@ client.on(`message`, msg => {
         if (role && role.rawPosition && role.rawPosition <= restrictedPosition) { //make sure role is above the restricted position
           role.setPosition(++restrictedPosition);
         }
+        break;
+      }
+      case `ow`: {
+        msg.channel.send(Overwatch.GetRoles(message))
+          .catch(e => {
+            console.log(`!ow error sending message for: ` + msg.guild.name + ` ID: ` + msg.guild.id);
+          });
         break;
       }
     }
