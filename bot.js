@@ -47,10 +47,10 @@ client.on(`message`, msg => {
       }
       case `rc`: {
         let role = msg.member.roles.color || msg.member.roles.highest;
-        let forbiddenRoles = [`@everyone`, `Server Booster`];
-        if (role && role.name && !forbiddenRoles.includes(role.name)) {
-          let messageUpper = message.toUpperCase();
+        let forbiddenRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles cannot be changed
+        if (role && role.id && !forbiddenRoleIds.includes(role.id)) {
           let color;
+          let messageUpper = message.toUpperCase();
           if (messageUpper == `DEFAULT`) {
             color = messageUpper;
           }
@@ -63,13 +63,13 @@ client.on(`message`, msg => {
               colorObj = TinyColor(messageUpper);
             }
             //if the colorObj is not valid, or if it is valid but not very readable when compared to discord's background color, generate a new color until one is found.
-            while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 2)) {
+            while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 1)) {
               colorObj = TinyColor.random();
             }
             color = colorObj.toHexString();
           }
           role.setColor(color)
-            .then(roleUp => console.log(`!rc successfully set color of role ${roleUp.name} to ${roleUp.color}`))
+            .then(role => console.log(`!rc successfully set color of role ${role.name} to ${role.color}`))
             .catch(e => {
               console.log(`!rc error setting color: ${msg.guild.name} for id: ${msg.guild.id}`);
             });
