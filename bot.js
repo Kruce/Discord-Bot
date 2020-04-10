@@ -50,7 +50,7 @@ client.on(`message`, msg => {
         let forbiddenRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles cannot be changed
         if (role && role.id && !forbiddenRoleIds.includes(role.id)) {
           let color = `DEFAULT`;
-          let messageUpper = message.toUpper();
+          let messageUpper = message.toUpperCase();
           if (messageUpper != color) {
             let colorObj;
             if (messageUpper == `RANDOM`) {
