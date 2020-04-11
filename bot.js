@@ -41,8 +41,6 @@ client.on(`message`, msg => {
         break;
       }
       case `c`: {
-        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
-        let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles
         let color = `DEFAULT`;
         let contentUpper = content.toUpperCase();
         if (contentUpper != color) { //unless default, generate color from user's input
@@ -58,13 +56,15 @@ client.on(`message`, msg => {
           }
           color = colorObj.toHexString();
         }
+        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
+        let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
         if (!role) { //create role if one does not exist and assign it our color and position
           msg.guild.roles
             .create({
               data: {
                 name: msg.member.displayName,
                 color: color,
-                position: restrictedRoleIds.length //since this is new, place it above restricted role's highest role. since restricted roles are on the bottom and start at zero, just count all restricted roles (from restrictedRoleIds).
+                position: restrictedRoleIds.length //since this is new, place it above restricted role's highest role. since restricted roles are on the bottom and start at zero, just count all restricted roles in the restrictedRoleIds array.
               },
               reason: `!rc user did not have a role when trying to access command.`,
             })
