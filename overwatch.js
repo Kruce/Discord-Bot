@@ -1,17 +1,17 @@
 module.exports = {
-    PickRoles: function (msg) {
-        if (WordCount(msg) <= 6 && WordCount(msg) >= 1) {
+    AssignRoles: function (content) {
+        if (WordCount(content) <= 6 && WordCount(content) >= 1) {
             //roles - dont worry about the order we are going to shuffle
             let role = [`healer`, `tank`, `dps`, `healer`, `dps`, `tank`];
             //get the input from the chat, this should be the players 
-            var players = shuffle(msg.split(` `));
+            let players = shuffle(content.split(` `));
             //remove empty whitespaces
-            var filteredPlayers = players.filter(function (str) { return /\S/.test(str); });
+            let filteredPlayers = players.filter(function (str) { return /\S/.test(str); });
             console.log(filteredPlayers);
-            var returnPlayersMessage = [];
+            let returnPlayersMessage = [];
             while (filteredPlayers.length > 0) {
-                var tempRole = shuffle(role);
-                var tempMessage = ` ` + filteredPlayers[0] + `: ` + tempRole[0];
+                let tempRole = shuffle(role);
+                let tempMessage = ` ` + filteredPlayers[0] + `: ` + tempRole[0];
                 returnPlayersMessage.push(tempMessage);
                 role.shift();
                 filteredPlayers.shift();
@@ -23,9 +23,10 @@ module.exports = {
         }
     },
 };
+
 function WordCount(str) {
-    var totalSoFar = 0;
-    var words = str.split(` `);
+    let totalSoFar = 0;
+    let words = str.split(` `);
     for (var i = 0; i < words.length; i++) {
         if (words[i] !== ` ` && words[i] !== ``) {
             totalSoFar++;
@@ -35,7 +36,7 @@ function WordCount(str) {
 }
 
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
         // Pick a remaining element...
