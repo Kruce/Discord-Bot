@@ -9,55 +9,49 @@ client.on(`ready`, () => {
 
 client.on(`message`, msg => {
   if (msg.content.substring(0, 1) == `!`) {
-    var args = msg.content.substring(1).split(` `);
-    var cmd = args[0];
-    args = args.splice(1);
-    var message = args.join(` `);
+    let args = msg.content.substring(1).split(` `);
+    let cmd = args[0];
+    args = args.splice(1); //remove the cmd
+    let content = args.join(` `);
+    let message = ``;
     switch (cmd) {
       case `rit`: {
         let numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
-        let returnMessage = ``;
-        for (var i = 0; i < message.length; i++) {
-          let currentCharacter = message.charAt(i);
-          if (currentCharacter.match(/[a-z]/i)) { //match alpha characters regardless of case
-            returnMessage += `:regional_indicator_${currentCharacter.toLowerCase()}:`;
+        for (var i = 0; i < content.length; i++) {
+          let charCurrent = content.charAt(i);
+          if (charCurrent.match(/[a-z]/i)) { //match alpha characters regardless of case
+            message += `:regional_indicator_${charCurrent.toLowerCase()}:`;
           }
-          else if (currentCharacter.match(/\d+/)) { //match numeric characters
-            returnMessage += `:${numbers[parseInt(currentCharacter)]}:`;
+          else if (charCurrent.match(/\d+/)) { //match numeric characters
+            message += `:${numbers[parseInt(charCurrent)]}:`;
           }
-          else if (currentCharacter == `?`) {
-            returnMessage += `:grey_question:`;
+          else if (charCurrent == `?`) {
+            message += `:grey_question:`;
           }
-          else if (currentCharacter == `!`) {
-            returnMessage += `:grey_exclamation:`;
+          else if (charCurrent == `!`) {
+            message += `:grey_exclamation:`;
           }
           else {
-            returnMessage += currentCharacter;
+            message += charCurrent;
           }
-          returnMessage += ` `; //added space to display emoji correctly for mobile users
+          message += ` `; //added space to display emoji correctly for mobile users
         }
-        msg.delete({ timeout: 1 })
-          .catch(e => {
-            console.log(`!rit error deleting message for: ${msg.guild.name} for id: ${msg.guild.id}`);
-          });
-        msg.channel.send(msg.member.displayName + ` ` + returnMessage)
-          .catch(e => {
-            console.log(`!rit error sending message for: ${msg.guild.name} id: ${msg.guild.id}`);
-          });
+        MsgDelete(msg, 1);
+        MsgSend(msg, `${msg.member.displayName} ${message}`);
         break;
       }
       case `c`: {
-        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles are restricted from color change
+        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
         let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles
         let color = `DEFAULT`;
-        let messageUpper = message.toUpperCase();
-        if (messageUpper != color) { //unless default, generate color from user's input
+        let contentUpper = content.toUpperCase();
+        if (contentUpper != color) { //unless default, generate color from user's input
           let colorObj;
-          if (messageUpper == `RANDOM`) {
+          if (contentUpper == `RANDOM`) {
             colorObj = TinyColor.random();
           }
           else {
-            colorObj = TinyColor(messageUpper);
+            colorObj = TinyColor(contentUpper);
           }
           while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 1)) { //if the colorObj is not valid, or if it is valid but not very readable when compared to discord's background color, generate a new color until one is found.
             colorObj = TinyColor.random();
@@ -90,14 +84,45 @@ client.on(`message`, msg => {
         break;
       }
       case `ow`: {
-        msg.channel.send(Overwatch.GetRoles(message))
-          .catch(e => {
-            console.log(`!ow error sending message for: ` + msg.guild.name + ` ID: ` + msg.guild.id);
-          });
+        if (content === ``) {
+          var players = [];
+          for (let [k, presence] of msg.guild.presences.cache) {
+            var name = presence.user.username;
+            for (let activity of presence.activities) {
+              if (activity.name.trim().toUpperCase() == `OVERWATCH` && players.length <= 5) {
+                players.push(name);
+              }
+            }
+          }
+          if (players.length == 0) {
+            message = `no names were given & no one is currently playing overwatch.`;
+          }
+          else {
+            message = Overwatch.PickRoles(players.join(` `));
+          }
+        }
+        else {
+          message = Overwatch.PickRoles(content);
+        }
+        MsgSend(msg, message);
         break;
       }
     }
   }
 });
+
+function MsgSend(msg, message) {
+  msg.channel.send(message)
+    .catch(e => {
+      console.log(`error sending message for: ${msg.guild.name} id: ${msg.guild.id}`);
+    });
+}
+
+function MsgDelete(msg, timeout) {
+  msg.delete({ timeout: timeout })
+    .catch(e => {
+      console.log(`error deleting message for: ${msg.guild.name} for id: ${msg.guild.id}`);
+    });
+}
 
 client.login(process.env.BOT_TOKEN);
