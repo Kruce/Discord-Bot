@@ -7,7 +7,7 @@ client.on(`ready`, () => {
   console.log(`logged in as ${client.user.tag}!`);
 });
 
-client.on(`message`, async msg => {
+client.on(`message`, msg => {
   if (msg.content.substring(0, 1) == `!`) {
     var args = msg.content.substring(1).split(` `);
     var cmd = args[0];
