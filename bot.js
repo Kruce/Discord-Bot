@@ -98,11 +98,11 @@ client.on(`message`, msg => {
             message = `no names were given & no one is currently playing overwatch.`;
           }
           else {
-            message = Overwatch.PickRoles(players.join(` `));
+            message = Overwatch.AssignRoles(players.join(` `));
           }
         }
         else {
-          message = Overwatch.PickRoles(content);
+          message = Overwatch.AssignRoles(content);
         }
         MsgSend(msg, message);
         break;
