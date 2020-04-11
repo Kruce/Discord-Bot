@@ -2,7 +2,7 @@ module.exports = {
     AssignRoles: function (content) {
         if (WordCount(content) <= 6 && WordCount(content) >= 1) {
             //roles - dont worry about the order we are going to shuffle
-            let role = [`healer`, `tank`, `dps`, `healer`, `dps`, `tank`];
+            let role = [`tank`, `tank`, `dps`, `dps`, `healer`, `healer`];
             //get the input from the chat, this should be the players 
             let players = shuffle(content.split(` `));
             //remove empty whitespaces
@@ -19,7 +19,7 @@ module.exports = {
             return (`${returnPlayersMessage}`);
         }
         else {
-            return (`ow command only takes up to six names, please try again!`);
+            return (`!ow command requires six or less space separated names to assign roles`);
         }
     },
 };
