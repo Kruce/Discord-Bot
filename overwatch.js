@@ -1,5 +1,5 @@
 module.exports = {
-    GetRoles: function (msg) {
+    PickRoles: function (msg) {
         if (WordCount(msg) <= 6 && WordCount(msg) >= 1) {
             //roles - dont worry about the order we are going to shuffle
             let role = [`healer`, `tank`, `dps`, `healer`, `dps`, `tank`];
