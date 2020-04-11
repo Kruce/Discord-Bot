@@ -87,9 +87,6 @@ client.on(`message`, msg => {
             .catch(e => {
               console.log(`!rc error setting color: ${msg.guild.name} for id: ${msg.guild.id}`);
             });
-          if (role && role.rawPosition && role.rawPosition <= restrictedPosition) { //make sure role is above the restricted position
-            role.setPosition(++restrictedPosition);
-          }
         }
         break;
       }
