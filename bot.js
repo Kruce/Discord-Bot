@@ -64,14 +64,13 @@ client.on(`message`, msg => {
           }
           color = colorObj.toHexString();
         }
-        let restrictedPosition = restrictedRoleIds.length - 1; //the absolute position that all roles should be above. since rolls are on the bottom and start at zero, just count all restricted roles (from restrictedRoleIds) subtracted by one.
         if (!role) { //create role if one does not exist and assign it our color and position
           msg.guild.roles
             .create({
               data: {
                 name: msg.member.displayName,
                 color: color,
-                position: ++restrictedPosition //since this is new, place role above restricted position
+                position: restrictedRoleIds.length //since this is new, place it above restricted role's highest role. since restricted roles are on the bottom and start at zero, just count all restricted roles (from restrictedRoleIds).
               },
               reason: `!rc user did not have a role when trying to access command.`,
             })
