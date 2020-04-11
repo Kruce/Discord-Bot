@@ -87,7 +87,7 @@ client.on(`message`, msg => {
         if (content === ``) {
           var players = [];
           for (let [k, presence] of msg.guild.presences.cache) {
-            var name = presence.user.username;
+            var name = presence.user.username.replace(` `, `_`);
             for (let activity of presence.activities) {
               if (activity.name.trim().toUpperCase() == `OVERWATCH` && players.length <= 5) {
                 players.push(name);
