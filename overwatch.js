@@ -19,7 +19,7 @@ module.exports = {
             return (`${returnPlayersMessage}`);
         }
         else {
-            return (`!ow command requires six or less space separated names to assign roles`);
+            return (`the !ow command requires six or less space separated names to assign roles`);
         }
     },
 };
