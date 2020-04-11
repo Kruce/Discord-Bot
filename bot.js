@@ -85,26 +85,16 @@ client.on(`message`, msg => {
       }
       case `ow`: {
         if (content === ``) {
-          var players = [];
-          for (let [k, presence] of msg.guild.presences.cache) {
+          for (let [key, presence] of msg.guild.presences.cache) {
             var name = presence.user.username.replace(` `, `_`);
             for (let activity of presence.activities) {
-              if (activity.name.trim().toUpperCase() == `OVERWATCH` && players.length <= 5) {
-                players.push(name);
+              if (activity.name.trim().toUpperCase() == `OVERWATCH`) {
+                content += `${name} `;
               }
             }
           }
-          if (players.length == 0) {
-            message = `no names were given & no one is currently playing overwatch.`;
-          }
-          else {
-            message = Overwatch.AssignRoles(players.join(` `));
-          }
         }
-        else {
-          message = Overwatch.AssignRoles(content);
-        }
-        MsgSend(msg, message);
+        MsgSend(msg, Overwatch.AssignRoles(content));
         break;
       }
     }
