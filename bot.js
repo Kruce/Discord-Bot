@@ -48,7 +48,7 @@ client.on(`message`, msg => {
       }
       case `c`: {
         let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles are restricted from color change
-        let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first();
+        let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles
         let color = `DEFAULT`;
         let messageUpper = message.toUpperCase();
         if (messageUpper != color) { //unless default, generate color from user's input
@@ -64,18 +64,18 @@ client.on(`message`, msg => {
           }
           color = colorObj.toHexString();
         }
-        let restrictedPosition = restrictedRoleIds.length - 1; //the absolute position that all roles should be above. since rolls are on bottom and start at zero, just count all restricted roles minus one.
-        if (!role) { //create role if one does not exist and assing it to our local role variable
+        let restrictedPosition = restrictedRoleIds.length - 1; //the absolute position that all roles should be above. since rolls are on the bottom and start at zero, just count all restricted roles (from restrictedRoleIds) subtracted by one.
+        if (!role) { //create role if one does not exist and assign it our color and position
           msg.guild.roles
             .create({
               data: {
                 name: msg.member.displayName,
                 color: color,
-                position: ++restrictedPosition //make sure role is above restricted position
+                position: ++restrictedPosition //since this is new, place role above restricted position
               },
               reason: `!rc user did not have a role when trying to access command.`,
             })
-            .then(r => msg.member.roles.add(r)) //add new role to user
+            .then(r => msg.member.roles.add(r)) //add new role to user requesting the color change
             .catch(e => {
               console.log(`!rc error creating role for: ${msg.guild.name} id: ${msg.guild.id}`);
             })
