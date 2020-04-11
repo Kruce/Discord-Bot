@@ -83,20 +83,6 @@ client.on(`message`, msg => {
         }
         break;
       }
-      case `ow`: {
-        if (content === ``) {
-          for (let [key, presence] of msg.guild.presences.cache) {
-            var name = presence.user.username.replace(` `, `_`);
-            for (let activity of presence.activities) {
-              if (activity.name.trim().toUpperCase() == `OVERWATCH`) {
-                content += `${name} `;
-              }
-            }
-          }
-        }
-        MsgSend(msg, Overwatch.AssignRoles(content));
-        break;
-      }
     }
   }
 });
