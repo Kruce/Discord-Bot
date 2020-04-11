@@ -13,7 +13,7 @@ client.on(`message`, msg => {
     let cmd = args[0];
     args = args.splice(1); //remove the cmd
     let content = args.join(` `);
-    let message = ``;
+    let message = ``; //empty string for a return message
     switch (cmd) {
       case `rit`: {
         let numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
@@ -44,13 +44,7 @@ client.on(`message`, msg => {
         let color = `DEFAULT`;
         let contentUpper = content.toUpperCase();
         if (contentUpper != color) { //unless default, generate color from user's input
-          let colorObj;
-          if (contentUpper == `RANDOM`) {
-            colorObj = TinyColor.random();
-          }
-          else {
-            colorObj = TinyColor(contentUpper);
-          }
+          let colorObj = (contentUpper == `RANDOM`) ? TinyColor.random() : TinyColor(contentUpper);
           while (!colorObj.isValid() || (colorObj.isValid() && TinyColor.readability(`#36393F`, colorObj.toHexString()) <= 1)) { //if the colorObj is not valid, or if it is valid but not very readable when compared to discord's background color, generate a new color until one is found.
             colorObj = TinyColor.random();
           }
@@ -58,13 +52,20 @@ client.on(`message`, msg => {
         }
         let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
         let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
-        if (!role) { //create role if one does not exist and assign it our color and position
+        if (role) { //if a role exists, change color as expected, otherwise create a new role with color
+          role.setColor(color)
+            .then(role => console.log(`!rc successfully set color of role ${role.name} to ${role.color}`))
+            .catch(e => {
+              console.log(`!rc error setting color: ${msg.guild.name} for id: ${msg.guild.id}`);
+            });
+        }
+        else {
           msg.guild.roles
             .create({
               data: {
                 name: msg.member.displayName,
                 color: color,
-                position: restrictedRoleIds.length //since this is new, place it above restricted role's highest role. since restricted roles are on the bottom and start at zero, just count all restricted roles in the restrictedRoleIds array.
+                position: restrictedRoleIds.length //since this is new, place it above all restricted roles highest role. since restricted roles are on the bottom and start at zero, just count all restricted roles in the restrictedRoleIds array to get position the new role should be.
               },
               reason: `!rc user did not have a role when trying to access command.`,
             })
@@ -74,17 +75,10 @@ client.on(`message`, msg => {
             })
             .finally(() => console.log(`!rc new role created and added to the user: ${msg.member.displayName}.`));
         }
-        else { //otherwise update current role color
-          role.setColor(color)
-            .then(role => console.log(`!rc successfully set color of role ${role.name} to ${role.color}`))
-            .catch(e => {
-              console.log(`!rc error setting color: ${msg.guild.name} for id: ${msg.guild.id}`);
-            });
-        }
         break;
       }
       case `ow`: {
-        if (content === ``) {
+        if (content === ``) { //if empty, get any players currently playing overwatch and use them
           for (let [key, presence] of msg.guild.presences.cache) {
             var name = presence.user.username.replace(` `, `_`);
             for (let activity of presence.activities) {
