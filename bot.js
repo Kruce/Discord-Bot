@@ -47,7 +47,7 @@ client.on(`message`, async msg => {
         break;
       }
       case `c`: {
-        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
+        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //'everyone' and 'Server Booster' roles are restricted from color change
         let role = msg.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first();
         let color = `DEFAULT`;
         let messageUpper = message.toUpperCase();
@@ -64,23 +64,22 @@ client.on(`message`, async msg => {
           }
           color = colorObj.toHexString();
         }
+        let restrictedPosition = restrictedRoleIds.length - 1; //the absolute position that all roles should be above. since rolls are on bottom and start at zero, just count all restricted roles minus one.
         if (!role) { //create role if one does not exist and assing it to our local role variable
-          role = await msg.guild.roles
+          msg.guild.roles
             .create({
               data: {
                 name: msg.member.displayName,
-                color: color
+                color: color,
+                position: ++restrictedPosition //make sure role is above restricted position
               },
               reason: `!rc user did not have a role when trying to access command.`,
             })
-            .then(function (r) {
-              msg.member.roles.add(r); //add new role to user
-              return r; //let our promise return new role
-            })
+            .then(r => msg.member.roles.add(r)) //add new role to user
             .catch(e => {
               console.log(`!rc error creating role for: ${msg.guild.name} id: ${msg.guild.id}`);
             })
-            .finally(() => console.log(`new role created and added to ${msg.member.displayName}.`));
+            .finally(() => console.log(`!rc new role created and added to the user: ${msg.member.displayName}.`));
         }
         else { //otherwise update current role color
           role.setColor(color)
@@ -88,10 +87,9 @@ client.on(`message`, async msg => {
             .catch(e => {
               console.log(`!rc error setting color: ${msg.guild.name} for id: ${msg.guild.id}`);
             });
-        }
-        let restrictedPosition = msg.member.roles.cache.find(r => r.id == restrictedRoleIds[1]).rawPosition; //the absolute position that all roles should be above (Server Booster currently)
-        if (role && role.rawPosition && role.rawPosition <= restrictedPosition) { //make sure role is above the restricted position
-          role.setPosition(++restrictedPosition);
+          if (role && role.rawPosition && role.rawPosition <= restrictedPosition) { //make sure role is above the restricted position
+            role.setPosition(++restrictedPosition);
+          }
         }
         break;
       }
