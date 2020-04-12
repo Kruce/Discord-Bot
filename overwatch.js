@@ -2,7 +2,7 @@ module.exports = {
     AssignRoles: function (content) {
         if (WordCount(content) <= 6 && WordCount(content) >= 1) {
             //roles - dont worry about the order we are going to shuffle
-            let role = [`tank`, `tank`, `dps`, `dps`, `healer`, `healer`];
+            let role = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
             //get the input from the chat, this should be the players 
             let players = shuffle(content.split(` `));
             //remove empty whitespaces
