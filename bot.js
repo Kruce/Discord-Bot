@@ -88,7 +88,7 @@ client.on(`message`, msg => {
             }
           }
         }
-        MsgSend(msg, Overwatch.AssignRoles(content));
+        MsgSend(msg, Overwatch.assign(content));
         break;
       }
     }
