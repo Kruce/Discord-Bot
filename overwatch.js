@@ -1,6 +1,6 @@
 module.exports = {
     assign: function (content) {
-        let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `).filter(x=>x); //trim empty space, replace spaces more than one with one, split by word
+        let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `).filter(x => x); //trim empty space, replace spaces more than one with one, split by word
         if (words.length <= 6 && words.length >= 1) {
             let message = ``;
             let reservedRoles = []; //if they are just requesting a hero change, the role gets reserved
@@ -13,7 +13,7 @@ module.exports = {
 
             let tempWords = [...words]; //create an array clone of all our words
             while (tempWords.some(r => remainedRoles.indexOf(r) >= 0)) { //while our user's words contain any remained role
-                for (let role of tempWords) { 
+                for (let role of tempWords) {
                     let index = remainedRoles.indexOf(role); //find the index of role in remained roles
                     if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
                         let element = remainedRoles[index];
@@ -34,7 +34,7 @@ module.exports = {
                     reservedRoles.splice(reservedRoles.findIndex(x => x == words[0]), 1); //remove the first instance of the role
                 }
                 else {
-                    remainedRoles = shuffle(remainedRoles); 
+                    remainedRoles = shuffle(remainedRoles);
                     message += `**${(words[0]).replace(`%20`, ` `)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `; //replace %20 with space
                     heroes[remainedRoles[0]].shift();
                     remainedRoles.shift();
