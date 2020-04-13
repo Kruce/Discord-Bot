@@ -80,7 +80,7 @@ client.on(`message`, msg => {
       case `ow`: {
         if (content === ``) { //if empty, get any players currently playing overwatch and use them
           for (let [key, presence] of msg.guild.presences.cache) {
-            var name = presence.user.username.replace(` `, `%20`); //splitting by space in overwatch command, so using %20 until then
+            let name = presence.user.username.replace(` `, `%20`); //splitting by space in overwatch command, so using %20 until then
             for (let activity of presence.activities) {
               if (activity.name.trim().toUpperCase() == `OVERWATCH`) {
                 content += `${name} `;
