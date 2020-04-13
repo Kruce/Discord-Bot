@@ -10,12 +10,12 @@ module.exports = {
                 "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
             };
 
-            roles = shuffle(roles); //shuffle roles and heroes
-            heroes["tank"] = shuffle(heroes["tank"]);
-            heroes["damage"] = shuffle(heroes["damage"]);
-            heroes["support"] = shuffle(heroes["support"]);
-
             while (players.length > 0) {
+                roles = shuffle(roles); //shuffle roles and heroes. shuffling inside while loop for extra randomness
+                heroes["tank"] = shuffle(heroes["tank"]);
+                heroes["damage"] = shuffle(heroes["damage"]);
+                heroes["support"] = shuffle(heroes["support"]);
+
                 message += `**${(players[0]).replace(`%20`, ` `)}:** {${roles[0]}, ${heroes[roles[0]][0]}} `; //replace %20 with space
                 heroes[roles[0]].shift();
                 roles.shift();
