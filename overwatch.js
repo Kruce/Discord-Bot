@@ -1,7 +1,7 @@
 module.exports = {
     assign: function (content) {
         if (WordCount(content) <= 6 && WordCount(content) >= 1) {
-            let message = [];
+            let message = ``;
             let roles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
             let heroes = {
                 "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`],
@@ -17,18 +17,17 @@ module.exports = {
             heroes["support"] = shuffle(heroes["support"]);
 
             while (players.length > 0) {
-                let tempMessage = `${players[0]}: ${roles[0]} - ${heroes[roles[0]][0]} `;
-                message.push(tempMessage);
+                message += `**${players[0]}:** {${roles[0]}, ${heroes[roles[0]][0]}} `;
                 heroes[roles[0]].shift();
                 roles.shift();
                 players.shift();
             }
-            return (`${message}`);
+            return (message);
         }
         else {
             return (`the !ow command requires six or less space separated names to assign roles`);
         }
-    },
+    }
 };
 
 function WordCount(str) {
