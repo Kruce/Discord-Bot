@@ -1,22 +1,29 @@
 module.exports = {
-    AssignRoles: function (content) {
+    assign: function (content) {
         if (WordCount(content) <= 6 && WordCount(content) >= 1) {
-            //roles - dont worry about the order we are going to shuffle
-            let role = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
-            //get the input from the chat, this should be the players 
-            let players = shuffle(content.split(` `));
-            //remove empty whitespaces
-            let filteredPlayers = players.filter(function (str) { return /\S/.test(str); });
-            console.log(filteredPlayers);
-            let returnPlayersMessage = [];
-            while (filteredPlayers.length > 0) {
-                let tempRole = shuffle(role);
-                let tempMessage = ` ` + filteredPlayers[0] + `: ` + tempRole[0];
-                returnPlayersMessage.push(tempMessage);
-                role.shift();
-                filteredPlayers.shift();
+            let message = [];
+            let roles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
+            let heroes = {
+                "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`],
+                "damage": [`ashe`, `bastion`, `doomfist`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
+                "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
+            };
+
+            let players = content.split(` `).filter(function (str) { return /\S/.test(str); }); //remove empty whitespaces
+
+            roles = shuffle(roles);//shuffle roles/heroes
+            heroes["tank"] = shuffle(heroes["tank"]);
+            heroes["damage"] = shuffle(heroes["damage"]);
+            heroes["support"] = shuffle(heroes["support"]);
+
+            while (players.length > 0) {
+                let tempMessage = `${players[0]}: ${roles[0]} - ${heroes[roles[0]][0]} `;
+                message.push(tempMessage);
+                heroes[roles[0]].shift();
+                roles.shift();
+                players.shift();
             }
-            return (`${returnPlayersMessage}`);
+            return (`${message}`);
         }
         else {
             return (`the !ow command requires six or less space separated names to assign roles`);
