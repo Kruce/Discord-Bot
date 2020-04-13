@@ -1,6 +1,6 @@
 module.exports = {
     assign: function (content) {
-        let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `); //trim empty space, replace spaces more than one with one, split by word
+        let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `).filter(x=>x); //trim empty space, replace spaces more than one with one, split by word
         if (words.length <= 6 && words.length >= 1) {
             let message = ``;
             let reservedRoles = []; //if they are just requesting a hero change, the role gets reserved
@@ -48,15 +48,3 @@ module.exports = {
         }
     }
 };
-
-function shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-    while (0 !== currentIndex) { // while there remain elements to shuffle...
-        randomIndex = Math.floor(Math.random() * currentIndex); // pick a remaining element...
-        --currentIndex;
-        temporaryValue = array[currentIndex]; // and swap it with the current element.
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
