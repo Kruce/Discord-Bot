@@ -11,13 +11,13 @@ module.exports = {
 
             let players = content.split(` `).filter(function (str) { return /\S/.test(str); }); //remove empty whitespaces
 
-            roles = shuffle(roles);//shuffle roles/heroes
+            roles = shuffle(roles); //shuffle roles and heroes
             heroes["tank"] = shuffle(heroes["tank"]);
             heroes["damage"] = shuffle(heroes["damage"]);
             heroes["support"] = shuffle(heroes["support"]);
 
             while (players.length > 0) {
-                message += `**${players[0]}:** {${roles[0]}, ${heroes[roles[0]][0]}} `;
+                message += `**${(players[0]).replace(`%20`,` `)}:** {${roles[0]}, ${heroes[roles[0]][0]}} `; //replace %20 with space
                 heroes[roles[0]].shift();
                 roles.shift();
                 players.shift();
@@ -43,13 +43,10 @@ function WordCount(str) {
 
 function shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
+    while (0 !== currentIndex) { // while there remain elements to shuffle...
+        randomIndex = Math.floor(Math.random() * currentIndex); // pick a remaining element...
         currentIndex -= 1;
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
+        temporaryValue = array[currentIndex]; // and swap it with the current element.
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
