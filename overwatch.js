@@ -10,8 +10,8 @@ module.exports = {
                 "damage": [`ashe`, `bastion`, `doomfist`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
                 "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
             };
-            for (let word of words) {
-                let index = remainedRoles.indexOf(word); //check if the current word is is a role, and there are any roles remaining
+            for (let word of words) { //update our remained and reserved roles before we start assigning them
+                let index = remainedRoles.indexOf(word); //check if the current word is equal to a role and there are any remaining
                 if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
                     let element = remainedRoles[index];
                     remainedRoles.splice(index, 1);
@@ -19,18 +19,19 @@ module.exports = {
                 }
             }
             while (words.length > 0) { //shuffling roles and heroes inside while loop for extra randomness
+                let word = words[0]; //since we shift at end of loop this will always be the current word
                 heroes["tank"] = shuffle(heroes["tank"]);
                 heroes["damage"] = shuffle(heroes["damage"]);
                 heroes["support"] = shuffle(heroes["support"]);
 
-                if (reservedRoles.includes(words[0])) { //if the message is a role and there's still roles of that type left to use
-                    message += `{**new ${words[0]} hero**: ${heroes[words[0]][0]}} `;
-                    heroes[words[0]].shift();
-                    reservedRoles.splice(reservedRoles.findIndex(x => x == words[0]), 1); //remove the first instance of the role
+                if (reservedRoles.includes(word)) { //if the message is a role and there's still roles of that type left to use
+                    message += `{**new ${word} hero**: ${heroes[word][0]}} `;
+                    heroes[word].shift();
+                    reservedRoles.splice(reservedRoles.findIndex(x => x == word), 1); //remove the first instance of the role
                 }
                 else {
                     remainedRoles = shuffle(remainedRoles);
-                    message += `**${(words[0]).replace(`%20`, ` `)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `; //replace %20 with space
+                    message += `**${(word).replace(`%20`, ` `)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `; //replace %20 with space
                     heroes[remainedRoles[0]].shift();
                     remainedRoles.shift();
                 }
