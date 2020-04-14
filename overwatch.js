@@ -7,20 +7,15 @@ module.exports = {
             let remainedRoles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
             let heroes = {
                 "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`, `zarya`],
-                "damage": [`ashe`, `bastion`, `doomfist`, `echo`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
+                "damage": [`ashe`, `bastion`, `doomfist`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
                 "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
             };
-
-            let tempWords = [...words]; //create an array clone of all our words
-            while (tempWords.some(r => remainedRoles.indexOf(r) >= 0)) { //while our user's words contain any remained role
-                for (let role of tempWords) {
-                    let index = remainedRoles.indexOf(role); //find the index of role in remained roles
-                    if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
-                        let element = remainedRoles[index];
-                        remainedRoles.splice(index, 1);
-                        reservedRoles.push(element);
-                    }
-                    tempWords.splice(tempWords.findIndex(r => r == role), 1);
+            for (let word of words) {
+                let index = remainedRoles.indexOf(word); //check if the current word is is a role, and there are any roles remaining
+                if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
+                    let element = remainedRoles[index];
+                    remainedRoles.splice(index, 1);
+                    reservedRoles.push(element);
                 }
             }
             while (words.length > 0) { //shuffling roles and heroes inside while loop for extra randomness
