@@ -11,8 +11,7 @@ client.on(`message`, msg => {
   if (msg.content.substring(0, 1) == `!`) {
     let args = msg.content.substring(1).split(` `);
     let cmd = args[0];
-    args = args.splice(1); //remove the cmd
-    let content = args.join(` `);
+    let content = args.splice(1).join(` `); //remove the cmd with splice then join each argument for the user's requested content string
     let message = ``; //empty string for a return message
     switch (cmd) {
       case `rit`: {
