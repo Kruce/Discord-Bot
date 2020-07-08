@@ -1,3 +1,5 @@
+const Shuffle = require(`./shuffle`);
+
 module.exports = {
     assign: function (content) {
         let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `).filter(x => x); //trim empty space, replace spaces more than one with one, split by word
@@ -20,9 +22,9 @@ module.exports = {
             }
             while (words.length > 0) { //shuffling roles and heroes inside while loop for extra randomness
                 let word = words[0]; //since we shift at end of loop this will always be the current word
-                heroes["tank"] = shuffle(heroes["tank"]);
-                heroes["damage"] = shuffle(heroes["damage"]);
-                heroes["support"] = shuffle(heroes["support"]);
+                heroes["tank"] = Shuffle.array(heroes["tank"]);
+                heroes["damage"] = Shuffle.array(heroes["damage"]);
+                heroes["support"] = Shuffle.array(heroes["support"]);
 
                 if (reservedRoles.includes(word)) { //if the message is a role and there's still roles of that type left to use
                     message += `{**new ${word} hero**: ${heroes[word][0]}} `;
@@ -30,7 +32,7 @@ module.exports = {
                     reservedRoles.splice(reservedRoles.findIndex(x => x == word), 1); //remove the first instance of the role
                 }
                 else {
-                    remainedRoles = shuffle(remainedRoles);
+                    remainedRoles = Shuffle.array(remainedRoles);
                     message += `**${(word).replace(`%20`, ` `)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `; //replace %20 with space
                     heroes[remainedRoles[0]].shift();
                     remainedRoles.shift();
@@ -44,15 +46,3 @@ module.exports = {
         }
     }
 };
-
-function shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-    while (0 !== currentIndex) { // while there remain elements to shuffle...
-        randomIndex = Math.floor(Math.random() * currentIndex); // pick a remaining element...
-        --currentIndex;
-        temporaryValue = array[currentIndex]; // and swap it with the current element.
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
