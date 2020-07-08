@@ -1,5 +1,5 @@
-const Client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const Discord = require(`discord.js`);
+const Client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const Overwatch = require(`./overwatch`);
 const Shuffle = require(`./shuffle`);
 const TinyColor = require(`tinycolor2`);
