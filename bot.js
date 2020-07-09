@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const Client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const Client = new Discord.Client({ partials: [`MESSAGE`, `CHANNEL`, `REACTION`] });
 const Overwatch = require(`./overwatch`);
 const Shuffle = require(`./shuffle`);
 const TinyColor = require(`tinycolor2`);
@@ -96,18 +96,18 @@ Client.on(`message`, msg => {
 });
 
 Client.on(`messageReactionAdd`, async (reaction, user) => {
-    if (user.bot) return; //if it's a bot, ignore
     if (reaction.emoji.id != `651815701782200320`) return; //if emoji is not BUB
+    if (user.bot) return; //if it's a bot, ignore
     let message = reaction.message;
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
             await reaction.fetch();
         } catch (error) {
-            console.log('Something went wrong when fetching the message: ', error);
+            console.log(`Something went wrong when fetching the message: `, error);
             return;
         }
     }
-    //message is cahced and available now
+    //message is cached and available now
     let cats = [
         `598348083490979846`, //smordecai2
         `597272180769685527`, //smordecai
@@ -119,6 +119,9 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
         `607772984098160660`, //reggie
         `665730452119879721`, //nala
     ];
+    let botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
+    if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
+
     Promise.all(Shuffle.array(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
         message.react(cat)
     })).catch(() => console.log(`one emoji failed to react.`));
