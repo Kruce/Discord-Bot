@@ -10,7 +10,7 @@ Client.on(`ready`, () => {
     console.log(`logged in as ${Client.user.tag}!`);
 });
 
-Schedule.scheduleJob('0 0 * * *', () => {
+Schedule.scheduleJob(`0 0 * * *`, () => {
     let holiday = Holiday.getHoliday();
     if (holiday === ``) return; //no holiday, so exit out
     Client.guilds.cache.get(`232319112141996032`).setName(`${holiday} me and the boys ${holiday}`, `today is a holiday`);
