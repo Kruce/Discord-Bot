@@ -16,7 +16,7 @@ let GregorianHoliday2 = { // keys are formatted as "month,day of the month" usin
     "3,22": `🌎`, //earth day
     "3,24": `🇦🇲`, //armenian genocide remembrance day
     "4,15": `🇵🇸`, //nakba day
-    "5,1": `🏳️‍🌈`, //pride month
+    "5,1": `🏳️‍🌈`, //pride month begins
     "5,19": `✊🏿`, //juneteenth
     "6,4": `🎆`, //independance day
     "9,31": `👻`, //halloween

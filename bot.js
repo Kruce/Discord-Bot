@@ -11,9 +11,12 @@ Client.on(`ready`, () => {
 });
 
 Schedule.scheduleJob(`add holiday to guild name job`, `0 0 * * *`, `America/New_York`, () => {
-  let holiday = Holiday.getHoliday();
-  if (holiday === ``) return; //no holiday, so exit out
-  Client.guilds.cache.get(`232319112141996032`).setName(`${holiday} me and the boys ${holiday}`, `today is a holiday`);
+    console.log(`holiday job started`);
+    let holiday = Holiday.getHoliday();
+    if (holiday !== ``) { //there is a holiday
+        Client.guilds.cache.get(`232319112141996032`).setName(`${holiday} me and the boys ${holiday}`, `today is a holiday`);
+    }
+    console.log(`holiday job finished`);
 });
 
 Client.on(`message`, msg => {
