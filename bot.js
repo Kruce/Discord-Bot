@@ -3,17 +3,17 @@ const Client = new Discord.Client({ partials: [`MESSAGE`, `CHANNEL`, `REACTION`]
 const Holiday = require(`./holiday.js`);
 const Overwatch = require(`./overwatch`);
 const Shuffle = require(`./shuffle`);
-const Schedule = require(`node-schedule`);
+const Schedule = require(`node-schedule-tz`);
 const TinyColor = require(`tinycolor2`);
 
 Client.on(`ready`, () => {
     console.log(`logged in as ${Client.user.tag}!`);
 });
 
-Schedule.scheduleJob(`0 0 * * *`, () => {
-    let holiday = Holiday.getHoliday();
-    if (holiday === ``) return; //no holiday, so exit out
-    Client.guilds.cache.get(`232319112141996032`).setName(`${holiday} me and the boys ${holiday}`, `today is a holiday`);
+Schedule.scheduleJob(`add holiday to guild name job`, `0 0 * * *`, `America/New_York`, () => {
+  let holiday = Holiday.getHoliday();
+  if (holiday === ``) return; //no holiday, so exit out
+  Client.guilds.cache.get(`232319112141996032`).setName(`${holiday} me and the boys ${holiday}`, `today is a holiday`);
 });
 
 Client.on(`message`, msg => {
