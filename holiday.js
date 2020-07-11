@@ -11,22 +11,23 @@
 const GregorianHolidayByDate = { // keys are formatted as "month,day of the month" using zero based months
     "0,1": `🎉`, //new years day
     "1,1": `🙌🏿`, //black history month begins
-    "1,14": `💕`, //valentine's day
+    "1,14": `💘`, //valentine's day
     "2,17": `☘️`, //st. patrick's day
     "3,22": `🌎`, //earth day
     "3,24": `🇦🇲`, //armenian genocide remembrance day
+    "4,5": `💃`, //cinco de mayo
     "4,15": `🇵🇸`, //nakba day
     "5,1": `🏳️‍🌈`, //pride month begins
     "5,19": `✊🏿`, //juneteenth
     "6,4": `🎆`, //independance day
-    "9,31": `👻`, //halloween
+    "9,31": `🎃`, //halloween
     "11,25": `🎄` //christmas
 };
 
 const IslamicHoliday = {
     "1 Ramadan": `🌙`, //ramadan
     "1 Shawwal": `😋`, //eid al-fitr
-    "10 Dhul Hijja": `🕋` //eid al-adha 
+    "10 Dhul Hijja": `🐑` //eid al-adha 
 };
 
 function GetWeekdayCountBetweenDates(startDay, endDay, dayOfWeek) {
