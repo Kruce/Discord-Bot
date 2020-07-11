@@ -12,10 +12,8 @@ Client.on(`ready`, () => {
 
 Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
     console.log(`holiday job started`);
-    let holiday = Holiday.getHoliday();
-    if (holiday !== ``) { //there is a holiday
-        Client.guilds.cache.get(`232319112141996032`).setName(`${holiday} me and the boys ${holiday}`, `today is a holiday`);
-    }
+    let holiday = Holiday.getHoliday(); //empty if no holiday
+    Client.guilds.cache.get(`232319112141996032`).setName(`${holiday}me and the boys${holiday}`);
     console.log(`holiday job finished`);
 });
 
@@ -113,8 +111,8 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
             await reaction.fetch();
-        } catch (error) {
-            console.log(`Something went wrong when fetching the message: `, error);
+        } catch (e) {
+            console.log(`Something went wrong when fetching the message: `, e);
             return;
         }
     }

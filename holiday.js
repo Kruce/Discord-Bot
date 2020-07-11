@@ -29,11 +29,11 @@ const IslamicHoliday = {
     "10 Dhul Hijja": `🕋` //eid al-adha 
 };
 
-function GetWeekdayCountBetweenDates(startDay, endDay, DayOfWeek) {
+function GetWeekdayCountBetweenDates(startDay, endDay, dayOfWeek) {
     let total = 0;
     let start = new Date(startDay);
-    for (var i = start; i <= endDay; i.setDate(i.getDate() + 1)) {
-        if (i.getDay() == DayOfWeek) total++;
+    for (let date = start; date <= endDay; date.setDate(date.getDate() + 1)) {
+        if (date.getDay() == dayOfWeek) total++;
     }
     return total;
 }
