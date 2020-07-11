@@ -10,7 +10,7 @@ Client.on(`ready`, () => {
     console.log(`logged in as ${Client.user.tag}!`);
 });
 
-Schedule.scheduleJob(`add holiday to guild name job`, `0 0 * * *`, `America/New_York`, () => {
+Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
     console.log(`holiday job started`);
     let holiday = Holiday.getHoliday();
     if (holiday !== ``) { //there is a holiday
