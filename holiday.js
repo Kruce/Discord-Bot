@@ -30,11 +30,17 @@ const IslamicHoliday = {
     "10 Dhul Hijja": `🐑` //eid al-adha 
 };
 
-function GetWeekdayCountBetweenDates(startDay, endDay, dayOfWeek) {
+/**
+ * @param {number} startDate Day of the month to start at.
+ * @param {number} endDate Day of the month to end at.
+ * @param {number} dayOfWeek Day of the week that startDate falls on.
+ * @param {number} dayOfWeekCount Day of the week to count between startDate and endDate.
+ */
+function GetOccurrenceOfWeekDay(startDate, endDate, dayOfWeek, dayOfWeekCount) {
     let total = 0;
-    let start = new Date(startDay);
-    for (let date = start; date <= endDay; date.setDate(date.getDate() + 1)) {
-        if (date.getDay() == dayOfWeek) total++;
+    for (let currentDay = startDate; currentDay <= endDate; currentDay++) {
+        if (dayOfWeek === dayOfWeekCount) total++;
+        (dayOfWeek == 6) ? dayOfWeek = 0 : dayOfWeek++; //if it is 6 (or Saturday), set the next to 0 (Sunday) instead of incrementing
     }
     return total;
 }
@@ -124,25 +130,24 @@ function IslamicDate(year, month, day, adjustment) {
 module.exports = {
     getHoliday: function () {
         let date = new Date(); //create new date object
-        let year = date.getFullYear(); //extract current date info
-        let month = date.getMonth();
-        let dayOfWeek = date.getDay();
-        let dayOfMonth = date.getDate();
+        let currentYear = date.getFullYear(); //extract current date info
+        let currentMonth = date.getMonth();
+        let currentDayOfWeek = date.getDay();
+        let currentDayOfMonth = date.getDate();
 
-        let currentDay = new Date(year, month, dayOfMonth); //create new date object without time
-        let firstDay = new Date(year, month, 1);
-        let lastDay = new Date(year, month + 1, 0);
+        let firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
+        let lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
 
-        let occurrence = GetWeekdayCountBetweenDates(firstDay, currentDay, dayOfWeek); //get total occurrence of the current date's day up to the current date for the month 
-        let totalOccurence = GetWeekdayCountBetweenDates(firstDay, lastDay, dayOfWeek); //get total occurrence of the current date's day in the entire month 
+        let occurrence = GetOccurrenceOfWeekDay(1, currentDayOfMonth, firstDayOfWeek, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
+        let totalOccurence = GetOccurrenceOfWeekDay(1, lastDayOfMonth, firstDayOfWeek, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
         let holiday = [ //join each array results if any into one holiday
-            GregorianHolidayByWeekAndDay[`${month},${occurrence},${dayOfWeek}`],
-            GregorianHolidayByDate[`${month},${dayOfMonth}`],
-            IslamicHoliday[IslamicDate(year, month, dayOfMonth)]
+            GregorianHolidayByWeekAndDay[`${currentMonth},${occurrence},${currentDayOfWeek}`],
+            GregorianHolidayByDate[`${currentMonth},${currentDayOfMonth}`],
+            IslamicHoliday[IslamicDate(currentYear, currentMonth, currentDayOfMonth)]
         ];
         if (occurrence === totalOccurence) { //if this is the last occurence, add any last occurences using -1 as occurrence/week
-            holiday.push(GregorianHolidayByWeekAndDay[`${month},-1,${dayOfWeek}`])
+            holiday.push(GregorianHolidayByWeekAndDay[`${currentMonth},-1,${currentDayOfWeek}`])
         }
         return holiday.join(``);
     }
