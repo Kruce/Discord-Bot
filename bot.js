@@ -11,7 +11,7 @@ Client.on(`ready`, () => {
 });
 
 Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
-    let holiday = Holiday.getHoliday(); //empty if no holiday
+    let holiday = Holiday.getEmojis(); //empty if no holiday
     let name = `me and the boys`;
     if (holiday != ``) name = `${holiday} ${name} ${holiday}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
