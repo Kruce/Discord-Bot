@@ -32,14 +32,14 @@ const IslamicHoliday = {
 
 /**
  * @param {number} startDate Day of the month to start at.
- * @param {number} endDate Day of the month to end at.
  * @param {number} dayOfWeek Day of the week that startDate falls on.
+ * @param {number} endDate Day of the month to end at.
  * @param {number} dayOfWeekCount Day of the week to count between startDate and endDate.
  */
-function GetOccurrenceOfWeekDay(startDate, endDate, dayOfWeek, dayOfWeekCount) {
+function GetOccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
     let total = 0;
     for (let currentDay = startDate; currentDay <= endDate; currentDay++) {
-        if (dayOfWeek === dayOfWeekCount) total++;
+        if (dayOfWeek == dayOfWeekCount) total++;
         (dayOfWeek == 6) ? dayOfWeek = 0 : dayOfWeek++; //if it is 6 (or Saturday), set the next to 0 (Sunday) instead of incrementing
     }
     return total;
@@ -141,17 +141,15 @@ module.exports = {
         let firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
         let lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
 
-        let occurrence = GetOccurrenceOfWeekDay(1, currentDayOfMonth, firstDayOfWeek, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
-        let totalOccurence = GetOccurrenceOfWeekDay(1, lastDayOfMonth, firstDayOfWeek, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
+        let occurrence = GetOccurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
+        let totalOccurrence = GetOccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
-        let holiday = [ //join each array results if any into one holiday
-            GregorianHolidayByWeekAndDay[`${currentMonth},${occurrence},${currentDayOfWeek}`],
-            GregorianHolidayByDate[`${currentMonth},${currentDayOfMonth}`],
-            IslamicHoliday[IslamicDate(currentYear, currentMonth, currentDayOfMonth)]
-        ];
-        if (occurrence === totalOccurence) { //if this is the last occurence, add any last occurences using -1 as occurrence/week
-            holiday.push(GregorianHolidayByWeekAndDay[`${currentMonth},-1,${currentDayOfWeek}`])
-        }
-        return holiday.join(``);
+        let holiday = []; //create new holiday array and add all holiday emojis if any
+        holiday.push(GregorianHolidayByWeekAndDay[`${currentMonth},${occurrence},${currentDayOfWeek}`]);
+        holiday.push(GregorianHolidayByDate[`${currentMonth},${currentDayOfMonth}`]);
+        holiday.push(IslamicHoliday[IslamicDate(currentYear, currentMonth, currentDayOfMonth)]);
+        if (occurrence == totalOccurrence) holiday.push(GregorianHolidayByWeekAndDay[`${currentMonth},-1,${currentDayOfWeek}`]); //if today is the last occurrence of this weekday in the month, add any last occurrence holidays using -1
+
+        return holiday.join(``); //join into string removing any undefined values
     }
 }
