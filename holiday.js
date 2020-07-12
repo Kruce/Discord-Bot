@@ -128,6 +128,9 @@ function IslamicDate(year, month, day, adjustment) {
 }
 
 module.exports = {
+    /**
+     * Check whether today's date is a holiday and return a string of emojis for each holiday. If no holiday, string will be empty.
+     */
     getHoliday: function () {
         let date = new Date(); //create new date object
         let currentYear = date.getFullYear(); //extract current date info

@@ -1,6 +1,12 @@
 const Shuffle = require(`./shuffle`);
 
 module.exports = {
+    /**
+    * Assigns a random overwatch role and hero to each given space separated word in string.
+    * If a word is any of `damage`, `support`, or `tank` (an overwatch role).. the role gets reserved and assigns just a new hero instead.
+    * heroes will not be assigned more than once and roles will not be assigned more than twice per string. Any word that is a role over total count two is treated as word.
+    * @param {string} content a space separated list of words as names or roles to assign new roles and heroes or just heroes to.
+    */
     assign: function (content) {
         let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `).filter(x => x); //trim empty space, replace spaces more than one with one, split by word
         if (words.length <= 6 && words.length >= 1) {

@@ -1,4 +1,8 @@
 module.exports = {
+    /**
+    * Shuffles all elements in an array.
+    * @param {Array} array an array of items
+    */
     array: function (array) {
         let currentIndex = array.length, temporaryValue, randomIndex;
         while (0 !== currentIndex) { // while there remain elements to shuffle...

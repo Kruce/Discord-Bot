@@ -136,6 +136,11 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
     })).catch(() => console.log(`one emoji failed to react.`));
 });
 
+/**
+ * Sends a message to the msg channel
+ * @param {Message} msg a message on Discord
+ * @param {string} message a new message to send to the msg channel
+ */
 function MsgSend(msg, message) {
     msg.channel.send(message)
         .catch(e => {
@@ -143,6 +148,11 @@ function MsgSend(msg, message) {
         });
 }
 
+/**
+ * Deletes the msg after a given timeout
+ * @param {Message} msg a message on Discord
+ * @param {number} timeout How long to wait to delete the message in milliseconds
+ */
 function MsgDelete(msg, timeout) {
     msg.delete({ timeout: timeout })
         .catch(e => {
