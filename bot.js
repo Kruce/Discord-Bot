@@ -11,10 +11,10 @@ Client.on(`ready`, () => {
 });
 
 Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
-    console.log(`holiday job started`);
     let holiday = Holiday.getHoliday(); //empty if no holiday
-    Client.guilds.cache.get(`232319112141996032`).setName(`${holiday}me and the boys${holiday}`);
-    console.log(`holiday job finished`);
+    let name = `me and the boys`;
+    if (holiday != ``) name = `${holiday} ${name} ${holiday}`; //if a holiday exists, format name with spaces
+    Client.guilds.cache.get(`232319112141996032`).setName(name);
 });
 
 Client.on(`message`, msg => {
