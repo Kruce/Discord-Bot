@@ -25,6 +25,8 @@ const GregorianHolidayByDate = { // keys are formatted as "month,day of the mont
 };
 
 const IslamicHoliday = {
+    "1 Muharram": `☪️`, //muslim new year
+    "12 Rabi'ul Awwal": `🎂`, //mawlid
     "1 Ramadan": `🌙`, //ramadan
     "1 Shawwal": `😋`, //eid al-fitr
     "10 Dhul Hijja": `🐑` //eid al-adha 
