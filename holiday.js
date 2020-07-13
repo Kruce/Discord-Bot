@@ -13,6 +13,7 @@ const GregorianHolidayByDate = { // keys are formatted as "month,day of the mont
     "1,1": `🙌🏿`, //black history month begins
     "1,14": `💘`, //valentine's day
     "2,17": `☘️`, //st. patrick's day
+    "2,30": `🌱`, //palestinian land day
     "3,22": `🌎`, //earth day
     "3,24": `🇦🇲`, //armenian genocide remembrance day
     "4,5": `💃`, //cinco de mayo
