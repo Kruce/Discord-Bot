@@ -1,17 +1,17 @@
 const Discord = require(`discord.js`);
 const Client = new Discord.Client({ partials: [`MESSAGE`, `CHANNEL`, `REACTION`] });
+const Schedule = require(`node-schedule-tz`);
+const TinyColor = require(`tinycolor2`);
 const Holiday = require(`./holiday.js`);
 const Overwatch = require(`./overwatch`);
 const Shuffle = require(`./shuffle`);
-const Schedule = require(`node-schedule-tz`);
-const TinyColor = require(`tinycolor2`);
 
 Client.on(`ready`, () => {
     console.log(`logged in as ${Client.user.tag}!`);
 });
 
 Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
-    let holiday = Holiday.getEmojis(); //empty if no holiday
+    let holiday = Holiday.TodaysEmojis(); //empty string if no holidays
     let name = `me and the boys`;
     if (holiday != ``) name = `${holiday} ${name} ${holiday}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
@@ -24,31 +24,6 @@ Client.on(`message`, msg => {
         let content = args.splice(1).join(` `); //remove the cmd with splice then join each argument for the user's requested content string
         let message = ``; //empty string for a return message
         switch (cmd) {
-            case `rit`: {
-                let numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
-                for (var i = 0; i < content.length; i++) {
-                    let charCurrent = content.charAt(i);
-                    if (charCurrent.match(/[a-z]/i)) { //match alpha characters regardless of case
-                        message += `:regional_indicator_${charCurrent.toLowerCase()}:`;
-                    }
-                    else if (charCurrent.match(/\d+/)) { //match numeric characters
-                        message += `:${numbers[parseInt(charCurrent)]}:`;
-                    }
-                    else if (charCurrent == `?`) {
-                        message += `:grey_question:`;
-                    }
-                    else if (charCurrent == `!`) {
-                        message += `:grey_exclamation:`;
-                    }
-                    else {
-                        message += charCurrent;
-                    }
-                    message += ` `; //added space to display emoji correctly for mobile users
-                }
-                MsgDelete(msg, 1);
-                MsgSend(msg, `${msg.member.displayName} ${message}`);
-                break;
-            }
             case `c`: {
                 let color = `DEFAULT`;
                 let contentUpper = content.toUpperCase();
@@ -86,6 +61,20 @@ Client.on(`message`, msg => {
                 }
                 break;
             }
+            case `holiday`: {
+                let holidays = Holiday.Todays();
+                if (holidays && holidays.length) {
+                    const embed = new Discord.MessageEmbed()
+                        .setTitle(`Today's Holidays`)
+                        .setThumbnail(`https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png`)
+                        .setTimestamp(new Date().toUTCString());
+                    for (var i = 0; i < holidays.length; ++i) {
+                        embed.addField(holidays[i][0], `[${holidays[i][1]}](${holidays[i][2]})`);
+                    }
+                    MsgSend(msg, embed);
+                }
+                break;
+            }
             case `ow`: {
                 if (content === ``) { //if empty, get any players currently playing overwatch and use them
                     for (let [key, presence] of msg.guild.presences.cache) {
@@ -97,7 +86,32 @@ Client.on(`message`, msg => {
                         }
                     }
                 }
-                MsgSend(msg, Overwatch.assign(content));
+                MsgSend(msg, Overwatch.AssignRolesAndHeroes(content));
+                break;
+            }
+            case `rit`: {
+                let numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
+                for (var i = 0; i < content.length; i++) {
+                    let charCurrent = content.charAt(i);
+                    if (charCurrent.match(/[a-z]/i)) { //match alpha characters regardless of case
+                        message += `:regional_indicator_${charCurrent.toLowerCase()}:`;
+                    }
+                    else if (charCurrent.match(/\d+/)) { //match numeric characters
+                        message += `:${numbers[parseInt(charCurrent)]}:`;
+                    }
+                    else if (charCurrent == `?`) {
+                        message += `:grey_question:`;
+                    }
+                    else if (charCurrent == `!`) {
+                        message += `:grey_exclamation:`;
+                    }
+                    else {
+                        message += charCurrent;
+                    }
+                    message += ` `; //added space to display emoji correctly for mobile users
+                }
+                MsgDelete(msg, 1);
+                MsgSend(msg, `${msg.member.displayName} ${message}`);
                 break;
             }
         }
@@ -131,16 +145,16 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
     let botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
     if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
 
-    Promise.all(Shuffle.array(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
+    Promise.all(Shuffle.Array(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
         message.react(cat)
     })).catch(() => console.log(`one emoji failed to react.`));
 });
 
 /**
- * Sends a message to the msg channel
- * @param {Message} msg a message on Discord
- * @param {string} message a new message to send to the msg channel
- */
+* Sends a message to the msg channel
+* @param {Message} msg a message on Discord
+* @param {string} message a new message to send to the msg channel
+*/
 function MsgSend(msg, message) {
     msg.channel.send(message)
         .catch(e => {
@@ -149,10 +163,10 @@ function MsgSend(msg, message) {
 }
 
 /**
- * Deletes the msg after a given timeout
- * @param {Message} msg a message on Discord
- * @param {number} timeout How long to wait to delete the message in milliseconds
- */
+* Deletes the msg after a given timeout
+* @param {Message} msg a message on Discord
+* @param {number} timeout How long to wait to delete the message in milliseconds
+*/
 function MsgDelete(msg, timeout) {
     msg.delete({ timeout: timeout })
         .catch(e => {

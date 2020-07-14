@@ -1,52 +1,37 @@
 ﻿const GregorianHolidayByWeekAndDay = { // keys are formatted as "month,occurrence(or week),day of the week" using zero based. Use -1 for `last`, such as `the last monday of month`
-    "0,3,1": `☮️`, //martin luther king jr. day
-    "1,2,1": `🎩`, //president's day
-    "2,1,0": `🌞`, //daylight saving's time begins
-    "4,-1,1": `🎖️`, //memorial day
-    "8,0,1": `🔨`, //labor day
-    "10,0,0": `🌝`, //daylight savings time ends
-    "10,4,4": `🦃` //thanksgiving
+    "0,3,1": [`☮️`, `Martin Luther King Jr. day`, `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`],
+    "1,2,1": [`🎩`, `President's day`, `https://en.wikipedia.org/wiki/Washington%27s_Birthday`],
+    "2,1,0": [`🌞`, `Daylight savings time begins`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
+    "4,-1,1": [`🎖️`, `Memorial day`, `https://en.wikipedia.org/wiki/Memorial_Day`],
+    "8,0,1": [`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`],
+    "10,0,0": [`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
+    "10,4,4": [`🦃`, `Thanksgiving`, `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`]
 };
 
 const GregorianHolidayByDate = { // keys are formatted as "month,day of the month" using zero based months
-    "0,1": `🎉`, //new years day
-    "1,1": `🙌🏿`, //black history month begins
-    "1,14": `💘`, //valentine's day
-    "2,17": `☘️`, //st. patrick's day
-    "2,30": `🌱`, //palestinian land day
-    "3,22": `🌎`, //earth day
-    "3,24": `🇦🇲`, //armenian genocide remembrance day
-    "4,5": `💃`, //cinco de mayo
-    "4,15": `🇵🇸`, //nakba day
-    "5,1": `🏳️‍🌈`, //pride month begins
-    "5,19": `✊🏿`, //juneteenth
-    "6,4": `🎆`, //independance day
-    "9,31": `🎃`, //halloween
-    "11,25": `🎄` //christmas
+    "0,1": [`🎉`, `New years day`, `https://en.wikipedia.org/wiki/New_Year%27s_Day`],
+    "1,1": [`🙌🏿`, `Black history month begins`, `https://en.wikipedia.org/wiki/Black_History_Month`],
+    "1,14": [`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`],
+    "2,17": [`☘️`, `St. Patrick's day`, `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`],
+    "2,30": [`🌱`, `Land day`, `https://en.wikipedia.org/wiki/Land_Day`],
+    "3,22": [`🌎`, `Earth day`, `https://en.wikipedia.org/wiki/Earth_Day`],
+    "3,24": [`🇦🇲`, `Armenian genocide rememberence day`, `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`],
+    "4,5": [`💃`, `Cinco de mayo`, `https://en.wikipedia.org/wiki/Cinco_de_Mayo`],
+    "4,15": [`🇵🇸`, `Nakba day`, `https://en.wikipedia.org/wiki/Nakba_Day`],
+    "5,1": [`🏳️‍🌈`, `Pride month begins`, `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`],
+    "5,19": [`✊🏿`, `Junteenth`, `https://en.wikipedia.org/wiki/Juneteenth`],
+    "6,4": [`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`],
+    "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
+    "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
 };
 
 const IslamicHoliday = {
-    "1 Muharram": `☪️`, //muslim new year
-    "12 Rabi'ul Awwal": `🎂`, //mawlid
-    "1 Ramadan": `🌙`, //ramadan
-    "1 Shawwal": `😋`, //eid al-fitr
-    "10 Dhul Hijja": `🐑` //eid al-adha 
+    "1 Muharram": [`☪️`, `Islamic new year`, `https://en.wikipedia.org/wiki/Islamic_New_Year`],
+    "12 Rabi'ul Awwal": [`🎂`, `Mawlid`, `https://en.wikipedia.org/wiki/Mawlid`],
+    "1 Ramadan": [`🌙`, `Ramadan begins`, `https://en.wikipedia.org/wiki/Ramadan`],
+    "1 Shawwal": [`😋`, `Eid Al-Fitr`, `https://en.wikipedia.org/wiki/Eid_al-Fitr`],
+    "10 Dhul Hijja": [`🐑`, `Eid Al-Adha`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]
 };
-
-/**
- * @param {number} startDate Day of the month to start at.
- * @param {number} dayOfWeek Day of the week that startDate falls on.
- * @param {number} endDate Day of the month to end at.
- * @param {number} dayOfWeekCount Day of the week to count between startDate and endDate.
- */
-function GetOccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
-    let total = 0;
-    for (let currentDay = startDate; currentDay <= endDate; ++currentDay) {
-        if (dayOfWeek == dayOfWeekCount) ++total;
-        (dayOfWeek < 6) ? ++dayOfWeek : dayOfWeek = 0; //if day of the week is less than 6 (before Saturday) increment, otherwise set the next to 0 (Sunday) instead
-    }
-    return total;
-}
 
 function KuwaitiCalendar(year, month, day, adjust) {
     var today = new Date();
@@ -130,29 +115,69 @@ function IslamicDate(year, month, day, adjustment) {
     return date[5] + " " + monthNames[date[6]];
 }
 
-module.exports = {
-    /**
-     * Check whether today's date is a holiday and return a string of emojis for each holiday. If no holiday, string will be empty.
-     */
-    getEmojis: function () {
-        let date = new Date(); //create new date object
-        let currentYear = date.getFullYear(); //extract current date info
-        let currentMonth = date.getMonth();
-        let currentDayOfWeek = date.getDay();
-        let currentDayOfMonth = date.getDate();
-
-        let firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
-        let lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
-
-        let occurrence = GetOccurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
-        let totalOccurrence = GetOccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
-
-        let holiday = []; //create new holiday array and add all holiday emojis if any
-        holiday.push(GregorianHolidayByWeekAndDay[`${currentMonth},${occurrence},${currentDayOfWeek}`]); 
-        holiday.push(GregorianHolidayByDate[`${currentMonth},${currentDayOfMonth}`]);
-        holiday.push(IslamicHoliday[IslamicDate(currentYear, currentMonth, currentDayOfMonth)]);
-        if (occurrence == totalOccurrence) holiday.push(GregorianHolidayByWeekAndDay[`${currentMonth},-1,${currentDayOfWeek}`]); //if today is the last occurrence of this weekday in the month, add any last occurrence holidays using -1 as the occurrence
-
-        return holiday.join(``); //join into string removing any undefined values
+/**
+ * @param {number} startDate Day of the month to start at.
+ * @param {number} dayOfWeek Day of the week that startDate falls on.
+ * @param {number} endDate Day of the month to end at.
+ * @param {number} dayOfWeekCount Day of the week to count between startDate and endDate.
+ */
+function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
+    let total = 0;
+    for (let currentDay = startDate; currentDay <= endDate; ++currentDay) {
+        if (dayOfWeek == dayOfWeekCount) ++total;
+        (dayOfWeek < 6) ? ++dayOfWeek : dayOfWeek = 0; //if day of the week is less than 6 (before Saturday) increment, otherwise set the next to 0 (Sunday) instead
     }
+    return total;
+}
+
+/**
+ * @param {Array} array The array with value to check
+ * @param {object} key The key to check to get value
+ * @param {Array} newArray The new array to push to if it exists in previous array
+ */
+function PushIfExists(array, key, newArray) {
+    let value = array[key];
+    if (value !== undefined) newArray.push(value);
+}
+
+/**
+ * Check whether today's date is a holiday and return a holiday array as [`holiday emoji`, `holiday name`, `holiday link`].
+ */
+function Todays() {
+    let date = new Date(); //create new date object
+    let currentYear = date.getFullYear(); //extract current date info
+    let currentMonth = date.getMonth();
+    let currentDayOfWeek = date.getDay();
+    let currentDayOfMonth = date.getDate();
+
+    let firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
+    let lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
+
+    let occurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
+    let totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
+
+    let holiday = []; //create new holiday array and add all holiday emojis if any
+    PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},${occurrence},${currentDayOfWeek}`, holiday);
+    PushIfExists(GregorianHolidayByDate, `${currentMonth},${currentDayOfMonth}`, holiday);
+    PushIfExists(IslamicHoliday, IslamicDate(currentYear, currentMonth, currentDayOfMonth), holiday);
+    if (occurrence == totalOccurrence) //if today is the last occurrence of this weekday in the month, add any last occurrence holidays using -1
+        PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},-1,${currentDayOfWeek}`, holiday);
+    return holiday; //remove bad values
+}
+
+/**
+ * Check whether today's date is a holiday and return a string of all emojis if any.
+ */
+function TodaysEmojis() {
+    let holidays = Todays();
+    let emojis = [];
+    for (var i = 0; i < holidays.length; ++i) {
+        emojis.push(holidays[i][0]);
+    }
+    return emojis.join(``);
+}
+
+module.exports = {
+    Todays,
+    TodaysEmojis,
 }
