@@ -162,7 +162,7 @@ function Todays() {
     PushIfExists(IslamicHoliday, IslamicDate(currentYear, currentMonth, currentDayOfMonth), holiday);
     if (occurrence == totalOccurrence) //if today is the last occurrence of this weekday in the month, add any last occurrence holidays using -1
         PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},-1,${currentDayOfWeek}`, holiday);
-    return holiday; //remove bad values
+    return holiday;
 }
 
 /**
