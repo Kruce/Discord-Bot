@@ -141,9 +141,9 @@ function PushIfExists(array, key, newArray) {
 }
 
 /**
- * Check whether today's date is a holiday and return a holiday array as [`holiday emoji`, `holiday name`, `holiday link`].
+ * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
-function Todays() {
+function HolidaysToday() {
     let date = new Date(); //create new date object
     let currentYear = date.getFullYear(); //extract current date info
     let currentMonth = date.getMonth();
@@ -156,7 +156,7 @@ function Todays() {
     let occurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
     let totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
-    let holiday = []; //create new holiday array and add all holiday emojis if any
+    let holiday = []; //create new holiday array and add all holiday emojis if they exist in our predefined arrays
     PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},${occurrence},${currentDayOfWeek}`, holiday);
     PushIfExists(GregorianHolidayByDate, `${currentMonth},${currentDayOfMonth}`, holiday);
     PushIfExists(IslamicHoliday, IslamicDate(currentYear, currentMonth, currentDayOfMonth), holiday);
@@ -166,18 +166,18 @@ function Todays() {
 }
 
 /**
- * Check whether today's date is a holiday and return a string of all emojis if any.
+ * Check whether today's date is any holiday and return a string of all emojis indicating holidays if any.
  */
-function TodaysEmojis() {
-    let holidays = Todays();
-    let emojis = [];
-    for (var i = 0; i < holidays.length; ++i) {
-        emojis.push(holidays[i][0]);
+function EmojisToday() {
+    let holiday = HolidaysToday();
+    let emojis = ``;
+    for (var i = 0; i < holiday.length; ++i) {
+        emojis += holiday[i][0];
     }
-    return emojis.join(``);
+    return emojis;
 }
 
 module.exports = {
-    Todays,
-    TodaysEmojis,
+    HolidaysToday,
+    EmojisToday,
 }

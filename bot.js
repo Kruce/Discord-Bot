@@ -11,9 +11,9 @@ Client.on(`ready`, () => {
 });
 
 Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
-    let holiday = Holiday.TodaysEmojis(); //empty string if no holidays
+    let emojis = Holiday.EmojisToday(); //empty string if no holidays
     let name = `me and the boys`;
-    if (holiday != ``) name = `${holiday} ${name} ${holiday}`; //if a holiday exists, format name with spaces
+    if (emojis != ``) name = `${emojis} ${name} ${emojis}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
 });
 
@@ -22,7 +22,6 @@ Client.on(`message`, msg => {
         let args = msg.content.substring(1).split(` `);
         let cmd = args[0];
         let content = args.splice(1).join(` `); //remove the cmd with splice then join each argument for the user's requested content string
-        let message = ``; //empty string for a return message
         switch (cmd) {
             case `c`: {
                 let color = `DEFAULT`;
@@ -62,8 +61,8 @@ Client.on(`message`, msg => {
                 break;
             }
             case `holiday`: {
-                let holidays = Holiday.Todays();
-                if (holidays && holidays.length) {
+                let holidays = Holiday.HolidaysToday();
+                if (holidays && holidays.length) { //if holiday(s) exist, create a new embed message and add each holiday as a field with holiday information
                     const embed = new Discord.MessageEmbed()
                         .setTitle(`Today's Holidays`)
                         .setThumbnail(`https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png`)
@@ -86,11 +85,12 @@ Client.on(`message`, msg => {
                         }
                     }
                 }
-                MsgSend(msg, Overwatch.AssignRolesAndHeroes(content));
+                MsgSend(msg, Overwatch.AssignRolesHeroes(content));
                 break;
             }
             case `rit`: {
                 let numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
+                let message = ``; //empty string for a return message
                 for (var i = 0; i < content.length; i++) {
                     let charCurrent = content.charAt(i);
                     if (charCurrent.match(/[a-z]/i)) { //match alpha characters regardless of case
@@ -145,7 +145,7 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
     let botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
     if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
 
-    Promise.all(Shuffle.Array(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
+    Promise.all(Shuffle.ShuffleArray(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
         message.react(cat)
     })).catch(() => console.log(`one emoji failed to react.`));
 });

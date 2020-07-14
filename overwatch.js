@@ -6,7 +6,7 @@ const Shuffle = require(`./shuffle`);
 * heroes will not be assigned more than once and roles will not be assigned more than twice per string. Any word that is a role over total count two is treated as word.
 * @param {string} content a space separated list of words as names or roles to assign new roles and heroes or just heroes to.
 */
-function AssignRolesAndHeroes(content) {
+function AssignRolesHeroes(content) {
     let words = content.trim().toLowerCase().replace(/[ ]{2,}/gi, ` `).split(` `).filter(x => x); //trim empty space, replace spaces more than one with one, split by word
     if (words.length <= 6 && words.length >= 1) {
         let message = ``;
@@ -27,9 +27,9 @@ function AssignRolesAndHeroes(content) {
         }
         while (words.length > 0) { //shuffling roles and heroes inside while loop for extra randomness
             let word = words[0]; //since we shift at end of loop this will always be the current word
-            heroes["tank"] = Shuffle.Array(heroes["tank"]);
-            heroes["damage"] = Shuffle.Array(heroes["damage"]);
-            heroes["support"] = Shuffle.Array(heroes["support"]);
+            heroes["tank"] = Shuffle.ShuffleArray(heroes["tank"]);
+            heroes["damage"] = Shuffle.ShuffleArray(heroes["damage"]);
+            heroes["support"] = Shuffle.ShuffleArray(heroes["support"]);
 
             if (reservedRoles.includes(word)) { //if the message is a role and there's still roles of that type left to use
                 message += `{**new ${word} hero**: ${heroes[word][0]}} `;
@@ -37,7 +37,7 @@ function AssignRolesAndHeroes(content) {
                 reservedRoles.splice(reservedRoles.findIndex(x => x == word), 1); //remove the first instance of the role
             }
             else {
-                remainedRoles = Shuffle.Array(remainedRoles);
+                remainedRoles = Shuffle.ShuffleArray(remainedRoles);
                 message += `**${(word).replace(`%20`, ` `)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `; //replace %20 with space
                 heroes[remainedRoles[0]].shift();
                 remainedRoles.shift();
@@ -52,5 +52,5 @@ function AssignRolesAndHeroes(content) {
 }
 
 module.exports = {
-    AssignRolesAndHeroes
+    AssignRolesHeroes
 };
