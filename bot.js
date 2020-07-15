@@ -62,14 +62,18 @@ Client.on(`message`, msg => {
             }
             case `holiday`: {
                 let holidays = Holiday.HolidaysToday();
-                if (holidays && holidays.length) { //if holiday(s) exist, create a new embed message and add each holiday as a field with holiday information
+                let total = (holidays) ? holidays.length : 0;
+                if (total) { //if a holiday(s) exist, create a new embed message and add each holiday in its description
+                    let description = ``;
+                    for (var i = 0; i < total; ++i) {
+                        description += `${holidays[i][0]} [${holidays[i][1]}](${holidays[i][2]})`;
+                        if (i < total - 1) description += `\n`;
+                    }
                     const embed = new Discord.MessageEmbed()
                         .setTitle(`Today's Holidays`)
+                        .setDescription(description)
                         .setThumbnail(`https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png`)
                         .setTimestamp(new Date().toUTCString());
-                    for (var i = 0; i < holidays.length; ++i) {
-                        embed.addField(holidays[i][0], `[${holidays[i][1]}](${holidays[i][2]})`);
-                    }
                     MsgSend(msg, embed);
                 }
                 break;
