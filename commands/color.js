@@ -20,9 +20,9 @@ module.exports = {
         let role = message.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
         if (role) { //if a role exists, change color as expected, otherwise create a new role with color
             role.setColor(color)
-                .then(role => console.log(`!rc successfully set color of role ${role.name} to ${role.color}`))
+                .then(role => console.log(`color command successfully set color of role ${role.name} to ${role.color}`))
                 .catch(e => {
-                    console.log(`!rc error setting color: ${message.guild.name} for id: ${message.guild.id}`);
+                    console.error(`color command error setting color: ${message.guild.name} for id: ${message.guild.id}:`, e);
                 });
         }
         else {
@@ -37,7 +37,7 @@ module.exports = {
                 })
                 .then(r => message.member.roles.add(r)) //add new role to user requesting the color change
                 .catch(e => {
-                    console.log(`!rc error creating role for: ${message.guild.name} id: ${message.guild.id}`);
+                    console.error(`color command error creating role for: ${message.guild.name} id: ${message.guild.id}`, e);
                 })
                 .finally(() => console.log(`!rc new role created and added to the user: ${message.member.displayName}.`));
         }

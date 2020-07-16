@@ -18,9 +18,10 @@ module.exports = {
                 .setDescription(description)
                 .setThumbnail(`https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png`)
                 .setTimestamp(new Date().toUTCString());
-            message.channel.send(embed).catch(e => {
-                console.log(`error sending message for: ${message.guild.name} id: ${message.guild.id}`);
-            });
+            message.channel.send(embed)
+                .catch(e => {
+                    console.error(`holiday command error sending message for: ${message.guild.name} id: ${message.guild.id}`, e);
+                });
         }
     },
 };

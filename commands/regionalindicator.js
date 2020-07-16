@@ -1,7 +1,7 @@
 module.exports = {
     name: `regionalindicator`,
     description: `Translate text into regional indicator emojis.`,
-    aliases: [`r`], //other alias to use this command
+    aliases: [`r`, `rit`], //other alias to use this command
     args: true, //arguments are required.
     usage: `<words>`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
@@ -30,11 +30,14 @@ module.exports = {
             }
             msg += `  ` //added space inbetween each word
         }
-        message.delete({ timeout: 1 }).catch(e => {
-            console.log(`error deleting message for: ${message.guild.name} for id: ${message.guild.id}`);
-        });
-        message.channel.send(`${message.member.displayName} ${msg}`).catch(e => {
-            console.log(`error sending message for: ${message.guild.name} id: ${message.guild.id}`);
-        });
+        if (message.channel.type === `text`) msg = `${message.member.displayName} ${msg}`;
+        message.delete({ timeout: 1 })
+            .catch(e => {
+                console.error(`regional indicator command issue deleting previous message:`, e);
+            });
+        message.channel.send(`${msg}`)
+            .catch(e => {
+                console.error(`regional indicator command issue sending message:`, e);
+            });
     },
 };
