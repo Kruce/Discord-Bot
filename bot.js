@@ -34,11 +34,11 @@ Client.on(`message`, message => {
     if (!command) return; //no command exists
 
     if (command.guildOnly && message.channel.type !== `text`) {
-        return message.reply(`I can\'t execute that command inside DMs!`);
+        return message.reply(`I can't execute that command inside dms.`);
     }
 
     if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
+        let reply = `You didn't provide any arguments, ${message.author}.`;
         if (command.usage) {
             reply += `\nThe proper usage would be: \`${process.env.PREFIX}${command.name} ${command.usage}\``;
         }
@@ -67,7 +67,7 @@ Client.on(`message`, message => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply(`there was an error trying to execute that command!`);
+        message.reply(`there was an error trying to execute that command.`);
     }
 });
 
