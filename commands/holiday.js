@@ -10,7 +10,7 @@ module.exports = {
         if (holidays && holidays.length) { //if any holidays exist, create a new embed message and add each holiday to its description
             let description = ``;
             for (var i = 0; i < holidays.length; ++i) {
-                if (i != 0) description += `\n`;
+                if (i > 0) description += `\n`; //add to a new line unless it is the first one
                 description += `${holidays[i][0]} [${holidays[i][1]}](${holidays[i][2]})`;
             }
             const embed = new Discord.MessageEmbed()
