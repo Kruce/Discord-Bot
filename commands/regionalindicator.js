@@ -35,7 +35,7 @@ module.exports = {
             .catch(e => {
                 console.error(`regional indicator command issue deleting previous message:`, e);
             });
-        message.channel.send(`${msg}`)
+        message.channel.send(msg)
             .catch(e => {
                 console.error(`regional indicator command issue sending message:`, e);
             });
