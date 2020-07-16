@@ -37,7 +37,7 @@ function AssignRolesHeroes(playersRoles) {
             }
             else {
                 remainedRoles = Shuffle.ShuffleArray(remainedRoles);
-                message += `**${(word).replace(`%20`, ` `)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `; //replace %20 with space
+                message += `**${(word)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `;
                 heroes[remainedRoles[0]].shift();
                 remainedRoles.shift();
             }
@@ -46,7 +46,7 @@ function AssignRolesHeroes(playersRoles) {
         return (message);
     }
     else {
-        return (`to assign, overwatch requires six or less of any combination of player names or overwatch roles`);
+        return (`To assign, overwatch requires six or less of any combination of player names or overwatch roles`);
     }
 }
 
