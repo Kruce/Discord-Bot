@@ -30,14 +30,10 @@ module.exports = {
             }
             msg += `  ` //added space inbetween each word
         }
-        if (message.channel.type === `text`) msg = `${message.member.displayName} ${msg}`;
+        if (message.channel.type === `text`) msg = `${message.member.displayName} ${msg}`; //if this isn't a dm, add username to beg.
         message.delete({ timeout: 1 })
-            .catch(e => {
-                console.error(`regional indicator command issue deleting previous message:`, e);
-            });
+            .catch(e => { console.error(`regional indicator command issue deleting previous message:`, e); });
         message.channel.send(msg)
-            .catch(e => {
-                console.error(`regional indicator command issue sending message:`, e);
-            });
+            .catch(e => { console.error(`regional indicator command issue sending message:`, e); });
     },
 };

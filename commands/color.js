@@ -21,9 +21,7 @@ module.exports = {
         if (role) { //if a role exists, change color as expected, otherwise create a new role with color
             role.setColor(color)
                 .then(role => console.log(`color command successfully set color of role ${role.name} to ${role.color}`))
-                .catch(e => {
-                    console.error(`color command error setting color: ${message.guild.name} for id: ${message.guild.id}:`, e);
-                });
+                .catch(e => { console.error(`color command error setting color: ${message.guild.name} for id: ${message.guild.id}:`, e); });
         }
         else {
             message.guild.roles
@@ -33,13 +31,11 @@ module.exports = {
                         color: color,
                         position: restrictedRoleIds.length //since this is new, place it above all restricted roles highest role. since restricted roles are on the bottom and start at zero, just count all restricted roles in the restrictedRoleIds array to get position the new role should be.
                     },
-                    reason: `!rc user did not have a role when trying to access command.`,
+                    reason: `color command user did not have a role when trying to access command.`,
                 })
                 .then(r => message.member.roles.add(r)) //add new role to user requesting the color change
-                .catch(e => {
-                    console.error(`color command error creating role for: ${message.guild.name} id: ${message.guild.id}`, e);
-                })
-                .finally(() => console.log(`!rc new role created and added to the user: ${message.member.displayName}.`));
+                .catch(e => { console.error(`color command error creating role for: ${message.guild.name} id: ${message.guild.id}`, e); })
+                .finally(() => console.log(`color command new role created and added to the user: ${message.member.displayName}.`));
         }
     },
 };

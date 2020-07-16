@@ -100,9 +100,7 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
 
     Promise.all(Shuffle.ShuffleArray(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
         message.react(cat)
-    })).catch(e => {
-        console.error(`adding cat emojis error, one failed to react: `, e)
-    });
+    })).catch(e => { console.error(`adding cat emojis error, one failed to react: `, e) });
 });
 
 Client.login(process.env.BOT_TOKEN);

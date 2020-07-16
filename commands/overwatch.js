@@ -16,8 +16,6 @@ module.exports = {
             }
         }
         message.channel.send(Overwatch.AssignRolesHeroes(args))
-            .catch(e => {
-                console.error(`overwatch command error sending message for: ${message.guild.name} id: ${message.guild.id}`, e);
-            });
+            .catch(e => { console.error(`overwatch command error sending message for: ${message.guild.name} id: ${message.guild.id}`, e); });
     },
 };
