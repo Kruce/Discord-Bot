@@ -2,6 +2,7 @@ const fs = require(`fs`);
 const Discord = require(`discord.js`);
 const Client = new Discord.Client({ partials: [`MESSAGE`, `CHANNEL`, `REACTION`] });
 const Schedule = require(`node-schedule-tz`);
+const Holiday = require(`./modules/holiday`);
 const Shuffle = require(`./modules/shuffle`);
 
 //set our commands collection
