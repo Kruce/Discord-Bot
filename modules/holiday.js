@@ -136,7 +136,7 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
  * @param {Array} newArray The new array to push to if it exists in previous array
  */
 function PushIfExists(array, key, newArray) {
-    let value = array[key];
+    const value = array[key];
     if (value !== undefined) newArray.push(value);
 }
 
@@ -144,17 +144,17 @@ function PushIfExists(array, key, newArray) {
  * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
 function HolidaysToday() {
-    let date = new Date(); //create new date object
-    let currentYear = date.getFullYear(); //extract current date info
-    let currentMonth = date.getMonth();
-    let currentDayOfWeek = date.getDay();
-    let currentDayOfMonth = date.getDate();
+    const date = new Date(); //create new date object
+    const currentYear = date.getFullYear(); //extract current date info
+    const currentMonth = date.getMonth();
+    const currentDayOfWeek = date.getDay();
+    const currentDayOfMonth = date.getDate();
 
-    let firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
-    let lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
+    const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
 
-    let occurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
-    let totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
+    const occurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
+    const totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
     let holiday = []; //create new holiday array and add all holiday emojis if they exist in our predefined arrays
     PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},${occurrence},${currentDayOfWeek}`, holiday);
@@ -169,7 +169,7 @@ function HolidaysToday() {
  * Check whether today's date is any holiday and return a string of all emojis indicating holidays if any.
  */
 function EmojisToday() {
-    let holiday = HolidaysToday();
+    const holiday = HolidaysToday();
     let emojis = ``;
     for (var i = 0; i < holiday.length; ++i) {
         emojis += holiday[i][0];

@@ -7,8 +7,8 @@ module.exports = {
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         if (message.channel.type !== `dm` && (!args || !args.length)) { //if not a dm and the arguments are empty, get any players currently playing overwatch and use them
-            for (let [key, presence] of message.guild.presences.cache) {
-                for (let activity of presence.activities) {
+            for (const [key, presence] of message.guild.presences.cache) {
+                for (const activity of presence.activities) {
                     if (activity.name.trim().toUpperCase() == `OVERWATCH`) {
                         args.push(presence.user.username);
                     }

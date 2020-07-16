@@ -16,16 +16,16 @@ function AssignRolesHeroes(playersRoles) {
             "damage": [`ashe`, `bastion`, `doomfist`, `echo`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
             "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
         };
-        for (let playerRole of playersRoles) { //update our remained and reserved roles before we start assigning them
-            let index = remainedRoles.indexOf(playerRole); //check if the current word is equal to a role and there are any remaining
+        for (const playerRole of playersRoles) { //update our remained and reserved roles before we start assigning them
+            const index = remainedRoles.indexOf(playerRole); //check if the current word is equal to a role and there are any remaining
             if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
-                let element = remainedRoles[index];
+                const element = remainedRoles[index];
                 remainedRoles.splice(index, 1);
                 reservedRoles.push(element);
             }
         }
         while (playersRoles.length > 0) { //shuffling roles and heroes inside while loop for extra randomness
-            let word = playersRoles[0]; //since we shift at end of loop this will always be the current word
+            const word = playersRoles[0]; //since we shift at end of loop this will always be the current word
             heroes["tank"] = Shuffle.ShuffleArray(heroes["tank"]);
             heroes["damage"] = Shuffle.ShuffleArray(heroes["damage"]);
             heroes["support"] = Shuffle.ShuffleArray(heroes["support"]);

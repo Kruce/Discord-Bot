@@ -10,7 +10,7 @@ module.exports = {
         let msg = ``; //empty string for a return message
         for (let i = 0; i < args.length; ++i) { //for each argument
             for (let c = 0; c < args[i].length; ++c) { //for each character in each argument
-                let charCurrent = args[i].charAt(c);
+                const charCurrent = args[i].charAt(c);
                 if (charCurrent.match(/[a-z]/i)) { //match alpha characters regardless of case
                     msg += `:regional_indicator_${charCurrent.toLowerCase()}:`;
                 }

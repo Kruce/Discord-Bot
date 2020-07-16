@@ -16,8 +16,8 @@ module.exports = {
             }
             color = colorObj.toHexString();
         }
-        let restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
-        let role = message.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
+        const restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from color change
+        const role = message.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
         if (role) { //if a role exists, change color as expected, otherwise create a new role with color
             role.setColor(color)
                 .then(role => console.log(`color command successfully set color of role ${role.name} to ${role.color}`))

@@ -19,7 +19,7 @@ Client.on(`ready`, () => {
 });
 
 Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
-    let emojis = Holiday.EmojisToday(); //empty string if no holidays
+    const emojis = Holiday.EmojisToday(); //empty string if no holidays
     let name = `me and the boys`;
     if (emojis != ``) name = `${emojis} ${name} ${emojis}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
@@ -74,12 +74,12 @@ Client.on(`message`, message => {
 Client.on(`messageReactionAdd`, async (reaction, user) => {
     if (reaction.emoji.id != `651815701782200320`) return; //if emoji is not BUB
     if (user.bot) return; //if it's a bot, ignore
-    let message = reaction.message;
+    const message = reaction.message;
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
             await reaction.fetch();
         } catch (e) {
-            console.log(`Something went wrong when fetching the message: `, e);
+            console.error(`adding cat emojis error, error when fetching the partial message: `, e);
             return;
         }
     }
@@ -95,12 +95,14 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
         `607772984098160660`, //reggie
         `665730452119879721`, //nala
     ];
-    let botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
+    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
     if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
 
     Promise.all(Shuffle.ShuffleArray(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
         message.react(cat)
-    })).catch(() => console.log(`one emoji failed to react.`));
+    })).catch(e => {
+        console.error(`adding cat emojis error, one failed to react: `, e)
+    });
 });
 
 Client.login(process.env.BOT_TOKEN);
