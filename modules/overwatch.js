@@ -1,9 +1,9 @@
 const Shuffle = require(`./shuffle`);
 
 /**
-* Assigns a random overwatch role and hero to word in array.
-* If a word is any of `damage`, `support`, or `tank` (an overwatch role).. the role gets reserved and assigns just a new hero instead.
-* heroes will not be assigned more than once and roles will not be assigned more than twice per string. Any word that is a role over total count two is treated as a player name.
+* Assigns a random overwatch role/hero to each string in array based on if string is a player name or overwatch role.
+* If a word is any of an overwatch role (`damage`, `support`, or `tank`), the role gets reserved and assigns a new hero only instead.
+* heroes will not be assigned more than once and roles will not be assigned more than twice per array. Any string that is an overwatch role over total count two is treated as a player name.
 * @param {Array} playersRoles an array of strings as player names or roles to assign new roles and heroes or just heroes to.
 */
 function AssignRolesHeroes(playersRoles) {
