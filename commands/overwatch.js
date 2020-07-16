@@ -3,7 +3,7 @@ module.exports = {
     name: `overwatch`,
     description: `Given any combination of a total of six space separated player names or overwatch roles, assign the player name a role and hero or the overwatch role a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
     aliases: [`ow`], //other alias to use this command
-    usage: `<playe name> or <overwatch role>`, //how to use the command
+    usage: `<player name> or <overwatch role>`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         if (!args || !args.length) { //if empty, get any players currently playing overwatch and use them
