@@ -6,7 +6,7 @@ module.exports = {
     usage: `<player name> or <overwatch role>`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
-        if (!args || !args.length) { //if empty, get any players currently playing overwatch and use them
+        if (message.channel.type !== `dm` && (!args || !args.length)) { //if not a dm and the argumnets are empty, get any players currently playing overwatch and use them
             for (let [key, presence] of message.guild.presences.cache) {
                 let name = presence.user.username;
                 for (let activity of presence.activities) {
