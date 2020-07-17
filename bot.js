@@ -72,7 +72,8 @@ Client.on(`message`, message => {
 });
 
 Client.on(`messageReactionAdd`, async (reaction, user) => {
-    if (reaction.emoji.id != `651815701782200320` && user.bot) return; //if emoji is not BUB or this is a bot reacting
+    if (reaction.emoji.id != `651815701782200320`) return; //if emoji is not BUB
+    if (user.bot) return;
     const message = reaction.message;
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
