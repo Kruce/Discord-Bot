@@ -85,7 +85,7 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
     }
     //message is cached and available now
     const cats = Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.startsWith(`_`)).keys()); //get all cat emojis (emoji names starting with an underscore are reserved specifically for cats)
-    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys()); //get all reactions on this message from our bot if any
+    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(Client.user.id)).keys()); //get all reactions on this message from our bot if any
     if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
 
     Promise.all(Shuffle.ShuffleArray(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
