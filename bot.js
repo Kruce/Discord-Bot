@@ -84,20 +84,8 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
         }
     }
     //message is cached and available now
-    let cats = [
-        `598348083490979846`, //smordecai2
-        `597272180769685527`, //smordecai
-        `651815701782200320`, //BUB
-        `598345950951374898`, //zexy2
-        `597270542139260930`, //zexy
-        `602357863104512030`, //oliver
-        `598377503333285891`, //thunderpaws
-        `607772984098160660`, //reggie
-        `665730452119879721`, //nala
-        `733514112595918869`, //toby
-        `733515298988228748`, //toby2
-    ];
-    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
+    const cats = Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.startsWith(`_`)).keys()); //get all cat emojis (emoji names starting with an underscore are reserved specifically for cats)
+    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys()); //get all reactions on this message from our bot if any
     if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
 
     Promise.all(Shuffle.ShuffleArray(cats).map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
