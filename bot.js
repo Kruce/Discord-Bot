@@ -95,6 +95,7 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
         `607772984098160660`, //reggie
         `665730452119879721`, //nala
         `733514112595918869`, //toby
+        `733515298988228748`, //toby2
     ];
     const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(`696792226956836954`)).keys());
     if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
