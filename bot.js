@@ -72,8 +72,7 @@ Client.on(`message`, message => {
 });
 
 Client.on(`messageReactionAdd`, async (reaction, user) => {
-    if (reaction.emoji.id != `651815701782200320`) return; //if emoji is not BUB
-    if (user.bot) return;
+    if (reaction.emoji.id != `651815701782200320` || user.bot) return; //if emoji is not BUB or this is a bot reacting
     const message = reaction.message;
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
@@ -82,11 +81,11 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
             console.error(`adding cat emojis error, error when fetching the partial message: `, e);
             return;
         }
-    }
-    //message is cached and available now
+    } //message is cached and available now
+    
     const cats = Shuffle.ShuffleArray(Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.startsWith(`_`)).keys())); //get all guild cat emojis (emoji names starting with an underscore are reserved specifically for cats) and shuffle the array
     const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(Client.user.id)).keys()); //get all reactions on this message from our bot if any
-    if (cats.every(v => botReactions.includes(v))) return; //message already contains all cats from bot
+    if (cats.every(cat => botReactions.includes(cat))) return; //message already contains all cats from bot
 
     Promise.all(cats.map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
         message.react(cat)
