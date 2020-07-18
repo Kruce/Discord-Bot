@@ -83,7 +83,7 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
         }
     } //message is cached and available now
     
-    const cats = Shuffle.ShuffleArray(Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.startsWith(`_`)).keys())); //get all guild cat emojis (emoji names starting with an underscore are reserved specifically for cats) and shuffle the array
+    const cats = Shuffle.ShuffleArray(Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.endsWith(`_`)).keys())); //get all guild cat emojis (emoji names ending with an underscore are reserved specifically for cats) and shuffle the array
     const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(Client.user.id)).keys()); //get all reactions on this message from our bot if any
     if (cats.every(cat => botReactions.includes(cat))) return; //message already contains all cats from bot
 
