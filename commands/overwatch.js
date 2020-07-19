@@ -16,20 +16,21 @@ module.exports = {
             }
         }
         if (!args.length || args.length > 6) return message.channel.send(`To assign, overwatch requires six or less of any combination of player names or overwatch roles.`);
+        args = args.map(v => v.toLowerCase()); //convert all user input to lower case
         let data = ``;
-        let reservedRoles = []; //if they are just requesting a hero change, the role gets reserved
-        let remainedRoles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
+        let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
+        let remainedroles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
         let heroes = {
             "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`, `zarya`],
             "damage": [`ashe`, `bastion`, `doomfist`, `echo`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
             "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
         };
         for (const arg of args) { //update our remained and reserved roles before we start assigning them
-            const index = remainedRoles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
+            const index = remainedroles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
             if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
-                const role = remainedRoles[index];
-                remainedRoles.splice(index, 1);
-                reservedRoles.push(role);
+                const role = remainedroles[index];
+                remainedroles.splice(index, 1);
+                reservedroles.push(role);
             }
         }
         while (args.length > 0) { //shuffling roles and heroes inside while loop for extra randomness
@@ -38,16 +39,16 @@ module.exports = {
             heroes["damage"] = Shuffle.ShuffleArray(heroes["damage"]);
             heroes["support"] = Shuffle.ShuffleArray(heroes["support"]);
 
-            if (reservedRoles.includes(arg)) { //if the message is a role and there's still roles of that type left to use
+            if (reservedroles.includes(arg)) { //if the message is a role and there's still roles of that type left to use
                 data += `{**new ${arg} hero**: ${heroes[arg][0]}} `;
                 heroes[arg].shift();
-                reservedRoles.splice(reservedRoles.findIndex(x => x == arg), 1); //remove the first instance of the role
+                reservedroles.splice(reservedroles.findIndex(x => x == arg), 1); //remove the first instance of the role
             }
             else {
-                remainedRoles = Shuffle.ShuffleArray(remainedRoles);
-                data += `**${(arg)}:** {${remainedRoles[0]}, ${heroes[remainedRoles[0]][0]}} `;
-                heroes[remainedRoles[0]].shift();
-                remainedRoles.shift();
+                remainedroles = Shuffle.ShuffleArray(remainedroles);
+                data += `**${(arg)}:** {${remainedroles[0]}, ${heroes[remainedroles[0]][0]}} `;
+                heroes[remainedroles[0]].shift();
+                remainedroles.shift();
             }
             args.shift();
         }
