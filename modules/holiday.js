@@ -21,6 +21,7 @@ const GregorianHolidayByDate = { // keys are formatted as "month,day of the mont
     "5,1": [`🏳️‍🌈`, `Pride month begins`, `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`],
     "5,19": [`✊🏿`, `Junteenth`, `https://en.wikipedia.org/wiki/Juneteenth`],
     "6,4": [`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`],
+    "7,26": [`💪`, `Women's Equality Day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
     "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
     "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
 };
