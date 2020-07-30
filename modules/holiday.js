@@ -145,7 +145,7 @@ function PushIfExists(array, key, newArray) {
  * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
 function HolidaysToday() {
-    const date = new Date(); //create new date object
+    const date = new Date(new Date().toLocaleString(`en-US`, { timeZone: `America/New_York` })); //create new date object to local timezone
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
     const currentDayOfWeek = date.getDay();
