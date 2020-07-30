@@ -35,13 +35,21 @@ const IslamicHoliday = {
     "10 Dhul Hijja": [`🐑`, `Eid Al-Adha`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]
 };
 
-function KuwaitiCalendar(year, month, day, adjust) {
-    var today = new Date();
+function gmod(n, m) {
+    return ((n % m) + m) % m;
+}
+
+function KuwaitiCalendar(date, adjust) {
     if (adjust) {
         adjustmili = 1000 * 60 * 60 * 24 * adjust;
-        todaymili = today.getTime() + adjustmili;
-        today = new Date(todaymili);
+        todaymili = date.getTime() + adjustmili;
+        date = new Date(todaymili);
     }
+
+    day = date.getDate();
+    month = date.getMonth();
+    year = date.getFullYear();
+
     m = month + 1;
     y = year;
     if (m < 3) {
@@ -79,7 +87,11 @@ function KuwaitiCalendar(year, month, day, adjust) {
     }
     year = cc - 4716;
 
-    wd = (((jd + 1 % 7) + 7) % 7) + 1;
+    if (adjust) {
+        wd = gmod(jd + 1 - adjust, 7) + 1;
+    } else {
+        wd = gmod(jd + 1, 7) + 1;
+    }
 
     iyear = 10631. / 30.;
     epochastro = 1948084;
@@ -111,10 +123,10 @@ function KuwaitiCalendar(year, month, day, adjust) {
     return myRes;
 }
 
-function IslamicDate(year, month, day, adjustment) {
+function IslamicDate(date, adjustment) {
     let monthNames = new Array(`Muharram`, `Safar`, `Rabi'ul Awwal`, `Rabi'ul Akhir`, `Jumadal Ula`, `Jumadal Akhira`, `Rajab`, `Sha'ban`, `Ramadan`, `Shawwal`, `Dhul Qa'ada`, `Dhul Hijja`);
-    let date = KuwaitiCalendar(year, month, day, adjustment);
-    return date[5] + " " + monthNames[date[6]];
+    let iDate = KuwaitiCalendar(date, adjustment);
+    return iDate[5] + " " + monthNames[iDate[6]];
 }
 
 /**
@@ -161,7 +173,7 @@ function HolidaysToday() {
     let holiday = []; //create new holiday array and add all holiday emojis if they exist in our predefined arrays
     PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},${occurrence},${currentDayOfWeek}`, holiday);
     PushIfExists(GregorianHolidayByDate, `${currentMonth},${currentDayOfMonth}`, holiday);
-    PushIfExists(IslamicHoliday, IslamicDate(currentYear, currentMonth, currentDayOfMonth), holiday);
+    PushIfExists(IslamicHoliday, IslamicDate(date, -1), holiday);
     if (occurrence == totalOccurrence) //if today is the last occurrence of this weekday in the month, add any last occurrence holidays using -1
         PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},-1,${currentDayOfWeek}`, holiday);
     return holiday;
