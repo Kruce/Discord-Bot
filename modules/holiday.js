@@ -24,6 +24,7 @@ const GregorianHolidayByDate = { // keys are formatted as "month,day of the mont
     "7,26": [`💪`, `Women's Equality Day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
     "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
     "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
+    "11,26": [`🕯️`, `Kwanzaa`, `https://en.wikipedia.org/wiki/Kwanzaa`]
 };
 
 const IslamicHoliday = {
