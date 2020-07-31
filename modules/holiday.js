@@ -24,7 +24,7 @@ const GregorianHolidayByDate = { // keys are formatted as "month,day of the mont
     "7,26": [`💪`, `Women's Equality Day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
     "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
     "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
-    "11,26": [`🕯️`, `Kwanzaa`, `https://en.wikipedia.org/wiki/Kwanzaa`]
+    "11,26": [`🕯️`, `Kwanzaa begins`, `https://en.wikipedia.org/wiki/Kwanzaa`]
 };
 
 const IslamicHoliday = {
@@ -32,7 +32,7 @@ const IslamicHoliday = {
     "12 Rabi'ul Awwal": [`🎂`, `Mawlid`, `https://en.wikipedia.org/wiki/Mawlid`],
     "1 Ramadan": [`🌙`, `Ramadan begins`, `https://en.wikipedia.org/wiki/Ramadan`],
     "1 Shawwal": [`😋`, `Eid Al-Fitr`, `https://en.wikipedia.org/wiki/Eid_al-Fitr`],
-    "10 Dhul Hijja": [`🐑`, `Eid Al-Adha`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]
+    "10 Dhul Hijja": [`🐑`, `Eid Al-Adha begins`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]
 };
 
 function gmod(n, m) {
