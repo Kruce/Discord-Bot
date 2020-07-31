@@ -1,7 +1,7 @@
 const TinyColor = require(`tinycolor2`);
 module.exports = {
     name: `color`,
-    description: `Change the color of your username. Color input accepts strings as 8-digit hex, rgb, rgba, hsl, hsla, or simply the color name. Use 'default' for original Discord color and 'random' for a random color.`,
+    description: `Change the color of your username. Color input accepts a string as one of multiple formats of 8-digit hex, rgb, rgba, hsl, hsla, or simply the color name. Use *default* for original Discord color and *random* for a random color.`,
     aliases: [`c`], //other alias to use this command
     args: true, //arguments are required.
     usage: `<color string>`, //how to use the command
