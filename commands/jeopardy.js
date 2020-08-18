@@ -7,10 +7,10 @@ module.exports = {
     usage: `<answer>, <repeat>, or blank for a new question`,
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
-        let cmd = (args.length) ? args[0].toLowerCase() : ``; //command if any
+        let arg = (args.length) ? args[0].toLowerCase() : ``; //command if any
         const GetOrSetJeopardyCache = () =>
             new Promise((resolve, reject) => {
-                if (message.client.jeopardy === undefined || message.client.jeopardy === null || !cmd) {
+                if (message.client.jeopardy === undefined || message.client.jeopardy === null || !arg) {
                     https.get(`https://jservice.io/api/random`, (response) => {
                         let data = ``;
                         response.on(`data`, (chunk) => {
@@ -41,11 +41,11 @@ module.exports = {
                 }
             })
         GetJeopardyQuestion().then(() => {
-            if (cmd == `answer`) {
+            if (arg == `answer`) {
                 let answer = message.client.jeopardy.get(`answer`);
                 return message.channel.send(`${answer.charAt(0).toUpperCase()}${answer.slice(1)}`).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
             }
-            else {
+            else if (!arg || arg == `repeat`) {
                 let category = message.client.jeopardy.get(`category`).title;
                 let data = `\n**Category:** ${category.charAt(0).toUpperCase()}${category.slice(1)} \n**Question:** ${message.client.jeopardy.get(`question`)}`;
                 return message.channel.send(data).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
