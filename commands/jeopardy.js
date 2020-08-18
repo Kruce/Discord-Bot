@@ -7,7 +7,7 @@ module.exports = {
     usage: `<answer>, <repeat>, or blank for a new question`,
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
-        let arg = (args.length) ? args[0].toLowerCase() : ``; //command if any
+        let arg = (args.length) ? args[0].toLowerCase() : ``; //argument, if any
         const GetOrSetJeopardyCache = () =>
             new Promise((resolve, reject) => {
                 if (message.client.jeopardy === undefined || message.client.jeopardy === null || !arg) {
@@ -39,16 +39,16 @@ module.exports = {
                 if (result === `retry`) {
                     return GetJeopardyQuestion();
                 }
-            })
+            });
         GetJeopardyQuestion().then(() => {
-            if (arg == `answer`) {
-                let answer = message.client.jeopardy.get(`answer`);
-                return message.channel.send(`${answer.charAt(0).toUpperCase()}${answer.slice(1)}`).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
-            }
-            else if (!arg || arg == `repeat`) {
+            if (!arg || arg == `repeat`) {
                 let category = message.client.jeopardy.get(`category`).title;
                 let data = `\n**Category:** ${category.charAt(0).toUpperCase()}${category.slice(1)} \n**Question:** ${message.client.jeopardy.get(`question`)}`;
                 return message.channel.send(data).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
+            }
+            if (arg == `answer`) {
+                let answer = message.client.jeopardy.get(`answer`);
+                return message.channel.send(`${answer.charAt(0).toUpperCase()}${answer.slice(1)}`).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
             }
         });
     },
