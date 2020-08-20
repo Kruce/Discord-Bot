@@ -18,7 +18,7 @@ module.exports = {
                         });
                         response.on(`end`, () => {
                             const jservice = JSON.parse(data)[0];
-                            if (jservice.invalid_count !== null && jservice.invalid_count >= 5) { //if question was marked as invalid more than five times, ignore and get another question
+                            if ((jservice.invalid_count !== null && jservice.invalid_count >= 5) || (jservice.question === null || jservice.question === ``)) { //if question was marked as invalid more than five times or the question is just empty ignore and get another
                                 resolve(`retry`);
                             }
                             message.client.jeopardy = new Discord.Collection();
