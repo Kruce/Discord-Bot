@@ -4,7 +4,7 @@ module.exports = {
     description: `Change the color of your username. Color input accepts a string as one of multiple formats of 8-digit hex, rgb, rgba, hsl, hsla, or simply the color name. Use *default* for original Discord color and *random* for a random color.`,
     aliases: [`c`], //other alias to use this command
     args: true, //arguments are required.
-    usage: `<color string>`, //how to use the command
+    usage: `Examples: *${process.env.PREFIX}c red*, *${process.env.PREFIX}c #ff0000*, *${process.env.PREFIX}c ff0000*, *${process.env.PREFIX}c rgb (255, 0, 0)*, *${process.env.PREFIX}c rgb 255 0 0*, *${process.env.PREFIX}c hsl(0, 100%, 50%)*, *${process.env.PREFIX}c random*, *${process.env.PREFIX}c default*`, //how to use the command
     guildOnly: true, //usable inside servers only and not dms
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {

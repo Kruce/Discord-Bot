@@ -4,6 +4,7 @@ module.exports = {
     name: `holiday`,
     description: `Description and information on today's holiday emoji.`,
     aliases: [`h`], //other alias to use this command
+    usage: `*${process.env.PREFIX}h* to retrieve more information on today's holiday emoji, if one exists.`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         const holidays = Holiday.HolidaysToday();
