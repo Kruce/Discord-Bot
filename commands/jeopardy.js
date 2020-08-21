@@ -4,7 +4,7 @@ module.exports = {
     name: `jeopardy`,
     description: `Choose from a list of categories to get a jeopardy formatted trivia clue and answer. You can also say random to skip selecting a category for an instant clue. A blank command will give you a list of new categories to choose from.`,
     aliases: [`j`], //other alias to use this command
-    usage: `<random> for a new random instant clue, <answer>, <repeat>, or blank for new categories to choose from`,
+    usage: `*${process.env.PREFIX}j* for new categories to choose from, *${process.env.PREFIX}j* then a number to select a category, *${process.env.PREFIX}j answer* for a selected clue's answer, *${process.env.PREFIX}j repeat* to either repeat the categories or the clue, or *${process.env.PREFIX}j random* for a new random instant clue.`,
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         let arg = (args.length) ? (!isNaN(args[0]) ? parseInt(args[0]) : args[0].toLowerCase()) : ``; //if there are any arguments get the first one only, if it is a number parse int and return that, otherwise return lowercase string
