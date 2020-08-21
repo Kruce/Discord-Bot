@@ -2,15 +2,15 @@ const Discord = require(`discord.js`);
 const https = require(`https`);
 module.exports = {
     name: `jeopardy`,
-    description: `Choose from a list of categories to get a jeopardy formatted trivia clue and answer. You can also say random to skip selecting a category for an instant clue. A blank command will give you a list of new categories to choose from.`,
+    description: `Get a random instant jeopardy formatted trivia clue or choose from a list of categories to get a jeopardy formatted trivia clue.`,
     aliases: [`j`], //other alias to use this command
-    usage: `*${process.env.PREFIX}j* for new categories to choose from, *${process.env.PREFIX}j* then a number to select a category, *${process.env.PREFIX}j answer* for a selected clue's answer, *${process.env.PREFIX}j repeat* to either repeat the categories or the clue, or *${process.env.PREFIX}j random* for a new random instant clue.`,
+    usage: `*${process.env.PREFIX}j* for a new random instant clue, *${process.env.PREFIX}j categories* for a new set of categories to choose from, *${process.env.PREFIX}j* then a number to select a category, *${process.env.PREFIX}j answer* for a selected clue's answer, *${process.env.PREFIX}j repeat* to either repeat the categories or the clue.`,
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         let arg = (args.length) ? (!isNaN(args[0]) ? parseInt(args[0]) : args[0].toLowerCase()) : ``; //if there are any arguments get the first one only, if it is a number parse int and return that, otherwise return lowercase string
         const GetOrSetJeopardyCache = () =>
             new Promise((resolve, reject) => {
-                if (message.client.jeopardy == null || !arg || arg == `random`) {
+                if (message.author.jeopardy == null || !arg || arg == `categories`) {
                     https.get(`https://jservice.io/api/random?count=5`, (response) => {
                         let data = ``;
                         response.on(`data`, (chunk) => {
@@ -18,7 +18,7 @@ module.exports = {
                         });
                         response.on(`end`, () => {
                             const clues = JSON.parse(data);
-                            message.client.jeopardy = new Discord.Collection();
+                            message.author.jeopardy = new Discord.Collection();
                             for (i = 0; i < clues.length; ++i) {
                                 const clue = clues[i];
                                 if ((clue.invalid_count !== null && clue.invalid_count >= 5) || (clue.question == null || clue.question === ``)) { //if clue was marked as invalid more than five times or the question is just empty ignore and get another 5
@@ -36,7 +36,13 @@ module.exports = {
                                     }
                                 }
                             }
-                            message.client.jeopardy.set(`clues`, clues);
+                            message.author.jeopardy.set(`clues`, clues);
+                            if (!arg) { //if arg was blank, set chosen clue to a random one from the 5 returned
+                                const min = 0;
+                                const max = 4;
+                                const number = Math.floor(Math.random() * (max - min + 1) + min);
+                                message.author.jeopardy.set(`chosenclue`, number);
+                            }
                             resolve(`cached`);
                         });
                     }).on(`error`, (error) => {
@@ -54,49 +60,41 @@ module.exports = {
             });
         GetJeopardyQuestion().then(() => {
             let data = ``;
-            const chosenclue = message.client.jeopardy.get(`chosenclue`);
-            const clues = message.client.jeopardy.get(`clues`);
-            if (arg == `random`) {
-                const min = 0;
-                const max = 4;
-                const number = Math.floor(Math.random() * (max - min + 1) + min);
-                message.client.jeopardy.set(`chosenclue`, number);
-                const clue = clues[number];
-                data = `\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`;
-            }
-            else if (chosenclue == null) {
-                if (arg >= 1 && arg <= 5) {
-                    const number = arg - 1;
-                    message.client.jeopardy.set(`chosenclue`, number);
-                    const clue = clues[number];
-                    data = `\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`;
-                }
-                else if (!arg || arg == `repeat`) {
+            const chosenclue = message.author.jeopardy.get(`chosenclue`);
+            const clues = message.author.jeopardy.get(`clues`);
+            if (chosenclue == null) { //if chosen clue isn't set, then they need to select from the list of categories
+                if (arg == `categories` || arg == `repeat`) {
                     data = `\n**Select your category:**`;
                     for (i = 0; i < clues.length; ++i) {
                         data += `\n${i + 1}.) ${clues[i].category.title}`;
                     }
                 }
+                else if (arg >= 1 && arg <= 5) {
+                    const number = arg - 1;
+                    message.author.jeopardy.set(`chosenclue`, number);
+                    const clue = clues[number];
+                    data = `\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`;
+                }
                 else {
-                    data = `You can send *repeat*, a number to select a clue from the given categories, *random* for a new random instant clue, or blank for new categories to choose from.`;
+                    data = `You can send *repeat*, a number to select a clue from your given categories, *categories* for new categories to choose from, or blank for a new random instant clue.`;
                 }
             }
             else {
                 let clue = clues[chosenclue];
-                if (arg >= 1 && arg <= 5) {
-                    const number = arg - 1;
-                    message.client.jeopardy.set(`chosenclue`, number);
-                    clue = clues[number];
+                if (!arg || arg == `repeat`) {
                     data = `\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`;
                 }
-                else if (!arg || arg == `repeat`) {
+                else if (arg >= 1 && arg <= 5) {
+                    const number = arg - 1;
+                    message.author.jeopardy.set(`chosenclue`, number);
+                    clue = clues[number];
                     data = `\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`;
                 }
                 else if (arg == `answer`) {
                     data = clue.answer;
                 }
                 else {
-                    data = `You can send *repeat*, *answer*, a number to select a clue from the given categories, *random* for a random new clue, or blank for new categories to choose from.`;
+                    data = `You can send *repeat*, *answer*, a number to select a clue from your given categories, *categories* for new categories to choose from, or blank for a new random instant clue.`;
                 }
             }
             return message.channel.send(data).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
