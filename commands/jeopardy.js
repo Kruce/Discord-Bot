@@ -32,14 +32,16 @@ module.exports = {
                                         clue.category.title = `${clue.category.title.charAt(0).toUpperCase()}${clue.category.title.slice(1)}`; //convert category to upper case
                                     }
                                     if (clue.answer != null) {
+                                        if (clue.answer.includes(`<i>`) && clue.answer.includes(`</i>`)) { //replace the italic html with discord italics
+                                            clue.answer.replace(`<i>`, `*`).replace(`</i>`, `*`); 
+                                        }
                                         clue.answer = `${clue.answer.charAt(0).toUpperCase()}${clue.answer.slice(1)}`; //convert answer to upper case
                                     }
                                 }
                             }
                             message.author.jeopardy.set(`clues`, clues);
                             if (!arg) { //if arg was blank, set chosen clue to a random one from the 5 returned
-                                const min = 0;
-                                const max = 4;
+                                const min = 0; const max = 4;
                                 const number = Math.floor(Math.random() * (max - min + 1) + min);
                                 message.author.jeopardy.set(`chosenclue`, number);
                             }
