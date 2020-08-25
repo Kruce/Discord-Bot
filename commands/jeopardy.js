@@ -33,7 +33,7 @@ module.exports = {
                                     }
                                     if (clue.answer != null) {
                                         if (clue.answer.includes(`<i>`) && clue.answer.includes(`</i>`)) { //replace the italic html with discord italics
-                                            clue.answer.replace(`<i>`, `*`).replace(`</i>`, `*`); 
+                                            clue.answer = clue.answer.replace(`<i>`, `*`).replace(`</i>`, `*`); 
                                         }
                                         clue.answer = `${clue.answer.charAt(0).toUpperCase()}${clue.answer.slice(1)}`; //convert answer to upper case
                                     }
