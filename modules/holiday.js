@@ -1,14 +1,14 @@
-﻿const GregorianHolidayByWeekAndDay = { // keys are formatted as "month,occurrence(or week),day of the week" using zero based. Use -1 for `last`, such as `the last monday of month`
+﻿const GregorianHolidayByWeekAndDay = { // keys are formatted as "month (using zero based),occurrence (or week),day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence
     "0,3,1": [`☮️`, `Martin Luther King Jr. day`, `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`],
     "1,2,1": [`🎩`, `President's day`, `https://en.wikipedia.org/wiki/Washington%27s_Birthday`],
     "2,1,0": [`🌞`, `Daylight savings time begins`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
     "4,-1,1": [`🎖️`, `Memorial day`, `https://en.wikipedia.org/wiki/Memorial_Day`],
-    "8,0,1": [`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`],
-    "10,0,0": [`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
+    "8,1,1": [`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`],
+    "10,1,0": [`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
     "10,4,4": [`🦃`, `Thanksgiving`, `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`]
 };
 
-const GregorianHolidayByDate = { // keys are formatted as "month,day of the month" using zero based months
+const GregorianHolidayByDate = { // keys are formatted as "month (using zero based),day of the month"
     "0,1": [`🎉`, `New years day`, `https://en.wikipedia.org/wiki/New_Year%27s_Day`],
     "1,1": [`🙌🏿`, `Black history month begins`, `https://en.wikipedia.org/wiki/Black_History_Month`],
     "1,14": [`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`],
