@@ -1,40 +1,39 @@
-﻿const GregorianHolidayByWeekAndDay = { // keys are formatted as "month (using zero based),occurrence (or week),day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence
-    "0,3,1": [`☮️`, `Martin Luther King Jr. day`, `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`],
-    "1,2,1": [`🎩`, `President's day`, `https://en.wikipedia.org/wiki/Washington%27s_Birthday`],
-    "2,1,0": [`🌞`, `Daylight savings time begins`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
-    "4,-1,1": [`🎖️`, `Memorial day`, `https://en.wikipedia.org/wiki/Memorial_Day`],
-    "8,1,1": [`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`],
-    "10,1,0": [`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
-    "10,4,4": [`🦃`, `Thanksgiving`, `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`]
-};
-
-const GregorianHolidayByDate = { // keys are formatted as "month (using zero based),day of the month"
-    "0,1": [`🎉`, `New years day`, `https://en.wikipedia.org/wiki/New_Year%27s_Day`],
-    "1,1": [`🙌🏿`, `Black history month begins`, `https://en.wikipedia.org/wiki/Black_History_Month`],
-    "1,14": [`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`],
-    "2,17": [`☘️`, `St. Patrick's day`, `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`],
-    "2,30": [`🌱`, `Land day`, `https://en.wikipedia.org/wiki/Land_Day`],
-    "3,22": [`🌎`, `Earth day`, `https://en.wikipedia.org/wiki/Earth_Day`],
-    "3,24": [`🇦🇲`, `Armenian genocide rememberence day`, `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`],
-    "4,5": [`💃`, `Cinco de mayo`, `https://en.wikipedia.org/wiki/Cinco_de_Mayo`],
-    "4,15": [`🇵🇸`, `Nakba day`, `https://en.wikipedia.org/wiki/Nakba_Day`],
-    "5,1": [`🏳️‍🌈`, `Pride month begins`, `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`],
-    "5,19": [`✊🏿`, `Junteenth`, `https://en.wikipedia.org/wiki/Juneteenth`],
-    "6,4": [`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`],
-    "7,26": [`💪`, `Women's Equality Day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
-    "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
-    "10,11": [`🦅`, `Veterans Day`, `https://en.wikipedia.org/wiki/Veterans_Day`],
-    "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
-    "11,26": [`🕯️`, `Kwanzaa begins`, `https://en.wikipedia.org/wiki/Kwanzaa`]
-};
-
-const IslamicHoliday = {
-    "1 Muharram": [`☪️`, `Islamic new year`, `https://en.wikipedia.org/wiki/Islamic_New_Year`],
-    "12 Rabi'ul Awwal": [`🎂`, `Mawlid`, `https://en.wikipedia.org/wiki/Mawlid`],
-    "1 Ramadan": [`🌙`, `Ramadan begins`, `https://en.wikipedia.org/wiki/Ramadan`],
-    "1 Shawwal": [`😋`, `Eid Al-Fitr`, `https://en.wikipedia.org/wiki/Eid_al-Fitr`],
-    "10 Dhul Hijja": [`🐑`, `Eid Al-Adha begins`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]
-};
+﻿const holidays = [ //multidimensional array where the first array is for gregorian holidays by week and day, the second array is for gregorian holidays by date, and the third is for islamic holidays
+    [{ // keys are formatted as "month (using zero based), occurrence (or week), day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence
+        "0,3,1": [`☮️`, `Martin Luther King Jr. day`, `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`],
+        "1,2,1": [`🎩`, `President's day`, `https://en.wikipedia.org/wiki/Washington%27s_Birthday`],
+        "2,1,0": [`🌞`, `Daylight savings time begins`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
+        "4,-1,1": [`🎖️`, `Memorial day`, `https://en.wikipedia.org/wiki/Memorial_Day`],
+        "8,1,1": [`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`],
+        "10,1,0": [`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
+        "10,4,4": [`🦃`, `Thanksgiving`, `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`]
+    }],
+    [{ // keys are formatted as "month (using zero based), day of the month" 
+        "0,1": [`🎉`, `New years day`, `https://en.wikipedia.org/wiki/New_Year%27s_Day`],
+        "1,1": [`🙌🏿`, `Black history month begins`, `https://en.wikipedia.org/wiki/Black_History_Month`],
+        "1,14": [`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`],
+        "2,17": [`☘️`, `St. Patrick's day`, `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`],
+        "2,30": [`🌱`, `Land day`, `https://en.wikipedia.org/wiki/Land_Day`],
+        "3,22": [`🌎`, `Earth day`, `https://en.wikipedia.org/wiki/Earth_Day`],
+        "3,24": [`🇦🇲`, `Armenian genocide rememberence day`, `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`],
+        "4,5": [`💃`, `Cinco de mayo`, `https://en.wikipedia.org/wiki/Cinco_de_Mayo`],
+        "4,15": [`🇵🇸`, `Nakba day`, `https://en.wikipedia.org/wiki/Nakba_Day`],
+        "5,1": [`🏳️‍🌈`, `Pride month begins`, `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`],
+        "5,19": [`✊🏿`, `Junteenth`, `https://en.wikipedia.org/wiki/Juneteenth`],
+        "6,4": [`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`],
+        "7,26": [`💪`, `Women's Equality Day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
+        "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
+        "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
+        "11,26": [`🕯️`, `Kwanzaa begins`, `https://en.wikipedia.org/wiki/Kwanzaa`]
+    }],
+    [{
+        "1 Muharram": [`☪️`, `Islamic new year`, `https://en.wikipedia.org/wiki/Islamic_New_Year`],
+        "12 Rabi'ul Awwal": [`🎂`, `Mawlid`, `https://en.wikipedia.org/wiki/Mawlid`],
+        "1 Ramadan": [`🌙`, `Ramadan begins`, `https://en.wikipedia.org/wiki/Ramadan`],
+        "1 Shawwal": [`😋`, `Eid Al-Fitr`, `https://en.wikipedia.org/wiki/Eid_al-Fitr`],
+        "10 Dhul Hijja": [`🐑`, `Eid Al-Adha begins`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]
+    }]
+];
 
 function gmod(n, m) {
     return ((n % m) + m) % m;
@@ -172,11 +171,19 @@ function HolidaysToday() {
     const totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
     let holiday = []; //create new holiday array and add all holiday emojis if they exist in our predefined arrays
-    PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},${occurrence},${currentDayOfWeek}`, holiday);
-    PushIfExists(GregorianHolidayByDate, `${currentMonth},${currentDayOfMonth}`, holiday);
-    PushIfExists(IslamicHoliday, IslamicDate(date, -1), holiday);
-    if (occurrence == totalOccurrence) //if today is the last occurrence of this weekday in the month, add any last occurrence holidays using -1
-        PushIfExists(GregorianHolidayByWeekAndDay, `${currentMonth},-1,${currentDayOfWeek}`, holiday);
+
+    let keys = [ //each array within this multidimensional array has two values. The first value is the key that is used to get the applicable holidays sub-array in the 'holidays' multidimensional array, and the second is today's generated key to check if any holidays match within that sub-array
+        [0, `${currentMonth},${occurrence},${currentDayOfWeek}`],
+        [1, `${currentMonth},${currentDayOfMonth}`],
+        [2, `${IslamicDate(date, -1)}`],
+    ];
+
+    if (occurrence == totalOccurrence) //if today is the last occurence of this day in the month, check for those holidays using -1 that was described in the holidays multidimensional array
+        keys.push([0, `${currentMonth},-1,${currentDayOfWeek}`]);
+
+    for (let i = 0; i < keys.length; ++i) { //for each of our keys, check their applicable holiday array to see if any holidays exist
+        PushIfExists(holidays[keys[i][0]][0], keys[i][1], holiday);
+    }
     return holiday;
 }
 
