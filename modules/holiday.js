@@ -145,16 +145,6 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
 }
 
 /**
- * @param {Array} array The array with value to check
- * @param {object} key The key to check to get value
- * @param {Array} newArray The new array to push to if it exists in previous array
- */
-function PushIfExists(array, key, newArray) {
-    const value = array[key];
-    if (value !== undefined) newArray.push(value);
-}
-
-/**
  * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
 function HolidaysToday() {
@@ -182,8 +172,12 @@ function HolidaysToday() {
         keys.push([0, `${currentMonth},-1,${currentDayOfWeek}`]);
 
     for (let i = 0; i < keys.length; ++i) { //for each of our keys, check their applicable holiday array to see if any holidays exist
-        PushIfExists(holidays[keys[i][0]][0], keys[i][1], holiday);
+        const array = holidays[keys[i][0]][0];
+        const key = keys[i][1];
+        const value = array[key];
+        if (value !== undefined) holiday.push(value);
     }
+
     return holiday;
 }
 
