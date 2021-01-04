@@ -7,15 +7,15 @@ module.exports = {
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
-            args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toUpperCase() == `OVERWATCH` }) }), p => p[1].user.username);
+            args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toUpperCase() == `OVERWATCH` }) }), p => p[1].member.displayName);
         if (!args.length || args.length > 6) //if array is empty or more than six players/roles return message
             return message.channel.send(`To assign, overwatch requires six or less of any combination of player names or overwatch roles.`);
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
         let remainedroles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
         let heroes = {
             "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`, `zarya`],
-            "damage": [`ashe`, `bastion`, `doomfist`, `echo`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
-            "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
+            "damage": [`ashe`, `bastion`, `doomfist`, `echo`, `genji`, `hanzo`, `junkrat`, `mcree`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjÃ¶rn`, `tracer`, `widowmaker`],
+            "support": [`ana`, `baptiste`, `brigitte`, `lÃºcio`, `mercy`, `moira`, `zenyatta`]
         };
         const argumentslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
         for (const arg of argumentslower) { //update our remained and reserved roles before we start assigning them
