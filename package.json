@@ -11,7 +11,7 @@
     "cheerio": "^1.0.0-rc.5",
     "discord.js": "^12.1.1",
     "node-schedule-tz": "^1.2.1-4",
-    "puppeteer": "^8.0.0",
+    "request-promise": "^4.2.6",
     "tinycolor2": "^1.4.1"
   }
 }
