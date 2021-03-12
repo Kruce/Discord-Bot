@@ -14,7 +14,7 @@ module.exports = {
         Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBTOKEN}`, { json: true }, (err, res, body) => {
             return body;
         }).then(function (price) {
-            Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=c15s5bf48v6oal0lrnog`, { json: true }, (err, res, body) => {
+            Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUBTOKEN}`, { json: true }, (err, res, body) => {
                 if (body.name == undefined) {
                     return message.channel.send(`There is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
