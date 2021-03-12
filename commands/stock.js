@@ -14,23 +14,28 @@ module.exports = {
         Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBTOKEN}`, { json: true }, (err, res, body) => {
             return body;
         }).then(function (price) {
-            Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUBTOKEN}`, { json: true }, (err, res, body) => {
+            Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=c15s5bf48v6oal0lrnog`, { json: true }, (err, res, body) => {
                 if (body.name == undefined) {
-                    return message.channel.send(`There is an issue retrieving that stock data.`).catch(e => { console.error(`stock command issue sending message:`, e); });
+                    return message.channel.send(`There is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
                 else {
                     const embed = new Discord.MessageEmbed()
                         .setTitle(`Estimated price of ${body.name} (${body.ticker})`)
                         .setURL(body.weburl)
-                        .setDescription(`$${price.c.toFixed(2)}`)
-                        .setTimestamp(new Date().toUTCString());
+                        .setDescription(body.finnhubIndustry)
+                        .setThumbnail(body.logo)
+                        .setTimestamp(new Date().toUTCString())
+                        .addFields(
+                            { name: 'Exchange', value: body.exchange },
+                            { name: 'Price', value: `$${price.c.toFixed(2)}` },
+                        );
                     return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
             });
         })
         .catch(function (e) {
             console.error(e);
-            return message.channel.send(`There is an issue retrieving that stock data.`).catch(e => { console.error(`stock command issue sending message:`, e); });
+            return message.channel.send(`There is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
         })
     },
 };
