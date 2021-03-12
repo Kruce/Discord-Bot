@@ -1,5 +1,6 @@
 const Cheerio = require(`cheerio`);
 const Discord = require(`discord.js`);
+const Request = require(`request-promise`);
 
 module.exports = {
     name: `stock`,
