@@ -13,7 +13,9 @@ module.exports = {
         if (args.length > 1) return message.channel.send(`Please only enter one nyse symbol at a time.`);
         const url = `https://www.google.com/finance/quote/${args}:NYSE`;
         Puppeteer
-            .launch()
+            .launch({
+                'args' : ['--no-sandbox', '--disable-setuid-sandbox']
+            })
             .then(function (browser) {
                 return browser.newPage()
             })
