@@ -12,10 +12,18 @@ module.exports = {
         if (!args.length) return message.channel.send(`Please enter a nyse symbol to retrieve data.`);
         if (args.length > 1) return message.channel.send(`Please only enter one nyse symbol at a time.`);
         const url = `https://www.google.com/finance/quote/${args}:NYSE`;
+        const options = {
+            headless: true,
+            defaultViewport: null,
+            args: [
+                "--incognito",
+                "--no-sandbox",
+                "--single-process",
+                "--no-zygote"
+            ],
+        };
         Puppeteer
-            .launch({
-                'args' : ['--no-sandbox', '--disable-setuid-sandbox']
-            })
+            .launch(options)
             .then(function (browser) {
                 return browser.newPage()
             })
