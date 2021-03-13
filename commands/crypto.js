@@ -4,11 +4,26 @@ const Request = require(`request-promise`);
 /**
  * @param {number} number number to format.
  */
-function GetTwoDecimals(number) {
+function CommaString(number) {
+    if (!number) {
+        return `?`;
+    }
+    else {
+        let parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    }
+}
+/**
+ * @param {number} number number to format.
+ */
+function DecimalString(number) {
     let log10 = number ? Math.floor(Math.log10(number)) : 0,
         div = log10 < 0 ? Math.pow(10, 1 - log10) : 100;
-    return (Math.round(number * div) / div);
+    numb = Math.round(number * div) / div;
+    return (CommaString(numb));
 }
+
 module.exports = {
     name: `crypto`,
     description: `Retrieves crypto data for a given symbol.`,
@@ -41,11 +56,11 @@ module.exports = {
                 const coin = response.data[coinKey];
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Estimated price of ${coin.name} (${coin.symbol})`)
-                    .setDescription(`Circulating supply: ${coin.circulating_supply.toLocaleString()}`)
+                    .setDescription(`Circulating supply: ${CommaString(coin.circulating_supply)} / ${CommaString(coin.max_supply)}`)
                     .setTimestamp(new Date().toUTCString())
                     .addFields(
-                        { name: 'Market Cap', value: `$${GetTwoDecimals(coin.quote.USD.market_cap).toLocaleString()}` },
-                        { name: 'Price', value: `$${GetTwoDecimals(coin.quote.USD.price)}` },
+                        { name: 'Market Cap', value: `$${DecimalString(coin.quote.USD.market_cap)}` },
+                        { name: 'Price', value: `$${DecimalString(coin.quote.USD.price)}` },
                     );
                 return message.channel.send(embed).catch(e => { console.error(`crypto command issue sending message:`, e); });
             }

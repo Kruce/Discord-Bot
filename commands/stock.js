@@ -4,10 +4,24 @@ const Discord = require(`discord.js`);
 /**
  * @param {number} number number to format.
  */
-function GetTwoDecimals(number) {
+function CommaString(number) {
+    if (!number) {
+        return `?`;
+    }
+    else {
+        let parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    }
+}
+/**
+ * @param {number} number number to format.
+ */
+function DecimalString(number) {
     let log10 = number ? Math.floor(Math.log10(number)) : 0,
         div = log10 < 0 ? Math.pow(10, 1 - log10) : 100;
-    return (Math.round(number * div) / div).toLocaleString();
+    numb = Math.round(number * div) / div;
+    return (CommaString(numb));
 }
 module.exports = {
     name: `stock`,
@@ -35,7 +49,7 @@ module.exports = {
                         .setTimestamp(new Date().toUTCString())
                         .addFields(
                             { name: 'Exchange', value: body.exchange },
-                            { name: 'Price', value: `$${GetTwoDecimals(price.c)}` },
+                            { name: 'Price', value: `$${DecimalString(price.c)}` },
                         );
                     return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
