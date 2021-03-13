@@ -16,8 +16,8 @@ module.exports = {
     usage: `*${process.env.PREFIX}c* btc`, //how to use the command
     cooldown: 5, //cooldown on command in seconds
     execute(message, args) {
-        if (!args.length) return message.channel.send(`Please enter a symbol to retrieve current data.`);
-        if (args.length > 1) return message.channel.send(`Please only enter one symbol at a time.`);
+        if (!args.length) return message.channel.send(`Please enter a symbol to retrieve data.`);
+        if (args.length > 1) return message.channel.send(`Please enter one symbol at a time.`);
         const symbol = args[0].toUpperCase();
         const requestOptions = {
             method: 'GET',
