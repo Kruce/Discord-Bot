@@ -1,22 +1,30 @@
 const Request = require(`request-promise`);
 const Discord = require(`discord.js`);
 
+/**
+ * @param {number} number number to format.
+ */
+function GetTwoDecimals(number) {
+    let log10 = number ? Math.floor(Math.log10(number)) : 0,
+        div = log10 < 0 ? Math.pow(10, 1 - log10) : 100;
+    return (Math.round(number * div) / div).toLocaleString();
+}
 module.exports = {
     name: `stock`,
-    description: `Retrieves data for a stock by symbol.`,
+    description: `Retrieves stock data for a given symbol.`,
     aliases: [`s`], //other alias to use this command
     usage: `*${process.env.PREFIX}s* gme`, //how to use the command
     cooldown: 10, //cooldown on command in seconds
     execute(message, args) {
-        if (!args.length) return message.channel.send(`Please enter a symbol to retrieve current data.`);
-        if (args.length > 1) return message.channel.send(`Please only enter one symbol at a time.`);
+        if (!args.length) return message.channel.send(`Please enter a symbol to retrieve data.`);
+        if (args.length > 1) return message.channel.send(`Please enter one symbol at a time.`);
         const symbol = args[0].toUpperCase();
-        Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBTOKEN}`, { json: true }, (err, res, body) => {
+        Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`, { json: true }, (err, res, body) => {
             return body;
         }).then(function (price) {
-            Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUBTOKEN}`, { json: true }, (err, res, body) => {
+            Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`, { json: true }, (err, res, body) => {
                 if (body.name == undefined) {
-                    return message.channel.send(`There is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
+                    return message.channel.send(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
                 else {
                     const embed = new Discord.MessageEmbed()
@@ -27,7 +35,7 @@ module.exports = {
                         .setTimestamp(new Date().toUTCString())
                         .addFields(
                             { name: 'Exchange', value: body.exchange },
-                            { name: 'Price', value: `$${price.c.toFixed(2)}` },
+                            { name: 'Price', value: `$${GetTwoDecimals(price.c)}` },
                         );
                     return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
@@ -35,7 +43,7 @@ module.exports = {
         })
         .catch(function (e) {
             console.error(e);
-            return message.channel.send(`There is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
+            return message.channel.send(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
         })
     },
 };
