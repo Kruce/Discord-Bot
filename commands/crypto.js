@@ -1,28 +1,6 @@
 const Discord = require(`discord.js`);
+const Number = require(`../modules/number.js`);
 const Request = require(`request-promise`);
-
-/**
- * @param {number} number number to format.
- */
-function CommaString(number) {
-    if (!number) {
-        return `?`;
-    }
-    else {
-        let parts = number.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    }
-}
-/**
- * @param {number} number number to format.
- */
-function DecimalString(number) {
-    let log10 = number ? Math.floor(Math.log10(number)) : 0,
-        div = log10 < 0 ? Math.pow(10, 1 - log10) : 100;
-    numb = Math.round(number * div) / div;
-    return (CommaString(numb));
-}
 
 module.exports = {
     name: `crypto`,
@@ -56,11 +34,11 @@ module.exports = {
                 const coin = response.data[coinKey];
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Estimated price of ${coin.name} (${coin.symbol})`)
-                    .setDescription(`Circulating supply: ${CommaString(coin.circulating_supply)} / ${CommaString(coin.max_supply)}`)
+                    .setDescription(`Circulating supply: ${Number.CommaString(coin.circulating_supply)} / ${Number.CommaString(coin.max_supply)}`)
                     .setTimestamp(new Date().toUTCString())
                     .addFields(
-                        { name: 'Market Cap', value: `$${DecimalString(coin.quote.USD.market_cap)}` },
-                        { name: 'Price', value: `$${DecimalString(coin.quote.USD.price)}` },
+                        { name: 'Market Cap', value: `$${Number.DecimalString(coin.quote.USD.market_cap)}` },
+                        { name: 'Price', value: `$${Number.DecimalString(coin.quote.USD.price)}` },
                     );
                 return message.channel.send(embed).catch(e => { console.error(`crypto command issue sending message:`, e); });
             }

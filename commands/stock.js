@@ -1,28 +1,7 @@
-const Request = require(`request-promise`);
 const Discord = require(`discord.js`);
+const Number = require(`../modules/number.js`);
+const Request = require(`request-promise`);
 
-/**
- * @param {number} number number to format.
- */
-function CommaString(number) {
-    if (!number) {
-        return `?`;
-    }
-    else {
-        let parts = number.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    }
-}
-/**
- * @param {number} number number to format.
- */
-function DecimalString(number) {
-    let log10 = number ? Math.floor(Math.log10(number)) : 0,
-        div = log10 < 0 ? Math.pow(10, 1 - log10) : 100;
-    numb = Math.round(number * div) / div;
-    return (CommaString(numb));
-}
 module.exports = {
     name: `stock`,
     description: `Retrieves stock data for a given symbol.`,
@@ -49,7 +28,7 @@ module.exports = {
                         .setTimestamp(new Date().toUTCString())
                         .addFields(
                             { name: 'Exchange', value: body.exchange },
-                            { name: 'Price', value: `$${DecimalString(price.c)}` },
+                            { name: 'Price', value: `$${Number.DecimalString(price.c)}` },
                         );
                     return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
                 }
