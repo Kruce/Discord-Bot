@@ -7,9 +7,9 @@ module.exports = {
     description: `Retrieves stock data for a given symbol.`,
     aliases: [`s`], //other alias to use this command
     usage: `*${process.env.PREFIX}s* gme`, //how to use the command
+    args: true, //arguments are required.
     cooldown: 10, //cooldown on command in seconds
     execute(message, args) {
-        if (!args.length) return message.channel.send(`Please enter a symbol to retrieve data.`);
         if (args.length > 1) return message.channel.send(`Please enter one symbol at a time.`);
         const symbol = args[0].toUpperCase();
         Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`, { json: true }, (err, res, body) => {

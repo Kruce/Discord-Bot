@@ -7,9 +7,9 @@ module.exports = {
     description: `Retrieves crypto data for a given symbol.`,
     aliases: [`c`], //other alias to use this command
     usage: `*${process.env.PREFIX}c* btc`, //how to use the command
+    args: true, //arguments are required.
     cooldown: 5, //cooldown on command in seconds
     execute(message, args) {
-        if (!args.length) return message.channel.send(`Please enter a symbol to retrieve data.`);
         if (args.length > 1) return message.channel.send(`Please enter one symbol at a time.`);
         const symbol = args[0].toUpperCase();
         const requestOptions = {
