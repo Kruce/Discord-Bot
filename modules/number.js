@@ -21,8 +21,13 @@ function DecimalString(number) {
         div = log10 < 0 ? Math.pow(10, 1 - log10) : 100;
     numb = Math.round(number * div) / div;
     const dec = numb.toString().split('.')[1]
-    const len = dec && dec.length < 2 ? 2 : dec.length
-    return (CommaString(Number(numb).toFixed(len)));
+    if (dec == undefined) { //there is no decimal
+        return (CommaString(Number(numb).toFixed(2)));
+    }
+    else {
+        const len = dec && dec.length < 2 ? 2 : dec.length
+        return (CommaString(Number(numb).toFixed(len)));
+    }
 }
 
 module.exports = {
