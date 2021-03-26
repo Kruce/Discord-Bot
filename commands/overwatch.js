@@ -8,8 +8,13 @@ module.exports = {
     execute(message, args) {
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
             args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toUpperCase() == `OVERWATCH` }) }), p => p[1].member.displayName);
-        if (!args.length || args.length > 6) //if array is empty or more than six players/roles return message
-            return message.channel.send(`To assign, overwatch requires six or less of any combination of player names or overwatch roles.`);
+        if (!args.length || args.length > 6) { //if array is empty or more than six players/roles return message
+            let reply = `Your provided arguments are invalid, ${message.author}.`;
+            if (command.usage) {
+                reply += `\n\`An example of proper usage would be:\` ${command.usage}`;
+            }
+            return message.channel.send(reply);
+        }
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
         let remainedroles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
         let heroes = {

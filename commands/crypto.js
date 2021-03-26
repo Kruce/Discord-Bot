@@ -28,7 +28,7 @@ module.exports = {
         Request(requestOptions).then(response => {
             const coinKey = Object.keys(response.data)[0];
             if (!coinKey) {
-                return message.channel.send(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
+                return message.reply(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
             }
             else {
                 const coin = response.data[coinKey];
@@ -44,7 +44,7 @@ module.exports = {
             }
         }).catch((e) => {
             console.error(e);
-            return message.channel.send(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
+            return message.reply(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
         });
     },
 };

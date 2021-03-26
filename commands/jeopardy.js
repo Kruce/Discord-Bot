@@ -99,7 +99,7 @@ module.exports = {
                     data = `You can send *repeat*, *answer*, a number to select a clue from your given categories, *categories* for new categories to choose from, or blank for a new random instant clue.`;
                 }
             }
-            return message.channel.send(data).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
+            return message.reply(data).catch(e => { console.error(`jeopardy command issue sending message:`, e); });
         });
     },
 };

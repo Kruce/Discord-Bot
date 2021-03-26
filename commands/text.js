@@ -6,6 +6,7 @@ module.exports = {
     usage: `*${process.env.PREFIX}t* then the string to convert.`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
+        message.delete({ timeout: 1 }).catch(e => { console.error(`regional indicator command issue deleting previous message:`, e); });
         const numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];
         let data = ``; //empty string for a return message
         for (let i = 0; i < args.length; ++i) { //for each argument
@@ -32,8 +33,6 @@ module.exports = {
         }
         if (message.channel.type === `text`) { //if this isn't a dm, add the user's displayName and delete their original message.
             data = `${message.member.displayName} ${data}`;
-            message.delete({ timeout: 1 })
-                .catch(e => { console.error(`regional indicator command issue deleting previous message:`, e); });
         }
         message.channel.send(data)
             .catch(e => { console.error(`regional indicator command issue sending message:`, e); });
