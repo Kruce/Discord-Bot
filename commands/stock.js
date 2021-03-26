@@ -21,14 +21,14 @@ module.exports = {
         .then(function (profile) {
             Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`, { json: true }, (err, res, body) => {
                 const embed = new Discord.MessageEmbed()
-                    .setTitle(`Estimated price of ${body.name} (${body.ticker})`)
-                    .setURL(body.weburl)
-                    .setDescription(body.finnhubIndustry)
-                    .setThumbnail(body.logo)
+                    .setTitle(`Estimated price of ${profile.name} (${profile.ticker})`)
+                    .setURL(profile.weburl)
+                    .setDescription(profile.finnhubIndustry)
+                    .setThumbnail(profile.logo)
                     .setTimestamp(new Date().toUTCString())
                     .addFields(
-                        { name: 'Exchange', value: body.exchange },
-                        { name: 'Price', value: `$${Number.DecimalString(price.c)}` },
+                        { name: 'Exchange', value: profile.exchange },
+                        { name: 'Price', value: `$${Number.DecimalString(body.c)}` },
                     );
                 return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
             });
