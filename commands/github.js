@@ -5,15 +5,16 @@ module.exports = {
     usage: `*${process.env.PREFIX}gh* or *${process.env.PREFIX}gh* rolename`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
+        let data = ``; //empty string for a return message
         if (args.length) {
             const command = message.client.commands.get(args[0]) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(args[0]));
             if (!command)
-                return message.channel.send(`That command doesn't exists, here is this bot's github: https://github.com/Kruce/Discord-Bot.`)
+                data = `That command does not exist. Here is this bot's github: https://github.com/Kruce/Discord-Bot`;
             else
-                return message.channel.send(`https://github.com/Kruce/Discord-Bot/blob/master/commands/${command.name}.js`)
+                data = `https://github.com/Kruce/Discord-Bot/blob/master/commands/${command.name}.js`;
         }
-        else {
-            return message.channel.send(`https://github.com/Kruce/Discord-Bot`)
-        }
+        else
+            data = `https://github.com/Kruce/Discord-Bot`;
+        return message.channel.send(data).catch(e => { console.error(`github command issue sending message:`, e); });
     },
 };
