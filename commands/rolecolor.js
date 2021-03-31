@@ -1,7 +1,7 @@
 const TinyColor = require(`tinycolor2`);
 module.exports = {
     name: `rolecolor`,
-    description: `Change the color of your username. Color input accepts a string as one of multiple formats of 8-digit hex, rgb, rgba, hsl, hsla, or simply the color name. Use *default* for original Discord color and *random* for a random color.`,
+    description: `change the color of your username. Color input accepts a string as one of multiple formats of 8-digit hex, rgb, rgba, hsl, hsla, or simply the color name. Use *default* for original Discord color and *random* for a random color.`,
     aliases: [`rc`], //other alias to use this command
     args: true, //arguments are required.
     usage: `*${process.env.PREFIX}rc red*, *${process.env.PREFIX}rc #ff0000*, *${process.env.PREFIX}rc ff0000*, *${process.env.PREFIX}rc rgb (255, 0, 0)*, *${process.env.PREFIX}rc rgb 255 0 0*, *${process.env.PREFIX}rc hsl(0, 100%, 50%)*, *${process.env.PREFIX}rc random*, *${process.env.PREFIX}rc default*`, //how to use the command

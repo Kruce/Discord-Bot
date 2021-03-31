@@ -1,9 +1,9 @@
 module.exports = {
     name: `text`,
-    description: `Translate text into regional indicator emojis.`,
+    description: `translate text into regional indicator emojis.`,
     aliases: [`t`], //other alias to use this command
     args: true, //arguments are required.
-    usage: `*${process.env.PREFIX}t* then the string to convert.`, //how to use the command
+    usage: `*${process.env.PREFIX}t* [string to convert].`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         message.delete({ timeout: 1 }).catch(e => { console.error(`regional indicator command issue deleting previous message:`, e); });

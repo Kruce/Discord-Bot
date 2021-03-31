@@ -3,15 +3,15 @@ module.exports = {
     name: `overwatch`,
     description: `Given any combination of a total of six space separated player names or overwatch roles, assign the player name a role and hero or the overwatch role a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
     aliases: [`ow`], //other alias to use this command
-    usage: `*${process.env.PREFIX}ow* to assign a role and hero to any players currently playing overwatch on this server, *${process.env.PREFIX}ow joe bill jane bob smith* to assign a role and hero to the given names, *${process.env.PREFIX}ow support support damage tank damage tank* to assign a new hero for the given roles, *${process.env.PREFIX}ow joe bill damage tank* to do a combination of both.`, //how to use the command
+    usage: `*${process.env.PREFIX}ow* to assign a role and hero to any players currently playing overwatch on this server, *${process.env.PREFIX}ow [name1] [name2] [name3[ [name4] [name5]* to assign a role and hero to the given names, *${process.env.PREFIX}ow [role] [role] [role] [role] [role] * to assign a new hero for the given roles, *${process.env.PREFIX}ow [role] [name] [name] [role] [name]* to do a combination of both.`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
             args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toUpperCase() == `OVERWATCH` }) }), p => p[1].member.displayName);
         if (!args.length || args.length > 6) { //if array is empty or more than six players/roles return message
-            let reply = `Your provided arguments are invalid, ${message.author}.`;
+            let reply = `your provided arguments are invalid, ${message.author}.`;
             if (command.usage) {
-                reply += `\n\`An example of proper usage would be:\` ${command.usage}`;
+                reply += `\n\`an example of proper usage would be:\` ${command.usage}`;
             }
             return message.channel.send(reply);
         }

@@ -1,9 +1,9 @@
 module.exports = {
     name: `rolename`,
-    description: `Change the name of your role. Names must be 1 to 30 characters long, cannot contain certain characters, and are sanitized and trimmed of leading, trailing, and excessive internal whitespace.`,
+    description: `change the name of your role. Names must be 1 to 30 characters long, cannot contain certain characters, and are sanitized and trimmed of leading, trailing, and excessive internal whitespace.`,
     aliases: [`rn`], //other alias to use this command
     args: true, //arguments are required.
-    usage: `*${process.env.PREFIX}rn it's dat boi*`, //how to use the command
+    usage: `*${process.env.PREFIX}rn [role name]*`, //how to use the command
     guildOnly: true, //usable inside servers only and not dms
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
@@ -13,9 +13,9 @@ module.exports = {
         });
 
         if (name.length < 1 || name.length > 30)
-            return message.channel.send(`Role name must be at least 1 to 30 characters only.`);
+            return message.channel.send(`role name must be at least 1 to 30 characters only.`);
         if (['everyone', 'discordtag', 'here', 'server booster'].indexOf(name.toLowerCase()) > -1)
-            return message.channel.send(`That name is restricted, please choose another name.`);
+            return message.channel.send(`that name is restricted, please choose another name.`);
 
         const restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from role name change
         const role = message.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
