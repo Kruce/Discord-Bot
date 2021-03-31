@@ -1,8 +1,8 @@
 const fs = require(`fs`);
 
 module.exports = {
-    name: `xxxget`,
-    description: `retrieves a value by keyword.`,
+    name: `get`,
+    description: `gets a value by keyword.`,
     usage: `*!get* [dictionary key].`, //how to use the command
     args: true, //arguments are required.
     cooldown: 1, //cooldown on command in seconds

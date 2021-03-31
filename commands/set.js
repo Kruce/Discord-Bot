@@ -1,9 +1,9 @@
 const fs = require(`fs`);
 
 module.exports = {
-    name: `xxxsave`,
-    description: `Saves a keyword and value to retrieve using get command.`,
-    usage: `*${process.env.PREFIX}save* [dictionary key] [word or value].`, //how to use the command
+    name: `set`,
+    description: `sets a keyword and value to retrieve using get command.`,
+    usage: `*${process.env.PREFIX}set* [dictionary key] [word or value].`, //how to use the command
     args: true, //arguments are required.
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
