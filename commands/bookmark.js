@@ -46,6 +46,10 @@ module.exports = {
                                 return Update(record, `key has been added.`);
                             }
                         })
+                        .catch((error) => {
+                            console.log(error);
+                            return message.reply(`there was an error setting bookmark`);
+                        });
                     break;
                 }
                 case `get`: {
@@ -63,6 +67,10 @@ module.exports = {
                                 return message.reply(`that key does not exist.`)
                             }
                         })
+                        .catch((error) => {
+                            console.log(error);
+                            return message.reply(`there was an error getting bookmark`);
+                        });
                     break;
                 }
                 case `all`: {
@@ -75,6 +83,10 @@ module.exports = {
                             }
                             return message.channel.send(data);
                         })
+                        .catch((error) => {
+                            console.log(error);
+                            return message.reply(`there was an error getting all bookmarks`);
+                        });
                     break;
                 }
                 default:
