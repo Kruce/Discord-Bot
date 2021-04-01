@@ -61,7 +61,10 @@ module.exports = {
                         .then(function (json) {
                             const record = json.record;
                             if (key in record) {
-                                return message.channel.send(record[key]);
+                                if (message.channel.type === `text`) { //if this isn't a dm, add the user's displayName and delete their original message.
+                                    message.delete({ timeout: 1 }).catch(e => { console.error(`regional indicator command issue deleting previous message:`, e); });
+                                    return message.channel.send(`${message.member.displayName} ${record[key]}`);
+                                }
                             }
                             else {
                                 return message.reply(`that key does not exist.`)
