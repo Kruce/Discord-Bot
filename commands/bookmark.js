@@ -82,7 +82,7 @@ module.exports = {
                             const record = json.record;
                             let data = ``;
                             for (const [key, value] of Object.entries(record)) {
-                                data += `\n ${key}: ||${value}||`;
+                                data += `[${key}] `;
                             }
                             return message.channel.send(data);
                         })
