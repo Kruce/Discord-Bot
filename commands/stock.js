@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
+const Fetch = require(`node-fetch`);
 const Number = require(`../modules/number.js`);
-const Request = require(`request-promise`);
 
 module.exports = {
     name: `stock`,
@@ -12,14 +12,31 @@ module.exports = {
     execute(message, args) {
         if (args.length > 1) return message.reply(`please only enter one symbol at a time.`);
         const symbol = args[0].toUpperCase();
-        Request(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`, { json: true }, (err, res, body) => {
-            if (body.name == undefined)
-                return message.reply(`there is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
-            else
-                return body;
-        })
-        .then(function (profile) {
-            Request(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`, { json: true }, (err, res, body) => {
+        let profile;
+        Fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`)
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return Promise.reject(response);
+                }
+            })
+            .then(function (response) {
+                if (response.name == undefined)
+                    return Promise.reject(`stock command symbol does not return a profile with valid name`);
+                else {
+                    profile = response;
+                    return Fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`);
+                }
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return Promise.reject(response);
+                }
+            })
+            .then(function (quote) {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Estimated price of ${profile.name} (${profile.ticker})`)
                     .setURL(profile.weburl)
@@ -28,14 +45,13 @@ module.exports = {
                     .setTimestamp(new Date().toUTCString())
                     .addFields(
                         { name: 'Exchange', value: profile.exchange },
-                        { name: 'Price', value: `$${Number.DecimalString(body.c)}` },
+                        { name: 'Price', value: `$${Number.DecimalString(quote.c)}` },
                     );
                 return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
-            });
-        })
-        .catch(function (e) {
-            console.error(e);
-            return message.reply(`there is an issue retrieving that data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
-        })
+            })
+            .catch(function (error) {
+                console.error(error);
+                return message.reply(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
+            })
     },
 };
