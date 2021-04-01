@@ -1,4 +1,4 @@
-const id = `6064edf118592d461f046082`;
+const id = `60660d4a045a422b32377d59`;
 const Jsonbin = require(`../modules/jsonbin`);
 
 module.exports = {
@@ -77,19 +77,7 @@ module.exports = {
                     break;
                 }
                 case `all`: {
-                    Jsonbin.ReadBin(id)
-                        .then(function (json) {
-                            const record = json.record;
-                            let data = ``;
-                            for (const [key, value] of Object.entries(record)) {
-                                data += `[${key}] `;
-                            }
-                            return message.channel.send(data);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            return message.reply(`there was an error getting all bookmarks`);
-                        });
+                    message.channel.send(`https://api.jsonbin.io/b/${id}`);
                     break;
                 }
                 default:
