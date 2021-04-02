@@ -74,7 +74,7 @@ module.exports = {
                     break;
                 }
                 case `all`: {
-                    message.channel.send(`https://api.jsonbin.io/b/${id}`);
+                    message.channel.send(`https://api.jsonbin.io/b/${id}/latest`);
                     break;
                 }
                 default:
