@@ -14,13 +14,7 @@ module.exports = {
         const symbol = args[0].toUpperCase();
         let profile;
         Fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUB_API_KEY}`)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return Promise.reject(response);
-                }
-            })
+            .then(response => CheckStatus(response))
             .then(function (response) {
                 if (response.name == undefined)
                     return Promise.reject(response);
@@ -29,13 +23,7 @@ module.exports = {
                     return Fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUB_API_KEY}`);
                 }
             })
-            .then(function (response) {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return Promise.reject(response);
-                }
-            })
+            .then(response => CheckStatus(response))
             .then(function (quote) {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Estimated price of ${profile.name} (${profile.ticker})`)
@@ -52,6 +40,13 @@ module.exports = {
             .catch(function (error) {
                 console.error(error);
                 return message.reply(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`stock command issue sending message:`, e); });
-            })
+            });
+        const CheckStatus = (response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject(response);
+            }
+        }
     },
 };

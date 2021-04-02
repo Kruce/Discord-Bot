@@ -19,13 +19,7 @@ module.exports = {
                 "Accept-Encoding": `deflate, gzip`
             })
         })
-        .then(function (response) {
-            if (response.ok) {
-                return response.json();
-            } else {
-                return Promise.reject(response);
-            }
-        })
+        .then(response => CheckStatus(response))
         .then(function (response) {
             const coinKey = Object.keys(response.data)[0];
             if (!coinKey) {
@@ -48,5 +42,12 @@ module.exports = {
             console.error(error);
             return message.reply(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
         });
+        const CheckStatus = (response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject(response);
+            }
+        }
     },
 };
