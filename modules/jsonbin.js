@@ -2,7 +2,7 @@ const Fetch = require(`node-fetch`);
 
 const basicHeaders = () => ({
     'Content-Type': 'application/json',
-    'X-Master-Key': process.env.JSONBINKEY,
+    'X-Master-Key': process.env.JSONBIN_API_KEY,
 })
 
 async function ReadBin(id, version = `latest`) {

@@ -3,7 +3,7 @@ module.exports = {
     description: `translate text into regional indicator emojis.`,
     aliases: [`t`], //other alias to use this command
     args: true, //arguments are required.
-    usage: `*${process.env.PREFIX}t* [string to convert].`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}t* [string to convert].`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         const numbers = [`zero`, `one`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`];

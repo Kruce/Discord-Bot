@@ -4,7 +4,7 @@ module.exports = {
     name: `jeopardy`,
     description: `get a random instant jeopardy formatted trivia clue or choose from a list of categories to get a jeopardy formatted trivia clue.`,
     aliases: [`j`], //other alias to use this command
-    usage: `*${process.env.PREFIX}j* for a new random instant clue, *${process.env.PREFIX}j categories* for a new set of categories to choose from, *${process.env.PREFIX}j* [a number to select a category], *${process.env.PREFIX}j answer* for a selected clue's answer, *${process.env.PREFIX}j repeat* to either repeat the categories or the clue.`,
+    usage: `*${process.env.COMMAND_PREFIX}j* for a new random instant clue, *${process.env.COMMAND_PREFIX}j categories* for a new set of categories to choose from, *${process.env.COMMAND_PREFIX}j* [a number to select a category], *${process.env.COMMAND_PREFIX}j answer* for a selected clue's answer, *${process.env.COMMAND_PREFIX}j repeat* to either repeat the categories or the clue.`,
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         let arg = (args.length) ? (!isNaN(args[0]) ? parseInt(args[0]) : args[0].toLowerCase()) : ``; //if there are any arguments get the first one only, if it is a number parse int and return that, otherwise return lowercase string

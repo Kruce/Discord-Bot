@@ -3,7 +3,7 @@ module.exports = {
     name: `overwatch`,
     description: `Given any combination of a total of six space separated player names or overwatch roles, assign the player name a role and hero or the overwatch role a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
     aliases: [`ow`], //other alias to use this command
-    usage: `*${process.env.PREFIX}ow* to assign a role and hero to any players currently playing overwatch on this server, *${process.env.PREFIX}ow [name1] [name2] [name3[ [name4] [name5]* to assign a role and hero to the given names, *${process.env.PREFIX}ow [role] [role] [role] [role] [role] * to assign a new hero for the given roles, *${process.env.PREFIX}ow [role] [name] [name] [role] [name]* to do a combination of both.`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}ow* to assign a role and hero to any players currently playing overwatch on this server, *${process.env.COMMAND_PREFIX}ow [name1] [name2] [name3[ [name4] [name5]* to assign a role and hero to the given names, *${process.env.COMMAND_PREFIX}ow [role] [role] [role] [role] [role] * to assign a new hero for the given roles, *${process.env.COMMAND_PREFIX}ow [role] [name] [name] [role] [name]* to do a combination of both.`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch

@@ -10,7 +10,7 @@ module.exports = {
         if (!args.length) {
             data.push(`here's a list of all my commands:`);
             data.push(commands.map(command => command.name).join(`, `));
-            data.push(`\nyou can send \`${process.env.PREFIX}help [command name]\` to get info on a specific command.`);
+            data.push(`\nyou can send \`${process.env.COMMAND_PREFIX}help [command name]\` to get info on a specific command.`);
 
             return message.author.send(data, { split: true })
                 .then(() => {

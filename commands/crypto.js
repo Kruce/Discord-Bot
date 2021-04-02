@@ -6,7 +6,7 @@ module.exports = {
     name: `crypto`,
     description: `retrieves crypto data for a given symbol.`,
     aliases: [`c`], //other alias to use this command
-    usage: `*${process.env.PREFIX}c* [crypto symbol]`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}c* [crypto symbol]`, //how to use the command
     args: true, //arguments are required.
     cooldown: 5, //cooldown on command in seconds
     execute(message, args) {
@@ -15,7 +15,7 @@ module.exports = {
         const symbol = args[0].toUpperCase();
         Fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`, {
             headers: ({
-                "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
+                "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY,
                 "Accept-Encoding": `deflate, gzip`
             })
         })

@@ -3,7 +3,7 @@ module.exports = {
     description: `change the name of your role. Names must be 1 to 30 characters long, cannot contain certain characters, and are sanitized and trimmed of leading, trailing, and excessive internal whitespace.`,
     aliases: [`rn`], //other alias to use this command
     args: true, //arguments are required.
-    usage: `*${process.env.PREFIX}rn [role name]*`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}rn [role name]*`, //how to use the command
     guildOnly: true, //usable inside servers only and not dms
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {

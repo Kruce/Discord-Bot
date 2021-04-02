@@ -2,7 +2,7 @@ module.exports = {
     name: `github`,
     description: `link to this bot's github page.`,
     aliases: [`gh`], //other alias to use this command
-    usage: `*${process.env.PREFIX}gh* or *${process.env.PREFIX}gh* [role name]`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}gh* or *${process.env.COMMAND_PREFIX}gh* [role name]`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         let data = ``; //empty string for a return message

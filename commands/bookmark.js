@@ -5,7 +5,7 @@ module.exports = {
     name: `bookmark`,
     description: `get or set a value or display all key/value pairs that are bookmarked`,
     aliases: [`bm`], //other alias to use this command
-    usage: `*${process.env.PREFIX}bm get* [bookmark key], *${process.env.PREFIX}bm set* [bookmark key] [bookmark value], *${process.env.PREFIX}bm all*`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}bm get* [bookmark key], *${process.env.COMMAND_PREFIX}bm set* [bookmark key] [bookmark value], *${process.env.COMMAND_PREFIX}bm all*`, //how to use the command
     args: true, //arguments are required.
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {

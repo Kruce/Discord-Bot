@@ -26,8 +26,8 @@ Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
 });
 
 Client.on(`message`, message => {
-    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
-    const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
+    if (!message.content.startsWith(process.env.COMMAND_PREFIX) || message.author.bot) return;
+    const args = message.content.slice(process.env.COMMAND_PREFIX.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
     const command = Client.commands.get(commandName) || Client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
