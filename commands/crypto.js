@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
+const Fetch = require(`node-fetch`);
 const Number = require(`../modules/number.js`);
-const Request = require(`request-promise`);
 
 module.exports = {
     name: `crypto`,
@@ -10,25 +10,26 @@ module.exports = {
     args: true, //arguments are required.
     cooldown: 5, //cooldown on command in seconds
     execute(message, args) {
-        if (args.length > 1) return message.channel.send(`please enter one symbol at a time.`);
+        if (!args) return message.channel.send(`Please enter a symbol to retrieve current data.`);
+        if (args.length > 1) return message.channel.send(`Please only enter one symbol at a time.`);
         const symbol = args[0].toUpperCase();
-        const requestOptions = {
-            method: 'GET',
-            uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest',
-            qs: {
-                'symbol': symbol,
-            },
-            headers: {
-                'X-CMC_PRO_API_KEY': process.env.CMCAPIKEY
-            },
-            json: true,
-            gzip: true
-        };
-
-        Request(requestOptions).then(response => {
+        Fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`, {
+            headers: ({
+                "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
+                "Accept-Encoding": `deflate, gzip`
+            })
+        })
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject(response);
+            }
+        })
+        .then(function (response) {
             const coinKey = Object.keys(response.data)[0];
             if (!coinKey) {
-                return message.reply(`there is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
+                return Promise.reject(response);
             }
             else {
                 const coin = response.data[coinKey];
@@ -42,9 +43,10 @@ module.exports = {
                     );
                 return message.channel.send(embed).catch(e => { console.error(`crypto command issue sending message:`, e); });
             }
-        }).catch((e) => {
-            console.error(e);
-            return message.reply(`there is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
+        })
+        .catch(function (error) {
+            console.error(error);
+            return message.reply(`There is an issue retrieving data for that symbol.`).catch(e => { console.error(`crypto command issue sending message:`, e); });
         });
     },
 };

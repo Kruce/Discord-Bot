@@ -23,7 +23,7 @@ module.exports = {
             })
             .then(function (response) {
                 if (response.name == undefined)
-                    return Promise.reject(`stock command symbol does not return a profile with valid name`);
+                    return Promise.reject(response);
                 else {
                     profile = response;
                     return Fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUBAPIKEY}`);
