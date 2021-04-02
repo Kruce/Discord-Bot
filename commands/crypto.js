@@ -11,8 +11,8 @@ module.exports = {
     cooldown: 5, //cooldown on command in seconds
     execute(message, args) {
         if (!args) return message.channel.send(`please enter a symbol to retrieve current data.`);
-        const symbol = args[0].toUpperCase();
-        Fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`, {
+        const symbols = args.join(',').toUpperCase(); //if more than one symbol format and add them
+        Fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbols}`, {
             headers: ({
                 "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY,
                 "Accept-Encoding": `deflate, gzip`
