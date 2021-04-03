@@ -9,7 +9,7 @@ module.exports = {
     args: true, //arguments are required.
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
-        if (user.bot) return;
+        if (message.author.bot) return;
         const cmd = (args[0]) ? args[0].toLowerCase() : ``;
         if (['set', 'get', 'all'].indexOf(cmd) < 0) { //they passed a command but it is not set or get
             let reply = `the provided arguments are invald, ${message.author}.`;
