@@ -14,7 +14,7 @@ module.exports = {
 
         if (name.length < 1 || name.length > 30)
             return message.channel.send(`role name must be at least 1 to 30 characters only.`);
-        if (['everyone', 'discordtag', 'here', 'server booster'].indexOf(name.toLowerCase()) > -1)
+        if ([`everyone`, `discordtag`, `here`, `server booster`].indexOf(name.toLowerCase()) > -1)
             return message.channel.send(`that name is restricted, please choose another name.`);
 
         const restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from role name change
@@ -23,8 +23,7 @@ module.exports = {
             role.setName(name)
                 .then(role => console.log(`role name command successfully set name of role to ${name}`))
                 .catch(e => { console.error(`role name command error setting name: ${message.guild.name} for id: ${message.guild.id}:`, e); });
-        }
-        else {
+        } else {
             message.guild.roles
                 .create({
                     data: {

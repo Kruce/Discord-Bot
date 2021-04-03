@@ -22,8 +22,7 @@ module.exports = {
             role.setColor(color)
                 .then(role => console.log(`color command successfully set color of role ${role.name} to ${role.color}`))
                 .catch(e => { console.error(`color command error setting color: ${message.guild.name} for id: ${message.guild.id}:`, e); });
-        }
-        else {
+        } else {
             message.guild.roles
                 .create({
                     data: {

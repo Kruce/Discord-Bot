@@ -10,8 +10,6 @@
   "dependencies": {
     "discord.js": "^12.1.1",
     "node-schedule-tz": "^1.2.1-4",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6",
     "tinycolor2": "^1.4.1"
   }
 }

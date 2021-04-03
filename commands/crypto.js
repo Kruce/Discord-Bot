@@ -23,8 +23,7 @@ module.exports = {
             const keys = Object.keys(response.data);
             if (!keys || keys.length < 1) {
                 return Promise.reject(response);
-            }
-            else {
+            } else {
                 for (i = 0; i < keys.length; ++i) {
                     const coin = response.data[keys[i]];
                     const embed = new Discord.MessageEmbed()
@@ -33,8 +32,7 @@ module.exports = {
                         .setTimestamp(new Date().toUTCString())
                         .addFields(
                             { name: 'Market Cap', value: `$${Number.DecimalString(coin.quote.USD.market_cap)}` },
-                            { name: 'Price', value: `$${Number.DecimalString(coin.quote.USD.price)}` },
-                        );
+                            { name: 'Price', value: `$${Number.DecimalString(coin.quote.USD.price)}` });
                     message.channel.send(embed).catch(e => { console.error(`crypto command issue sending message:`, e); });
                 }
             }

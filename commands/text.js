@@ -13,22 +13,16 @@ module.exports = {
                 const charCurrent = args[i].charAt(c);
                 if (charCurrent.match(/[a-z]/i)) { //match alpha characters regardless of case
                     data += `:regional_indicator_${charCurrent.toLowerCase()}:`;
-                }
-                else if (charCurrent.match(/\d+/)) { //match numeric characters
+                } else if (charCurrent.match(/\d+/)) { //match numeric characters
                     data += `:${numbers[parseInt(charCurrent)]}:`;
-                }
-                else if (charCurrent == `?`) {
+                } else if (charCurrent == `?`) {
                     data += `:grey_question:`;
-                }
-                else if (charCurrent == `!`) {
+                } else if (charCurrent == `!`) {
                     data += `:grey_exclamation:`;
-                }
-                else {
+                } else {
                     data += charCurrent;
-                }
-                data += ` `; //added space in between each character to correctly display for mobile users
-            }
-            data += `  `; //added space inbetween each word
+                } data += ` `; //added space in between each character to correctly display for mobile users
+            } data += `  `; //added space inbetween each word
         }
         if (message.channel.type === `text`) { //if this isn't a dm, add the user's displayName and delete their original message.
             message.delete({ timeout: 1 }).catch(e => { console.error(`regional indicator command issue deleting previous message:`, e); });

@@ -16,8 +16,7 @@ module.exports = {
                 reply += `\n\`the proper usage would be:\` ${this.usage}`;
             }
             return message.channel.send(reply);
-        }
-        else {
+        } else {
             switch (cmd) {
                 case `set`: {
                     if (!args[1] || !args[2]) { //if missing key and/or value
@@ -26,11 +25,9 @@ module.exports = {
                             msg += `a key and a value`;
                         } else if (!args[1]) {
                             msg += `a key`;
-                        }
-                        else {
+                        } else {
                             msg += `a value`;
-                        }
-                        return message.reply(msg);
+                        } return message.reply(msg);
                     }
                     const key = args[1].toLowerCase();
                     const value = args.join(` `).slice(cmd.length + key.length + 2); //remove cmd and key and join for value
@@ -40,8 +37,7 @@ module.exports = {
                             if (key in record) { //if key exists, ask if they want to replace value. If they do, update value.
                                 record[key] = value;
                                 return ReplaceKeyQuestion(record);
-                            }
-                            else { //add the new key/value
+                            } else { //add the new key/value
                                 record[key] = value;
                                 return Update(record, `key has been added.`);
                             }
@@ -62,8 +58,7 @@ module.exports = {
                             const record = json.record;
                             if (key in record) {
                                 return message.channel.send(record[key]);
-                            }
-                            else {
+                            } else {
                                 return message.reply(`that key does not exist.`)
                             }
                         })

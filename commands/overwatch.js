@@ -41,8 +41,7 @@ module.exports = {
                 data += `{**new ${arg} hero**: ${heroes[arg][0]}} `;
                 heroes[arg].shift();
                 reservedroles.splice(reservedroles.findIndex(x => x == arg), 1); //remove the first instance of the role
-            }
-            else {
+            } else {
                 remainedroles = Shuffle.ShuffleArray(remainedroles);
                 data += `**${(arg)}:** {${remainedroles[0]}, ${heroes[remainedroles[0]][0]}} `;
                 heroes[remainedroles[0]].shift();

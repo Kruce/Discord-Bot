@@ -16,9 +16,9 @@ module.exports = {
         Fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${process.env.FINNHUB_API_KEY}`)
             .then(response => CheckStatus(response))
             .then(function (response) {
-                if (response.name == undefined)
+                if (response.name == undefined) {
                     return Promise.reject(response);
-                else {
+                } else {
                     profile = response;
                     return Fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUB_API_KEY}`);
                 }
@@ -33,8 +33,7 @@ module.exports = {
                     .setTimestamp(new Date().toUTCString())
                     .addFields(
                         { name: 'Exchange', value: profile.exchange },
-                        { name: 'Price', value: `$${Number.DecimalString(quote.c)}` },
-                    );
+                        { name: 'Price', value: `$${Number.DecimalString(quote.c)}` });
                 return message.channel.send(embed).catch(e => { console.error(`stock command issue sending message:`, e); });
             })
             .catch(function (error) {
