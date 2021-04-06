@@ -23,22 +23,21 @@ module.exports = {
                 } else if ([`set`, `all`].indexOf(key.toLowerCase()) > -1) {
                     return message.channel.send(`that key is restricted, please try again with a different key`);
                 } else {
-                    const value = //remove cmd and key and join for value
-                        Jsonbin.ReadBin(id)
-                            .then(function (json) {
-                                const record = json.record;
-                                if (key in record) { //if key exists, ask if they want to replace value. If they do, update value.
-                                    record[key] = value;
-                                    return ReplaceKeyQuestion(record);
-                                } else { //add the new key/value
-                                    record[key] = value;
-                                    return Update(record, `key has been added.`);
-                                }
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                return message.reply(`there was an error setting bookmark`);
-                            });
+                    Jsonbin.ReadBin(id)
+                        .then(function (json) {
+                            const record = json.record;
+                            if (key in record) { //if key exists, ask if they want to replace value. If they do, update value.
+                                record[key] = value;
+                                return ReplaceKeyQuestion(record);
+                            } else { //add the new key/value
+                                record[key] = value;
+                                return Update(record, `key has been added.`);
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            return message.reply(`there was an error setting bookmark`);
+                        });
                 }
                 break;
             }
