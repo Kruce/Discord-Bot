@@ -14,7 +14,7 @@
         "1,14": [`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`],
         "2,17": [`☘️`, `St. Patrick's day`, `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`],
         "2,30": [`🌱`, `Land day`, `https://en.wikipedia.org/wiki/Land_Day`],
-        "3,14": [`🌾`, `Cambodian new year begins`, `https://en.wikipedia.org/wiki/Cambodian_New_Year`],
+        "3,14": [`🐂`, `Cambodian new year begins`, `https://en.wikipedia.org/wiki/Cambodian_New_Year`],
         "3,22": [`🌎`, `Earth day`, `https://en.wikipedia.org/wiki/Earth_Day`],
         "3,24": [`🇦🇲`, `Armenian genocide rememberence day`, `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`],
         "4,5": [`💃`, `Cinco de mayo`, `https://en.wikipedia.org/wiki/Cinco_de_Mayo`],
@@ -171,7 +171,7 @@ function HolidaysToday() {
     ];
 
     //if today is the last occurence of this day in the month, check for those holidays using -1 that was described in the holidays multidimensional array above
-    if (occurrence == totalOccurrence) keys.push([0, `${currentMonth},-1,${currentDayOfWeek}`]); 
+    if (occurrence == totalOccurrence) keys.push([0, `${currentMonth},-1,${currentDayOfWeek}`]);
 
     for (let i = 0; i < keys.length; ++i) { //for each of our keys, check their applicable holiday array to see if any holidays exist
         const array = holidays[keys[i][0]];
