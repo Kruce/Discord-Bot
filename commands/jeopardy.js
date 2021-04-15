@@ -101,7 +101,7 @@ module.exports = {
                     return message.reply(`\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`);
                 } else if (cmd == `quiz`) {
                     const filter = response => {
-                        return clue.answer.replace(/[^a-zA-Z0-9]/g, "").toLowerCase() == response.content.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+                        return response.content.replace(/[^a-zA-Z0-9]/g, "").toLowerCase() == clue.answer.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
                     };
                     message.channel.send(`\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`).then(() => {
                         message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: [`time`] })
@@ -122,7 +122,7 @@ module.exports = {
                                 return message.channel.send(`${author} got the correct answer: ${clue.answer}`);
                             })
                             .catch(collected => {
-                                return message.channel.send(`Time is up! the orrect answer was: ${clue.answer}`);
+                                return message.channel.send(`Time is up! the correct answer was: ${clue.answer}`);
                             });
                     });
                 } else if (cmd >= 1 && cmd <= 5) {
