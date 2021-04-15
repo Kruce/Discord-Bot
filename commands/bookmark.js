@@ -65,9 +65,9 @@ module.exports = {
             message.channel.send(`key already exists. would you like to update its value?`)
                 .then(() => {
                     const filter = response => {
-                        return [`y`, `yes`].some(r => r === response.content.toLowerCase());
+                        return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
                     };
-                    message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
+                    message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ['time'] })
                         .then(collected => {
                             Update(content, `key has been updated.`);
                         })
