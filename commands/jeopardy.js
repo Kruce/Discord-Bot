@@ -65,7 +65,7 @@ module.exports = {
                 }
             });
         GetJeopardyQuestion().then(() => {
-            let jcollection = GetSetJeopardyCollection(cmd);
+            const jcollection = GetSetJeopardyCollection(cmd);
             const chosenclue = jcollection.get(`chosenclue`);
             const clues = jcollection.get(`clues`);
             if (chosenclue == null) { //if chosen clue isn't set, then they need to select from the list of categories
