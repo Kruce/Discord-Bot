@@ -75,8 +75,11 @@ module.exports = {
                     return message.reply(`Nobody has tallied any points for today.`);
                 } else {
                     let data = `\n**Point totals for today:**`;
-                    for (const key in points) {
-                        data += `\n${key}: ${points[key]}`;
+                    const sorted = Object.fromEntries(
+                        Object.entries(points).sort(([, a], [, b]) => b - a)
+                    );
+                    for (const key in sorted) {
+                        data += `\n<@!${key}>: ${sorted[key]}`;
                     }
                     return message.channel.send(data);
                 }
@@ -101,15 +104,26 @@ module.exports = {
                     return message.reply(`\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`);
                 } else if (cmd == `quiz`) {
                     const filter = response => {
-                        return response.content.replace(/[^a-zA-Z0-9]/g, "").toLowerCase() == clue.answer.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+                        let answer = clue.answer.toLowerCase();
+                        let answers = [
+                            answer,
+                            answer.removeArticles(),
+                            answer.normalizeNfd(),
+                            answer.removeNonAlphanumeric(),
+                            answer.removeFromParanthesis(),
+                            answer.normalizeNfd().removeArticles().removeFromParanthesis().removeNonAlphanumeric()
+                        ];
+                        return answers.some(r => r === response.content.toLowerCase());
                     };
                     message.channel.send(`\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`).then(() => {
-                        message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: [`time`] })
+                        const read = (clue.question.split(` `).length + clue.category.title.split(` `).length) * 160; //time to read category and clue
+                        const respond = 5000; //time to answer question
+                        message.channel.awaitMessages(filter, { max: 1, time: (read + respond), errors: [`time`] })
                             .then(collected => {
                                 CheckPointsReset(jcollection);
                                 let points = jcollection.get(`points`);
                                 const author = collected.first().author;
-                                const key = `<@!${author.id}>`;
+                                const key = author.id;
                                 if (!points) {
                                     points = {};
                                     points[key] = 1;
@@ -164,6 +178,18 @@ module.exports = {
                 }
                 return message.author.jeopardy;
             }
+        };
+        String.prototype.removeArticles = function () {
+            return this.replace(/^the|an|a\s/i, ``).trim();
+        };
+        String.prototype.removeNonAlphanumeric = function () {
+            return this.replace(/[^a-zA-Z0-9\s]/g, ``);
+        };
+        String.prototype.normalizeNfd = function () {
+            return this.normalize(`NFD`).replace(/[\u0300-\u036f]/g, ``);
+        };
+        String.prototype.removeFromParanthesis = function () {
+            return this.replace(/ *\([^)]*\) */g, ``);
         };
     },
 };
