@@ -119,7 +119,7 @@ module.exports = {
                     };
                     message.channel.send(`\n**Category:** ${clue.category.title} \n**Clue:** ${clue.question}`).then(() => {
                         const read = (clue.question.split(` `).length + clue.category.title.split(` `).length) * 160; //time to read category and clue
-                        const respond = 5000; //time to answer question
+                        const respond = 10000; //time to answer question
                         message.channel.awaitMessages(filter, { max: 1, time: (read + respond), errors: [`time`] })
                             .then(collected => {
                                 CheckPointsReset(jcollection);
