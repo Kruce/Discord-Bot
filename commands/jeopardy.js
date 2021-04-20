@@ -115,7 +115,7 @@ module.exports = {
                             answer.removeNonAlphanumericExceptApostrophe(),
                             answer.removeFromParanthesis(),
                             answer.normalizeNfd().removeFromParanthesis().removeNonAlphanumeric().removeArticles(),
-                            answer.normalizeNfd().removeFromParanthesis().removeNonAlphanumericExceptApostrophe().removeArticles()];
+                            answer.normalizeNfd().removeFromParanthesis().removeNonAlphanumericExceptApostrophe().removeArticles()
                         ];
                         return answers.some(r => r === response.content.toLowerCase());
                     };
