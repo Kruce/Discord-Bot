@@ -112,8 +112,10 @@ module.exports = {
                             answer.removeArticles(),
                             answer.normalizeNfd(),
                             answer.removeNonAlphanumeric(),
+                            answer.removeNonAlphanumericExceptApostrophe(),
                             answer.removeFromParanthesis(),
-                            answer.normalizeNfd().removeArticles().removeFromParanthesis().removeNonAlphanumeric()
+                            answer.normalizeNfd().removeFromParanthesis().removeNonAlphanumeric().removeArticles(),
+                            answer.normalizeNfd().removeFromParanthesis().removeNonAlphanumericExceptApostrophe().removeArticles()];
                         ];
                         return answers.some(r => r === response.content.toLowerCase());
                     };
@@ -182,10 +184,13 @@ module.exports = {
             }
         };
         String.prototype.removeArticles = function () {
-            return this.replace(/^the|an|a\s/i, ``).trim();
+            return this.replace(/^(the|an|a)/, ``).trim();
         };
         String.prototype.removeNonAlphanumeric = function () {
             return this.replace(/[^a-zA-Z0-9\s]/g, ``);
+        };
+        String.prototype.removeNonAlphanumericExceptApostrophe = function () {
+            return this.replace(/[^a-zA-Z0-9'\s]/g, ``);
         };
         String.prototype.normalizeNfd = function () {
             return this.normalize(`NFD`).replace(/[\u0300-\u036f]/g, ``);
