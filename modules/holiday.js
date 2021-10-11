@@ -25,6 +25,7 @@
         "6,1": [`🇨🇦`, `Canada day`, `https://en.wikipedia.org/wiki/Canada_Day`],
         "6,4": [`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`],
         "7,26": [`💪`, `Women's equality day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
+        "9,11": [`🌄`, `Indigenous Peoples' Day`, `https://en.wikipedia.org/wiki/Indigenous_Peoples'_Day`],
         "9,31": [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`],
         "11,25": [`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`],
         "11,26": [`🕯️`, `Kwanzaa begins`, `https://en.wikipedia.org/wiki/Kwanzaa`]
