@@ -1,10 +1,11 @@
 ﻿const holidays = [ //multidimensional array where the first array is for gregorian holidays by week and day, the second array is for gregorian holidays by date, and the third is for islamic holidays
-    { //keys are formatted as "month (using zero based), occurrence (or week), day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence
+    { //keys are formatted as "month (using zero based), occurrence (or week), day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence and zero starts sunday for day of week
         "0,3,1": [`☮️`, `Martin Luther King Jr. day`, `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`],
         "1,3,1": [`🎩`, `President's day`, `https://en.wikipedia.org/wiki/Washington%27s_Birthday`],
         "2,2,0": [`🌞`, `Daylight savings time begins`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
         "4,-1,1": [`🎖️`, `Memorial day`, `https://en.wikipedia.org/wiki/Memorial_Day`],
         "8,1,1": [`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`],
+        "9,2,1": [`🍁`, `Thanksgiving (Canada)`, `https://en.wikipedia.org/wiki/Thanksgiving_(Canada)`],
         "10,1,0": [`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`],
         "10,4,4": [`🦃`, `Thanksgiving`, `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`]
     },
