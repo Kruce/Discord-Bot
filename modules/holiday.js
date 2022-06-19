@@ -21,7 +21,7 @@
         "4,5": [`💃`, `Cinco de mayo`, `https://en.wikipedia.org/wiki/Cinco_de_Mayo`],
         "4,15": [`🇵🇸`, `Nakba day`, `https://en.wikipedia.org/wiki/Nakba_Day`],
         "5,1": [`🏳️‍🌈`, `Pride month begins`, `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`],
-        "5,19": [`✊🏿`, `Junteenth`, `https://en.wikipedia.org/wiki/Juneteenth`],
+        "5,19": [`✊🏿`, `Juneteenth`, `https://en.wikipedia.org/wiki/Juneteenth`],
         "6,1": [`🇨🇦`, `Canada day`, `https://en.wikipedia.org/wiki/Canada_Day`],
         "6,4": [`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`],
         "7,26": [`💪`, `Women's equality day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`],
