@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "discord.js": "^12.1.1",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "node-schedule-tz": "^1.2.1-4",
     "tinycolor2": "^1.4.1"
   }
