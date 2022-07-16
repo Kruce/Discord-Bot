@@ -6,9 +6,10 @@ module.exports = {
     usage: `*${process.env.COMMAND_PREFIX}ow* to assign a role and hero to any players currently playing overwatch on this server, *${process.env.COMMAND_PREFIX}ow [name1] [name2] [name3[ [name4] [name5]* to assign a role and hero to the given names, *${process.env.COMMAND_PREFIX}ow [role] [role] [role] [role] [role] * to assign a new hero for the given roles, *${process.env.COMMAND_PREFIX}ow [role] [name] [name] [role] [name]* to do a combination of both.`, //how to use the command
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
+        let remainedroles = [`tank`, `damage`, `damage`, `support`, `support`];
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
             args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toUpperCase() == `OVERWATCH` }) }), p => p[1].member.displayName);
-        if (!args.length || args.length > 6) { //if array is empty or more than six players/roles return message
+        if (!args.length || args.length > remainedroles.length) { //if array is empty or more than allowed players/roles.. return message
             let reply = `your provided arguments are invalid, ${message.author}.`;
             if (command.usage) {
                 reply += `\n\`an example of proper usage would be:\` ${command.usage}`;
@@ -16,10 +17,9 @@ module.exports = {
             return message.channel.send(reply);
         }
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
-        let remainedroles = [`tank`, `tank`, `damage`, `damage`, `support`, `support`];
         let heroes = {
-            "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`, `zarya`],
-            "damage": [`ashe`, `bastion`, `doomfist`, `echo`, `genji`, `hanzo`, `junkrat`, `cassidy`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`],
+            "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`, `zarya`, `doomfist`, `junker queen`],
+            "damage": [`ashe`, `bastion`, `echo`, `genji`, `hanzo`, `junkrat`, `cassidy`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`, `sojourn`],
             "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
         };
         const argumentslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
