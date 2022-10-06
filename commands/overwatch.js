@@ -20,7 +20,7 @@ module.exports = {
         let heroes = {
             "tank": [`d.va`, `orisa`, `reinhardt`, `roadhog`, `sigma`, `winston`, `wrecking ball`, `zarya`, `doomfist`, `junker queen`],
             "damage": [`ashe`, `bastion`, `echo`, `genji`, `hanzo`, `junkrat`, `cassidy`, `mei`, `pharah`, `reaper`, `soldier: 76`, `sombra`, `symmetra`, `torbjörn`, `tracer`, `widowmaker`, `sojourn`],
-            "support": [`ana`, `baptiste`, `brigitte`, `lúcio`, `mercy`, `moira`, `zenyatta`]
+            "support": [`ana`, `baptiste`, `brigitte`, `kiriko`, `lúcio`, `mercy`, `moira`, `zenyatta`]
         };
         const argumentslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
         for (const arg of argumentslower) { //update our remained and reserved roles before we start assigning them
