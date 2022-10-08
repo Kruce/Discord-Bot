@@ -8,7 +8,7 @@ module.exports = {
     execute(message, args) {
         let remainedroles = [`tank`, `damage`, `damage`, `support`, `support`];
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
-            args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toUpperCase() == `OVERWATCH` }) }), p => p[1].member.displayName);
+            args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toLowerCase().includes(`overwatch`) }) }), p => p[1].member.displayName);
         if (!args.length || args.length > remainedroles.length) { //if array is empty or more than allowed players/roles.. return message
             let reply = `your provided arguments are invalid, ${message.author}.`;
             if (command.usage) {
