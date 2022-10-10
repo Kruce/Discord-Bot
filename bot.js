@@ -26,6 +26,7 @@ Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
     if (emojis != ``) name = `${emojis} ${name} ${emojis}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
 
+    Client.overwatch = new Discord.Collection();
     Fetch(`https://overwatch.blizzard.com/en-us/heroes/`)
         .then(response => response.text())
         .then(function (body) {
@@ -37,7 +38,6 @@ Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
                 const hero = main[i].lastChild.lastChild.lastChild.data.toLowerCase();
                 heroes[role].push(hero);
             }
-            Client.overwatch = new Discord.Collection();
             Client.overwatch.set(`heroes`, heroes);
         })
         .catch(function (error) {
