@@ -4,6 +4,8 @@ const Client = new Discord.Client({ partials: [`MESSAGE`, `CHANNEL`, `REACTION`]
 const Schedule = require(`node-schedule-tz`);
 const Holiday = require(`./modules/holiday`);
 const Shuffle = require(`./modules/shuffle`);
+const Cheerio = require(`cheerio`);
+const Fetch = require('node-fetch');
 
 //set our commands collection
 Client.commands = new Discord.Collection();
@@ -23,6 +25,24 @@ Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
     let name = `me and the boys`;
     if (emojis != ``) name = `${emojis} ${name} ${emojis}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
+
+    Fetch(`https://overwatch.blizzard.com/en-us/heroes/`)
+        .then(response => response.text())
+        .then(function (body) {
+            let $ = Cheerio.load(body);
+            let main = $(`blz-media-gallery`).children();
+            let heroes = { "tank": [], "damage": [], "support": [] };
+            for (let i = 1; i < main.length; ++i) {
+                const role = main[i].attribs[`data-role`].replace(/\W/g, ``).toLowerCase(); //remove non-alpha characters and convert to lowercase
+                const hero = main[i].lastChild.lastChild.lastChild.data.toLowerCase();
+                heroes[role].push(hero);
+            }
+            Client.overwatch = new Discord.Collection();
+            Client.overwatch.set(`heroes`, heroes);
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 });
 
 Client.on(`message`, message => {
