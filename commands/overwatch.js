@@ -25,7 +25,7 @@ module.exports = {
         let overwatch = message.client.overwatch;
         if (overwatch) {
             let cachedheroes = overwatch.get(`heroes`);
-            if (Array.isArray(cachedheroes) || cachedheroes.length) {
+            if (Array.isArray(cachedheroes) && cachedheroes.length) {
                 heroes = cachedheroes;
             }
         }

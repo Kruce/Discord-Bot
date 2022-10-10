@@ -20,12 +20,13 @@ Client.on(`ready`, () => {
     console.log(`logged in as ${Client.user.tag}!`);
 });
 
-Schedule.scheduleJob(`holiday job`, `0 0 * * *`, `America/New_York`, () => {
+Schedule.scheduleJob(`daily job`, `0 0 * * *`, `America/New_York`, () => {
     const emojis = Holiday.EmojisToday(); //empty string if no holidays
     let name = `me and the boys`;
     if (emojis != ``) name = `${emojis} ${name} ${emojis}`; //if a holiday exists, format name with spaces
     Client.guilds.cache.get(`232319112141996032`).setName(name);
 
+    //scrape blizzard's site for overwatch hero data until an api is available
     Client.overwatch = new Discord.Collection();
     Fetch(`https://overwatch.blizzard.com/en-us/heroes/`)
         .then(response => response.text())
