@@ -42,7 +42,7 @@ Schedule.scheduleJob(`daily job`, `0 0 * * *`, `America/New_York`, () => {
             Client.overwatch.set(`heroes`, heroes);
         })
         .catch(function (error) {
-            console.error(error);
+            console.error(`Daily overwatch web scrape error: ${error}`);
         });
 });
 

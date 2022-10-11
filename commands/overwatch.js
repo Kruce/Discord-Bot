@@ -10,11 +10,7 @@ module.exports = {
         if (!args.length && message.channel.type === `text`) //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
             args = Array.from(message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toLowerCase().includes(`overwatch`) }) }), p => p[1].member.displayName);
         if (!args.length || args.length > remainedroles.length) { //if array is empty or more than allowed players/roles.. return message
-            let reply = `your provided arguments are invalid, ${message.author}.`;
-            if (command.usage) {
-                reply += `\n\`an example of proper usage would be:\` ${command.usage}`;
-            }
-            return message.channel.send(reply);
+            return message.channel.send(`${message.author}, your provided arguments are invalid. you can type *${process.env.COMMAND_PREFIX}help ow* to see different examples of usage.`);
         }
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
         let heroes = {
