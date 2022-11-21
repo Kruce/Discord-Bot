@@ -1,3 +1,4 @@
+const Fetch = require(`node-fetch`);
 const basicHeaders = {
     'Content-Type': 'application/json',
     'ApiKey': process.env.KRUCEBLAKE_API_KEY,
@@ -41,7 +42,7 @@ module.exports = {
                     }
                     return message.channel.send(reply);
                 } else if ([`set`, `all`].indexOf(key.toLowerCase()) > -1) {
-                    return message.channel.send(`that key is restricted, please try again with a different key`);
+                    return message.channel.send(`that key is restricted, please try again with a different key.`);
                 } else {
                     GetBookmarks()
                         .then(function (json) {
@@ -55,7 +56,7 @@ module.exports = {
                         })
                         .catch((error) => {
                             console.log(error);
-                            return message.reply(`there was an error setting that bookmark`);
+                            return message.reply(`there was an error setting that bookmark.`);
                         });
                 }
                 break;
@@ -91,11 +92,10 @@ module.exports = {
                             return PutBookmarks(content);
                         })
                         .then(() => {
-                            return message.reply(`bookmark has been updated.`)
+                            return message.reply(`bookmark has been updated.`);
                         });
                 });
         };
-
         const AddBookmark = (content) => {
             PutBookmarks(content)
                 .then(() => {
