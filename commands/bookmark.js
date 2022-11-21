@@ -1,5 +1,25 @@
-const id = `60660d4a045a422b32377d59`;
-const Jsonbin = require(`../modules/jsonbin`);
+const basicHeaders = {
+    'Content-Type': 'application/json',
+    'ApiKey': process.env.KRUCEBLAKE_API_KEY,
+};
+
+const GetBookmarks = async function () {
+    const result = await Fetch(`https://api.kruceblake.com/discordbot/getbookmarks`, {
+        headers: basicHeaders,
+    })
+    if (!result.ok) throw new Error('kruce api error: ' + (await result.text()))
+    return await result.json();
+};
+
+const PutBookmarks = async function (content) {
+    const result = await Fetch(`https://api.kruceblake.com/discordbot/putbookmarks`, {
+        method: 'PUT',
+        body: JSON.stringify(content),
+        headers: basicHeaders,
+    })
+    if (!result.ok) throw new Error('kruce api error: ' + (await result.text()))
+    return await result.json()
+};
 
 module.exports = {
     name: `bookmark`,
@@ -23,61 +43,64 @@ module.exports = {
                 } else if ([`set`, `all`].indexOf(key.toLowerCase()) > -1) {
                     return message.channel.send(`that key is restricted, please try again with a different key`);
                 } else {
-                    Jsonbin.ReadBin(id)
+                    GetBookmarks()
                         .then(function (json) {
-                            const record = json.record;
-                            if (key in record) { //if key exists, ask if they want to replace value. If they do, update value.
-                                record[key] = value;
-                                return ReplaceKeyQuestion(record);
+                            if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
+                                json[key] = value;
+                                return ReplaceKeyQuestion(json);
                             } else { //add the new key/value
-                                record[key] = value;
-                                return Update(record, `key has been added.`);
+                                json[key] = value;
+                                return AddBookmark(json);
                             }
                         })
                         .catch((error) => {
                             console.log(error);
-                            return message.reply(`there was an error setting bookmark`);
+                            return message.reply(`there was an error setting that bookmark`);
                         });
                 }
                 break;
             }
             case `all`: {
-                message.channel.send(`https://api.jsonbin.io/v3/b/${id}/latest`);
+                message.channel.send(`https://api.kruceblake.com/discordbot/getbookmarks`);
                 break;
             }
-            default: //get
-                Jsonbin.ReadBin(id)
+            default:
+                GetBookmarks()
                     .then(function (json) {
-                        const record = json.record;
-                        if (cmd in record) {
-                            return message.channel.send(record[cmd]);
+                        if (cmd in json) {
+                            return message.channel.send(json[cmd]);
                         } else {
                             return message.reply(`that key does not exist.`)
                         }
                     })
                     .catch((error) => {
                         console.log(error);
-                        return message.reply(`there was an error getting bookmark`);
+                        return message.reply(`there was an error getting bookmark.`);
                     });
                 break;
         }
-        const ReplaceKeyQuestion = (content) =>
+
+        const ReplaceKeyQuestion = (content) => {
             message.channel.send(`key already exists. would you like to update its value?`)
                 .then(() => {
                     const filter = response => {
                         return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
                     };
-                    message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ['time'] })
-                        .then(collected => {
-                            Update(content, `key has been updated.`);
+                    message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
+                        .then(() => {
+                            return PutBookmarks(content);
                         })
-                        .catch(collected => {
-                            return ``;
+                        .then(() => {
+                            return message.reply(`bookmark has been updated.`)
                         });
                 });
-        const Update = (content, msg) => {
-            Jsonbin.UpdateBin(id, content);
-            return message.reply(msg);
-        }
+        };
+
+        const AddBookmark = (content) => {
+            PutBookmarks(content)
+                .then(() => {
+                    return message.reply(`bookmark has been added.`);
+                });
+        };
     },
 };
