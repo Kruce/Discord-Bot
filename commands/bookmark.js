@@ -1,10 +1,11 @@
+const Discord = require(`discord.js`);
 const Fetch = require(`node-fetch`);
 const basicHeaders = {
     'Content-Type': 'application/json',
     'ApiKey': process.env.KRUCEBLAKE_API_KEY,
 };
 
-const GetBookmarks = async function () {
+const GetBookmarksApi = async function () {
     const result = await Fetch(`https://api.kruceblake.com/discordbot/getbookmarks`, {
         headers: basicHeaders,
     })
@@ -12,7 +13,7 @@ const GetBookmarks = async function () {
     return await result.json();
 };
 
-const PutBookmarks = async function (content) {
+const PutBookmarksApi = async function (content) {
     const result = await Fetch(`https://api.kruceblake.com/discordbot/putbookmarks`, {
         method: 'PUT',
         body: JSON.stringify(content),
@@ -96,11 +97,31 @@ module.exports = {
                         });
                 });
         };
+
         const AddBookmark = (content) => {
             PutBookmarks(content)
                 .then(() => {
                     return message.reply(`bookmark has been added.`);
                 });
+        };
+
+        async function GetBookmarks() {
+            if (!message.client.bookmarks || !message.client.bookmarks.get("all")) {
+                message.client.bookmarks = new Discord.Collection();
+                let bookmarksApi = await GetBookmarksApi();
+                message.client.bookmarks.set("all", bookmarksApi);
+                return bookmarksApi;
+            } else {
+                return message.client.bookmarks.get("all");
+            }
+        };
+
+        async function PutBookmarks(json) {
+            if (!message.client.bookmarks) {
+                message.client.bookmarks = new Discord.Collection();
+            }
+            await PutBookmarksApi(json);
+            message.client.bookmarks.set("all", json);
         };
     },
 };
