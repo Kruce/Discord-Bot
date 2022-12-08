@@ -21,7 +21,8 @@ module.exports = {
         let overwatch = message.client.overwatch;
         if (overwatch) {
             let cachedheroes = overwatch.get(`heroes`);
-            if (Array.isArray(cachedheroes) && cachedheroes.length) {
+            let requiredKeys = ['tank', 'damage', 'support'];
+            if (typeof cachedheroes !== "undefined" && requiredKeys.every((i) => cachedheroes.hasOwnProperty(i))) {
                 heroes = cachedheroes;
             }
         }
