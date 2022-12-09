@@ -23,7 +23,7 @@ module.exports = {
             let cachedheroes = overwatch.get(`heroes`);
             let requiredKeys = ['tank', 'damage', 'support'];
             if (typeof cachedheroes !== "undefined" && requiredKeys.every((i) => cachedheroes.hasOwnProperty(i))) {
-                heroes = cachedheroes;
+                heroes = JSON.parse(JSON.stringify(cachedheroes));
             }
         }
         const argumentslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
