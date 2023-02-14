@@ -173,7 +173,7 @@ function HolidaysToday() {
     const totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
     let holiday = []; //create new holiday array and add all holiday emojis if they exist in our predefined arrays
-
+    console.log(`date: ${date} currentYear: ${currentYear} currentMonth: ${currentMonth} currentDayOfWeek: ${currentDayOfWeek} currentDayOfMonth: ${currentDayOfMonth}`);
     let keys = [ //each array within this multidimensional array has two values. The first value is the key that is used to get the applicable holidays sub-array in the 'holidays' multidimensional array, and the second is today's generated key to check if any holidays match within that sub-array
         [0, `${currentMonth},${occurrence},${currentDayOfWeek}`],
         [1, `${currentMonth},${currentDayOfMonth}`],
@@ -186,7 +186,6 @@ function HolidaysToday() {
     for (let i = 0; i < keys.length; ++i) { //for each of our keys, check their applicable holiday array to see if any holidays exist
         const array = holidays[keys[i][0]];
         const key = keys[i][1];
-        console.log(`holiday key: ${key}`);
         const value = array[key];
         if (value !== undefined) holiday.push(value);
     }
