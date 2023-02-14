@@ -160,9 +160,8 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
  * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
 function HolidaysToday() {
-    const date = new Date(); //create new date object to local timezone
-    console.log(`holiday command time: ${date.getHours()}:${date.getMinutes()}`);
-        
+    const d = new Date().toLocaleString(`en-US`, { timeZone: `America/New_York` });
+    const date = new Date(d);
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
     const currentDayOfWeek = date.getDay();
