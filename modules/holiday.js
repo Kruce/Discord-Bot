@@ -160,7 +160,10 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
  * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
 function HolidaysToday() {
-    const date = new Date(new Date().toLocaleString(`en-US`, { timeZone: `America/New_York` })); //create new date object to local timezone
+    const d = new Date().toLocaleString(`en-US`, { timeZone: `America/New_York` });
+    const date = new Date(d); //create new date object to local timezone
+    console.log(`d: ${d} date: ${date}`);
+        
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
     const currentDayOfWeek = date.getDay();
@@ -173,7 +176,6 @@ function HolidaysToday() {
     const totalOccurrence = OccurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
     let holiday = []; //create new holiday array and add all holiday emojis if they exist in our predefined arrays
-    console.log(`date: ${date} currentYear: ${currentYear} currentMonth: ${currentMonth} currentDayOfWeek: ${currentDayOfWeek} currentDayOfMonth: ${currentDayOfMonth}`);
     let keys = [ //each array within this multidimensional array has two values. The first value is the key that is used to get the applicable holidays sub-array in the 'holidays' multidimensional array, and the second is today's generated key to check if any holidays match within that sub-array
         [0, `${currentMonth},${occurrence},${currentDayOfWeek}`],
         [1, `${currentMonth},${currentDayOfMonth}`],
