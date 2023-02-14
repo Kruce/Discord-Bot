@@ -12,7 +12,7 @@
     { //keys are formatted as "month (using zero based), day of the month" 
         "0,1": [`🎉`, `New years day`, `https://en.wikipedia.org/wiki/New_Year%27s_Day`],
         "1,1": [`🙌🏿`, `Black history month begins`, `https://en.wikipedia.org/wiki/Black_History_Month`],
-        "1,2": [`🐿`, `Groundhog day`, `https://en.wikipedia.org/wiki/Groundhog_Day`],
+        "1,2": [`🐿️`, `Groundhog day`, `https://en.wikipedia.org/wiki/Groundhog_Day`],
         "1,14": [`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`],
         "2,17": [`☘️`, `St. Patrick's day`, `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`],
         "2,30": [`🌱`, `Land day`, `https://en.wikipedia.org/wiki/Land_Day`],
