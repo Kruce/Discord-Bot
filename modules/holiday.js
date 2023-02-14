@@ -186,6 +186,7 @@ function HolidaysToday() {
     for (let i = 0; i < keys.length; ++i) { //for each of our keys, check their applicable holiday array to see if any holidays exist
         const array = holidays[keys[i][0]];
         const key = keys[i][1];
+        console.log(`holiday key: ${key}`);
         const value = array[key];
         if (value !== undefined) holiday.push(value);
     }
