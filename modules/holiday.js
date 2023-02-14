@@ -41,7 +41,7 @@
 ];
 
 function CambodianNewYearEmoji() {
-    const year = new Date(new Date().toLocaleString(`en-US`, { timeZone: `America/New_York` })).getFullYear();
+    const year = new Date().getFullYear();
     const key = ((year - 4) % 12);
     const emojis = [`🐀`, `🐂`, `🐅`, `🐇`, `🐉`, `🐍`, `🐎`, `🐐`, `🐒`, `🐓`, `🐕`, `🐖`];
     return emojis[key];
@@ -160,8 +160,8 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
  * Check whether today's date is any holiday and return a holiday array indicating holidays as [`holiday emoji`, `holiday name`, `holiday link`].
  */
 function HolidaysToday() {
-    const d = new Date().toLocaleString(`en-US`, { timeZone: `America/New_York` });
-    const date = new Date(d);
+    const date = new Date();
+    date.setHours(date.getHours() - 5); //update UTC date/time for EST
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
     const currentDayOfWeek = date.getDay();
