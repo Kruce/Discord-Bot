@@ -21,6 +21,7 @@ Client.on(`ready`, () => {
 });
 
 Schedule.scheduleJob(`daily job`, `0 0 * * *`, `America/New_York`, () => {
+    console.log(`daily job has started!`);
     const emojis = Holiday.EmojisToday(); //empty string if no holidays
     let name = `me and the boys`;
     if (emojis != ``) name = `${emojis} ${name} ${emojis}`; //if a holiday exists, format name with spaces
