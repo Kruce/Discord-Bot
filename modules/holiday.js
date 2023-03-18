@@ -161,6 +161,7 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
  */
 function HolidaysToday() {
     const date = new Date();
+    date.setHours(date.getHours() - 4); //update hours to est for coordinated universal time
     console.log(`holiday command date: ` + date);
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
