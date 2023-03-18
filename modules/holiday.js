@@ -161,7 +161,7 @@ function OccurrenceOfWeekDay(startDate, dayOfWeek, endDate, dayOfWeekCount) {
  */
 function HolidaysToday() {
     const date = new Date();
-    date.setHours(date.getHours() - 5); //update UTC date/time for EST
+    console.log(`holiday command date: ` + date);
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
     const currentDayOfWeek = date.getDay();
