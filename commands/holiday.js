@@ -15,7 +15,7 @@ module.exports = {
                 description += `${holidays[i][0]} [${holidays[i][1]}](${holidays[i][2]})`;
             }
             const embed = new Discord.MessageEmbed()
-                .setTitle(`Today's Holidays`)
+                .setTitle(`Today's Observances`)
                 .setDescription(description)
                 .setThumbnail(`https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png`)
                 .setTimestamp(new Date().toUTCString());
