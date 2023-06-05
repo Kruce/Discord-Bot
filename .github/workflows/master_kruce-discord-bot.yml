@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'kruce-discord-bot'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F88D3490B1CB48D5B67D9DEB5D2D5455 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F189BD83364541F0806C6F0353CD2885 }}
           package: .
