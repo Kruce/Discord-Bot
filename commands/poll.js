@@ -18,9 +18,9 @@ module.exports = {
             if (choices.length > 11) {
                 return message.reply(`polls can only have a maximum of 11 choices separated by a comma.`)
             }
-            emojis.push(`1️⃣`, `2️⃣`, `3️⃣`, `4️⃣`, `5️⃣`, `6️⃣`, `7️⃣`, `8️⃣`, `9️⃣`, `🔟`);
+            emojis.push('1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟');
             if (choices.length == 11) {
-                emojis.unshift(`0️⃣`);
+                emojis.unshift('0️⃣');
             }
         }
         let description = `### ${question}`;
