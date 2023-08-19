@@ -18,9 +18,12 @@ module.exports = {
             if (choices.length > 11) {
                 return message.reply(`polls can only have a maximum of 11 choices separated by a comma.`)
             }
-            emojis.push('1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟');
+            let numbers = [`1️⃣`, `2️⃣`, `3️⃣`, `4️⃣`, `5️⃣`, `6️⃣`, `7️⃣`, `8️⃣`, `9️⃣`, `🔟`, `0️⃣`];
             if (choices.length == 11) {
-                emojis.unshift('0️⃣');
+                numbers.unshift(numbers.pop());
+            }
+            for (var i = 0; i < choices.length; ++i) {
+                emojis.push(numbers[i]);
             }
         }
         let description = `### ${question}`;
