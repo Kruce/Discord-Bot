@@ -37,7 +37,7 @@ Schedule.scheduleJob(`daily job`, `0 0 * * *`, `America/New_York`, () => {
             let heroes = { "tank": [], "damage": [], "support": [] };
             for (let i = 1; i < main.length; ++i) {
                 const role = main[i].attribs[`data-role`].replace(/\W/g, ``).toLowerCase(); //remove non-alpha characters and convert to lowercase
-                const hero = main[i].lastChild.lastChild.lastChild.data.toLowerCase();
+                const hero = main[i].attribs[`hero-name`].toLowerCase();
                 heroes[role].push(hero);
             }
             Client.overwatch.set(`heroes`, heroes);
