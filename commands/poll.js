@@ -9,29 +9,25 @@ module.exports = {
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
         let emojis = [];
-        let numbers = [`1️⃣`, `2️⃣`, `3️⃣`, `4️⃣`, `5️⃣`, `6️⃣`, `7️⃣`, `8️⃣`, `9️⃣`, `🔟`, `0️⃣`];
         let choices = args.join(` `).split(`,`).map(x => x.trim());
         let question = choices.shift();
-        let isYesNo = false;
+        let description = `### ${question}`;
 
         if (choices.length) {
             if (choices.length > 11) {
-                return message.reply(`polls can only have a maximum of 11 choices separated by a comma.`)
+                return message.reply(`polls can only have a maximum of 11 choices separated by a comma.`);
             }
+            let numbers = [`1️⃣`, `2️⃣`, `3️⃣`, `4️⃣`, `5️⃣`, `6️⃣`, `7️⃣`, `8️⃣`, `9️⃣`, `🔟`, `0️⃣`];
             if (choices.length == 11) {
                 numbers.unshift(numbers.pop());
             }
+            for (var i = 0; i < choices.length; ++i) {
+                emojis.push(numbers[i]);
+                description += `\n ${emojis[i]} ${choices[i]}`;
+            }
         } else { //this is a yes or no question
             emojis.push(`✅`, `❌`);
-            choices.push(`yes`, `no`);
-            isYesNo = true;
-        }
-        let description = `### ${question}`;
-        for (var i = 0; i < choices.length; ++i) {
-            if (!isYesNo) { //not a yes no, so add numbers for each choice
-                emojis.push(numbers[i]);
-            }
-            description += `\n ${emojis[i]} ${choices[i]}`;
+            description += `\n ✅ yes\n ❌ no`;
         }
 
         const embed = new Discord.MessageEmbed()
@@ -46,7 +42,7 @@ module.exports = {
         return message.channel.send(embed)
             .then(r => {
                 Promise.all(emojis.map((emoji) => {
-                    r.react(emoji)
+                    r.react(emoji);
                 }));
             })
             .catch(e => { console.error(`there was an error with the poll command`, e) });
