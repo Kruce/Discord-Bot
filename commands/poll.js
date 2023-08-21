@@ -15,7 +15,7 @@ module.exports = {
 
         if (choices.length) {
             if (choices.length > 20) {
-                return message.reply(`polls can only have a maximum of 11 choices separated by a comma.`);
+                return message.reply(`polls can only have a maximum of 20 choices separated by a comma.`);
             }
             let letters = [`🇦`, `🇧`, `🇨`, `🇩`, `🇪`, `🇫`, `🇬`, `🇭`, `🇮`, `🇯`, `🇰`, `🇱`, `🇲`, `🇳`, `🇴`, `🇵`, `🇶`, `🇷`, `🇸`, `🇹`];
             for (var i = 0; i < choices.length; ++i) {
