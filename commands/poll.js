@@ -4,7 +4,7 @@ module.exports = {
     description: `create a simple yes or no poll, or a complex poll with up to 11 custom choices`,
     aliases: [`p`], //other alias to use this command
     args: true, //arguments are required.
-    usage: `*${process.env.COMMAND_PREFIX}p [yes or no question]* for a simple poll with a ✅ and ❌ choice, *${process.env.COMMAND_PREFIX}p [complex question], [choice 1], [choice 2], etc.* for a complex poll with multiple choices (1️⃣, 2️⃣, etc.). note that you can only have a maximum of 11 choices and must use a comma to separate your question and each choice.`, //how to use the command
+    usage: `*${process.env.COMMAND_PREFIX}p [yes or no question]* for a simple poll with a ✅ and ❌ choice, *${process.env.COMMAND_PREFIX}p [complex question], [choice 1], [choice 2], etc.* for a complex poll with multiple choices (🇦, 🇧, etc.). note that you can only have a maximum of 20 choices and must use a comma to separate your question and each choice.`, //how to use the command
     guildOnly: false, //usable inside servers only and not dms
     cooldown: 1, //cooldown on command in seconds
     execute(message, args) {
@@ -14,15 +14,12 @@ module.exports = {
         let description = `### ${question}`;
 
         if (choices.length) {
-            if (choices.length > 11) {
+            if (choices.length > 20) {
                 return message.reply(`polls can only have a maximum of 11 choices separated by a comma.`);
             }
-            let numbers = [`1️⃣`, `2️⃣`, `3️⃣`, `4️⃣`, `5️⃣`, `6️⃣`, `7️⃣`, `8️⃣`, `9️⃣`, `🔟`, `0️⃣`];
-            if (choices.length == 11) {
-                numbers.unshift(numbers.pop());
-            }
+            let letters = [`🇦`, `🇧`, `🇨`, `🇩`, `🇪`, `🇫`, `🇬`, `🇭`, `🇮`, `🇯`, `🇰`, `🇱`, `🇲`, `🇳`, `🇴`, `🇵`, `🇶`, `🇷`, `🇸`, `🇹`];
             for (var i = 0; i < choices.length; ++i) {
-                emojis.push(numbers[i]);
+                emojis.push(letters[i]);
                 description += `\n ${emojis[i]} ${choices[i]}`;
             }
         } else { //this is a yes or no question
