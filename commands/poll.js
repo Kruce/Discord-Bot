@@ -29,7 +29,7 @@ module.exports = {
 
         const embed = new Discord.MessageEmbed()
             .setTitle(`**${message.member.displayName}**`)
-            .setThumbnail(`https://cdn.discordapp.com/embed/avatars/0.png`)
+            .setThumbnail(`https://cdn.discordapp.com/attachments/696807093939994665/1144335737211342909/voting-box.png`)
             .setDescription(description);
 
         if (message.channel.type === `text`) { //if this isn't a dm, delete previous message
