@@ -99,10 +99,6 @@ const holidays = [ //multidimensional array where the first array is for gregori
             [
                 [`💪`, `Women's equality day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`]
             ],
-        "9,11":
-            [
-                [`🌄`, `Indigenous Peoples' Day`, `https://en.wikipedia.org/wiki/Indigenous_Peoples'_Day`]
-            ],
         "9,31":
             [
                 [`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`]
