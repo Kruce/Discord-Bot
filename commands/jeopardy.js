@@ -156,7 +156,7 @@ module.exports = {
             }
         }).catch(function (error) {
             console.error(error);
-            return reject(error);
+            return message.reply(error);
         });
         const CheckStatus = (response) => {
             if (response.ok) {
