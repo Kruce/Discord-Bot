@@ -53,7 +53,7 @@ module.exports = {
                         })
                         .catch(function (error) {
                             console.error(error);
-                            return reject(`There is an issue getting or setting jeopardy cache.`);
+                            return reject(error.message);
                         });
                 }
                 else { resolve(`cached`); }
@@ -154,6 +154,9 @@ module.exports = {
                     return message.reply(`you can send *repeat*, a number to select a clue from your given categories, *categories* for your new categories to choose from, blank for your new random instant clue, *quiz* for a communal clue that tallies points for the first correct answer in chat, and *points* to see the current day's point total for *quiz*.`);
                 }
             }
+        }).catch(function (error) {
+            console.error(error);
+            return reject(error);
         });
         const CheckStatus = (response) => {
             if (response.ok) {
