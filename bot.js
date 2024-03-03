@@ -6,6 +6,7 @@ const Holiday = require(`./modules/holiday`);
 const Shuffle = require(`./modules/shuffle`);
 const Cheerio = require(`cheerio`);
 const Fetch = require('node-fetch');
+const Server = require(`./modules/server`);
 
 //set our commands collection
 Client.commands = new Discord.Collection();
@@ -15,6 +16,8 @@ for (const file of commandFiles) {
     Client.commands.set(command.name, command);
 }
 const cooldowns = new Discord.Collection();
+
+Server.Listen();
 
 Client.on(`ready`, () => {
     console.log(`logged in as ${Client.user.tag}!`);
