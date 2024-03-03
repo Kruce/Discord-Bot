@@ -107,14 +107,13 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
             return;
         }
     } //message is cached and available now
-    
-    const cats = Shuffle.ShuffleArray(Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.endsWith(`_`)).keys())); //get all guild cat emojis (emoji names ending with an underscore are reserved specifically for cats) and shuffle the array
-    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.has(Client.user.id)).keys()); //get all reactions on this message from our bot if any
-    if (cats.every(cat => botReactions.includes(cat))) return; //message already contains all cats from bot
 
-    Promise.all(cats.map((cat) => { //promise.all won't guarantee same order already, but it usally does so I still shuffle order first so they're always random
-        message.react(cat)
-    })).catch(e => { console.error(`adding cat emojis error, one failed to react: `, e) });
+    let cats = Shuffle.ShuffleArray(Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.endsWith(`_`)).keys())); //get all guild cat emojis (emoji names ending with an underscore are reserved specifically for cats) and shuffle the array
+    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.filter((user) => user.id == Client.user.id)).keys()); //get all reactions on this message from our bot if any
+    cats = cats.filter(cat => !botReactions.includes(cat));
+
+    Promise.all(cats.map(cat => message.react(cat)))
+        .catch(e => { console.error(`adding cat emojis error, one failed to react: `, e) });
 });
 
 Client.login(process.env.BOT_TOKEN);
