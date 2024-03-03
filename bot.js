@@ -107,12 +107,26 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
             return;
         }
     } //message is cached and available now
-
-    let cats = Shuffle.ShuffleArray(Array.from(message.guild.emojis.cache.filter(emoji => emoji.name.endsWith(`_`)).keys())); //get all guild cat emojis (emoji names ending with an underscore are reserved specifically for cats) and shuffle the array
-    const botReactions = Array.from(message.reactions.cache.filter(reaction => reaction.users.cache.filter((user) => user.id == Client.user.id)).keys()); //get all reactions on this message from our bot if any
-    cats = cats.filter(cat => !botReactions.includes(cat));
-
-    Promise.all(cats.map(cat => message.react(cat)))
+    let catEmojis = Shuffle.ShuffleArray(message.guild.emojis.cache.filter(emoji => emoji.name.endsWith(`_`)).map(emoji => emoji.id));
+    let totalReactionAmount = 20 - message.reactions.cache.size; //20 is the max amount of emojis allowed, subtract any slots already used
+    //if message already has cat emojis, move to the front or back based on whether the bot reacted to them already or not
+    message.reactions.cache.forEach((reaction) => {
+        if (reaction.emoji.name.endsWith(`_`)) {
+            let index = catEmojis.indexOf(reaction.emoji.id);
+            if (index !== -1) {
+                if (reaction.me) {
+                    catEmojis.push(catEmojis.splice(index, 1)[0]);
+                }
+                else {
+                    catEmojis.unshift(catEmojis.splice(index, 1)[0]);
+                    totalReactionAmount += 1; //add one reaction if it was a cat that hasn't been reacted by the bot yet
+                }
+            }
+        }
+    });
+    if (totalReactionAmount == 0)
+        return;
+    Promise.all(catEmojis.slice(0, totalReactionAmount).map(reaction => message.react(reaction)))
         .catch(e => { console.error(`adding cat emojis error, one failed to react: `, e) });
 });
 
