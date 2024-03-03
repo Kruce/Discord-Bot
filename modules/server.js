@@ -1,13 +1,13 @@
-const express = require(`express`);
-const server = express();
-const port = process.env.PORT || 3000
+const Express = require(`express`);
+const Server = Express();
+const Port = process.env.PORT || 3000;
 
-server.all("/", (req, res) => {
+Server.all("/", (req, res) => {
     res.send(`bot is running`);
 })
 
 function Listen() {
-    server.listen(port, () => {
+    Server.listen(Port, () => {
         console.log(`server is ready.`);
     })
 }
