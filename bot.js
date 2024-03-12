@@ -97,8 +97,7 @@ Client.on(`message`, message => {
 });
 
 Client.on(`messageReactionAdd`, async (reaction, user) => {
-    if (reaction.emoji.id != `651815701782200320` || user.bot) return; //if emoji is not BUB or this is a bot reacting
-    const message = reaction.message;
+    if (reaction.emoji.id != `651815701782200320` || (reaction.emoji.id == `651815701782200320` && reaction.me) || user.bot) return;
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
             await reaction.fetch();
@@ -107,6 +106,7 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
             return;
         }
     } //message is cached and available now
+    const message = reaction.message;
     let catEmojis = Shuffle.ShuffleArray(message.guild.emojis.cache.filter(emoji => emoji.name.endsWith(`_`)).map(emoji => emoji.id));
     let totalReactionAmount = 20 - message.reactions.cache.size; //20 is the max amount of emojis allowed, subtract any slots already used
     //if message already has cat emojis, move to the front or back based on whether the bot reacted to them already or not
@@ -114,11 +114,12 @@ Client.on(`messageReactionAdd`, async (reaction, user) => {
         if (reaction.emoji.name.endsWith(`_`)) {
             let index = catEmojis.indexOf(reaction.emoji.id);
             if (index !== -1) {
+                let move = catEmojis.splice(index, 1)[0];
                 if (reaction.me) {
-                    catEmojis.push(catEmojis.splice(index, 1)[0]);
+                    catEmojis.push(move);
                 }
                 else {
-                    catEmojis.unshift(catEmojis.splice(index, 1)[0]);
+                    catEmojis.unshift(move);
                     totalReactionAmount += 1; //add one reaction if it was a cat that hasn't been reacted by the bot yet
                 }
             }
