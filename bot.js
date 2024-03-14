@@ -97,7 +97,7 @@ Client.on(`message`, message => {
 });
 
 Client.on(`messageReactionAdd`, async (reaction, user) => {
-    if (reaction.emoji.id != `651815701782200320` || (reaction.emoji.id == `651815701782200320` && reaction.me) || user.bot) return;
+    if (reaction.emoji.id != `651815701782200320` || user.bot) return;
     if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
         try { // If the message this reaction belongs to was removed fetching might result in an API error
             await reaction.fetch();
