@@ -57,12 +57,11 @@ module.exports = {
                         ));
                     break;
                 case 'reaction':
-                    command = client.applicationcommandsArray.find((c) => c.name.startsWith(chosenCommand.value));
+                    command = client.collection.reactions.find((c) => c.name.startsWith(chosenCommand.value));
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Reaction command: <:${command.structure.name}:${command.structure.emojiId}>`)
                         .addFields(
-                            { name: 'Description:', value: `${command.description || '(No description)'}` },
-                            { name: 'Options:', value: command.options.join('\n') }
+                            { name: 'Description:', value: `${command.description || '(No description)'}` }
                         ));
                     break;
             }
