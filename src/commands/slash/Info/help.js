@@ -59,7 +59,7 @@ module.exports = {
                 case 'reaction':
                     command = client.applicationcommandsArray.find((c) => c.name.startsWith(chosenCommand.value));
                     embeds.push(new EmbedBuilder()
-                        .setTitle(`Reaction command: <:${v.structure.name}:${v.structure.emojiId}>`)
+                        .setTitle(`Reaction command: <:${command.structure.name}:${command.structure.emojiId}>`)
                         .addFields(
                             { name: 'Description:', value: `${command.description || '(No description)'}` },
                             { name: 'Options:', value: command.options.join('\n') }
