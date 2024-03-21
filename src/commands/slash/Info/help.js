@@ -61,7 +61,7 @@ module.exports = {
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Reaction command: <:${command.structure.name}:${command.structure.emojiId}>`)
                         .addFields(
-                            { name: 'Description:', value: `${command.description || '(No description)'}` }
+                            { name: 'Description:', value: `${command.structure.description || '(No description)'}` }
                         ));
                     break;
             }
