@@ -57,7 +57,7 @@ module.exports = {
                         ));
                     break;
                 case 'reaction':
-                    command = client.collection.reactions.find((c) => c.name.startsWith(chosenCommand.value));
+                    command = client.collection.reactions.find((c) => c.structure.name.startsWith(chosenCommand.value));
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Reaction command: <:${command.structure.name}:${command.structure.emojiId}>`)
                         .addFields(
