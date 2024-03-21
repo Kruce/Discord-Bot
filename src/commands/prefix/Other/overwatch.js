@@ -31,7 +31,7 @@ module.exports = {
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache.`);
 
         let cachedheroes = overwatch.get(`heroes`);
-        if (typeof cachedheroes === "undefined" || !cachedheroes.length)
+        if (typeof cachedheroes === "undefined")
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes.`);
 
         let heroes = JSON.parse(JSON.stringify(cachedheroes));
