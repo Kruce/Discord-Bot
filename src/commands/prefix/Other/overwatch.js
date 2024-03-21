@@ -41,7 +41,7 @@ module.exports = {
             if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
                 const role = roles[index];
                 roles.splice(index, 1);
-                roles.push(role);
+                reservedroles.push(role);
             }
         }
 
