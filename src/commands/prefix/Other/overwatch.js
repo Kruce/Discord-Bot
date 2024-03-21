@@ -1,13 +1,14 @@
 const { Message, ChannelType, EmbedBuilder } = require('discord.js');
 const { log, shuffleArray } = require('../../../functions');
 const ExtendedClient = require('../../../class/ExtendedClient');
+let roles = [`tank`, `damage`, `damage`, `support`, `support`];
 
 module.exports = {
     structure: {
         name: 'overwatch',
         description: 'Assign the name an ow role and hero or the overwatch role a new hero.',
         aliases: ['ow'],
-        usage: `Enter any combination of a total of 6 space separated player names or overwatch roles as arguments. Command will assign the player name argument a role and hero, or the overwatch role argument a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
+        usage: `Enter any combination of a total of ${roles.length} space separated player names or overwatch roles as arguments. Command will assign the player name argument a role and hero, or the overwatch role argument a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
         permissions: 'SendMessages',
         cooldown: 1
     },
@@ -17,10 +18,9 @@ module.exports = {
      * @param {string[]} args 
      */
     run: async (client, message, args) => {
-        let remainedroles = [`tank`, `damage`, `damage`, `support`, `support`];
         if (!args.length && message.channel.type === ChannelType.GuildText)  //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
             args = message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toLowerCase().includes(`overwatch`) }) }).map(p => p.member.displayName);
-        if (!args.length || args.length > remainedroles.length) { //if array is empty or more than allowed players/roles.. return message
+        if (!args.length || args.length > roles.length) { //if array is empty or more than allowed players/roles.. return message
             return await message.channel.send(`${message.author}, your provided arguments are invalid.`);
         }
 
@@ -36,11 +36,11 @@ module.exports = {
         let heroes = JSON.parse(JSON.stringify(cachedheroes));
         const argumentslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
         for (const arg of argumentslower) { //update our remained and reserved roles before we start assigning them
-            const index = remainedroles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
+            const index = roles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
             if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
-                const role = remainedroles[index];
-                remainedroles.splice(index, 1);
-                reservedroles.push(role);
+                const role = roles[index];
+                roles.splice(index, 1);
+                roles.push(role);
             }
         }
 
@@ -59,15 +59,15 @@ module.exports = {
                 heroes[arg].shift();
                 reservedroles.splice(reservedroles.findIndex(x => x == arg), 1); //remove the first instance of the role
             } else {
-                remainedroles = shuffleArray(remainedroles);
-                let role = remainedroles[0];
+                roles = shuffleArray(roles);
+                let role = roles[0];
                 let embed = new EmbedBuilder()
                     .setDescription(`**${arg}**\n${role}\n${heroes[role][0][0]}`)
                     .setThumbnail(heroes[role][0][1])
                     .setColor("f06414");
                 embeds.push(embed);
-                heroes[remainedroles[0]].shift();
-                remainedroles.shift();
+                heroes[roles[0]].shift();
+                roles.shift();
             }
             argumentslower.shift();
         }

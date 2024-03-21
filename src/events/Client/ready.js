@@ -1,3 +1,4 @@
+const config = require("../../config");
 const { log } = require("../../functions");
 const ExtendedClient = require('../../class/ExtendedClient');
 
@@ -11,6 +12,11 @@ module.exports = {
      * @returns 
      */
     run: (_, client) => {
+        if (config.development && config.development.enabled) {
+            client.user.setPresence({
+                status: 'invisible'
+            });
+        }
         log('Logged in as: ' + client.user.tag, 'done');
     }
 };
