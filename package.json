@@ -1,16 +1,17 @@
 {
   "name": "discord-bot",
-  "description": "personal bot that provides various functionality",
   "version": "0.0.0",
-  "main": "bot.js",
+  "description": "personal bot that provides various functionality",
+  "main": "src/index.js",
   "author": "Kruce B.",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node ."
   },
+  "keywords": [],
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "discord.js": "^12.1.1",
-    "express": "^4.18.3",
+    "chalk": "^2.4.2",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
     "node-fetch": "^2.6.1",
     "node-schedule-tz": "^1.2.1-4",
     "tinycolor2": "^1.4.1"
