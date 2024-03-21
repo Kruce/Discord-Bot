@@ -5,7 +5,7 @@ const config = require('../../../config');
 module.exports = {
     structure: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('View info on all commands.')
+        .setDescription('View info on all commands or on one selected command.')
         .addStringOption(option =>
             option.setName('slash')
                 .setDescription('Choose a slash type command.')
@@ -32,12 +32,15 @@ module.exports = {
         await interaction.deferReply();
         let embeds = [];
         let prefix = process.env.PREFIX || config.handler.prefix;
-        const chosenCommand = interaction.options.data ? interaction.options.data[0] : null;
-        if (chosenCommand) { //get specific command
+        let data = interaction.options.data !== undefined && interaction.options.data.length != 0 ? interaction.options.data : null;
+        if (data) {
+            if (data.length > 1)
+                return await interaction.followUp(`Select one command at a time or none to view all commands.`);
+            let chosen = data[0];
             let command = null;
-            switch (chosenCommand.name) {
+            switch (chosen.name) {
                 case 'slash':
-                    command = client.applicationcommandsArray.find((c) => c.name.startsWith(chosenCommand.value));
+                    command = client.applicationcommandsArray.find((c) => c.name.startsWith(chosen.value));
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Slash command: \`${(command.type === 2 || command.type === 3) ? '' : '/'}${command.name}\``)
                         .setColor("e91e63")
@@ -47,7 +50,7 @@ module.exports = {
                         ));
                     break;
                 case 'prefix':
-                    command = client.collection.prefixcommands.find((c) => c.structure.name.startsWith(chosenCommand.value));
+                    command = client.collection.prefixcommands.find((c) => c.structure.name.startsWith(chosen.value));
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Prefix command: \`${prefix}${command.structure.name}\``)
                         .setColor("e91e63")
@@ -59,7 +62,7 @@ module.exports = {
                         ));
                     break;
                 case 'reaction':
-                    command = client.collection.reactions.find((c) => c.structure.name.startsWith(chosenCommand.value));
+                    command = client.collection.reactions.find((c) => c.structure.name.startsWith(chosen.value));
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Reaction command: <:${command.structure.name}:${command.structure.emojiId}>`)
                         .setColor("e91e63")
