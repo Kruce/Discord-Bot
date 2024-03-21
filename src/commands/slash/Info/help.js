@@ -5,20 +5,20 @@ const config = require('../../../config');
 module.exports = {
     structure: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('View all the possible commands!')
+        .setDescription('View info on all commands.')
         .addStringOption(option =>
             option.setName('slash')
-                .setDescription('choose a slash type command.')
+                .setDescription('Choose a slash type command.')
                 .setAutocomplete(true)
                 .setRequired(false))
         .addStringOption(option =>
             option.setName('prefix')
-                .setDescription('choose a prefix type command')
+                .setDescription('Choose a prefix type command')
                 .setAutocomplete(true)
                 .setRequired(false))
         .addStringOption(option =>
             option.setName('reaction')
-                .setDescription('choose a reaction type command')
+                .setDescription('Choose a reaction type command')
                 .setAutocomplete(true)
                 .setRequired(false)),
     options: {
@@ -32,7 +32,7 @@ module.exports = {
         await interaction.deferReply();
         let embeds = [];
         let prefix = process.env.PREFIX || config.handler.prefix;
-        const chosenCommand = interaction.options.get('slash') || interaction.options.get('prefix') || interaction.options.get('reaction');
+        const chosenCommand = interaction.options.data ? interaction.options.data[0] : null;
         if (chosenCommand) { //get specific command
             let command = null;
             switch (chosenCommand.name) {

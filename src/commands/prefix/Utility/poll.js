@@ -1,4 +1,5 @@
 const { Message, ChannelType, EmbedBuilder } = require('discord.js');
+const { log } = require('../../../functions');
 const ExtendedClient = require('../../../class/ExtendedClient');
 
 module.exports = {
@@ -42,7 +43,9 @@ module.exports = {
             .setDescription(description);
 
         if (message.channel.type === ChannelType.GuildText) { //if this isn't a dm, delete previous message
-            message.delete({ timeout: 1 }).catch(e => { console.error(`poll command issue deleting previous message:`, e); });
+            message.delete({ timeout: 1 }).catch((error) => {
+                log(`Poll command error deleteing previous message. \n ${error}`, "err");
+            });
         }
 
         return await message.channel.send({ embeds: [embed] })
@@ -51,6 +54,8 @@ module.exports = {
                     r.react(emoji);
                 }));
             })
-            .catch(error => { console.error(`there was an error with the poll command`, error) });
+            .catch((error) => {
+                log(`Poll command error in: ${message.guild.name} id: ${message.guild.id}. \n ${error}`, "err");
+            });
     },
 };

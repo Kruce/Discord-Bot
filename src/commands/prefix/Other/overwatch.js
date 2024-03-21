@@ -1,14 +1,14 @@
 const { Message, ChannelType, EmbedBuilder } = require('discord.js');
 const { log, shuffleArray } = require('../../../functions');
 const ExtendedClient = require('../../../class/ExtendedClient');
-const _roles = [`tank`, `damage`, `damage`, `support`, `support`];
+const Roles = [`tank`, `damage`, `damage`, `support`, `support`];
 
 module.exports = {
     structure: {
         name: 'overwatch',
         description: 'Assign the name an ow role and hero or the overwatch role a new hero.',
         aliases: ['ow'],
-        usage: `Enter any combination of a total of ${_roles.length} space separated player names or overwatch roles as arguments. Command will assign the player name argument a role and hero, or the overwatch role argument a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
+        usage: `Enter any combination of a total of ${Roles.length} space separated player names or overwatch roles as arguments. Command will assign the player name argument a role and hero, or the overwatch role argument a new hero. If no arguments are given, command will use any players currently playing Overwatch.`,
         permissions: 'SendMessages',
         cooldown: 1
     },
@@ -18,7 +18,7 @@ module.exports = {
      * @param {string[]} args 
      */
     run: async (client, message, args) => {
-        let roles = [..._roles];
+        let roles = [...Roles];
         if (!args.length && message.channel.type === ChannelType.GuildText)  //if array is empty and this isn't a dm, attempt to get all players currently playing overwatch
             args = message.guild.presences.cache.filter(function (p) { return p.activities.some(function (a) { return a.name.trim().toLowerCase().includes(`overwatch`) }) }).map(p => p.member.displayName);
         if (!args.length || args.length > roles.length) { //if array is empty or more than allowed players/roles.. return message
@@ -31,7 +31,7 @@ module.exports = {
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache.`);
 
         let cachedheroes = overwatch.get(`heroes`);
-        if (typeof cachedheroes === "undefined")
+        if (typeof cachedheroes === "undefined" || !cachedheroes.length)
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes.`);
 
         let heroes = JSON.parse(JSON.stringify(cachedheroes));
@@ -74,7 +74,7 @@ module.exports = {
         }
 
         return await message.channel.send({ embeds: embeds })
-            .catch(error => {
+            .catch((error) => {
                 log(`Overwatch command error sending message for: ${message.guild.name} id: ${message.guild.id}. \n ${error}`, "err");
             });
     }

@@ -1,4 +1,5 @@
 const { Message, ChannelType } = require('discord.js');
+const { log } = require('../../../functions');
 const ExtendedClient = require('../../../class/ExtendedClient');
 
 module.exports = {
@@ -35,12 +36,14 @@ module.exports = {
             } data += `  `; //added space inbetween each word
         }
         if (message.channel.type === ChannelType.GuildText) { //if this isn't a dm, delete previous message
-            message.delete({ timeout: 1 }).catch(e => { console.error(`poll command issue deleting previous message:`, e); });
+            message.delete({ timeout: 1 }).catch((error) => {
+                log(`Text command error deleteing previous message. \n ${error}`, "err");
+            });
             data = `${message.member.displayName} ${data}`;
         }
         return await message.channel.send(data)
-            .catch(e => {
-                console.error(`regional indicator command issue sending message:`, e);
+            .catch((error) => {
+                log(`Text command error sending message in: ${message.guild.name} id: ${message.guild.id}. \n ${error}`, "err");
             });
     },
 };

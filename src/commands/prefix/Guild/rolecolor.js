@@ -33,7 +33,7 @@ module.exports = {
                 await role.setColor(color);
                 log(`Rolecolor command successfully set color of role ${role.name} to ${role.color}`, "info");
             } catch (error) {
-                log(`Rolecolor command error setting color: ${message.guild.name} for id: ${message.guild.id}:\n${error}`, "err");
+                log(`Rolecolor command error setting color: ${message.guild.name} for id: ${message.guild.id}: \n ${error}`, "err");
             }
         } else {
             try {
@@ -46,7 +46,7 @@ module.exports = {
                 await message.member.roles.add(role);
                 log(`Rolecolor command new role created and added to the user: ${message.member.displayName}.`, "info");
             } catch (error) {
-                log(`Rolecolor command error creating role for: ${message.guild.name} id: ${message.guild.id}:\n${error}`, "err");
+                log(`Rolecolor command error creating role for: ${message.guild.name} id: ${message.guild.id}: \n ${error}`, "err");
             }
         }
     },

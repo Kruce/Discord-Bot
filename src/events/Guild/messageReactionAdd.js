@@ -14,8 +14,8 @@ module.exports = {
         if (reaction.partial) { //check if the reaction is part of a partial, or previously uncached
             try { // If the message this reaction belongs to was removed fetching might result in an API error
                 await reaction.fetch();
-            } catch (e) {
-                log(`error when fetching the partial message for a reaction: ${e}`, "err");
+            } catch (error) {
+                log(`Bub reaction command error when fetching the partial message for a reaction: \n ${error}`, "err");
                 return;
             }
         } //message is cached and available now
@@ -25,7 +25,7 @@ module.exports = {
             try {
                 react.run(client, reaction, user);
             } catch (error) {
-                log(error, "err");
+                log(`Bub reaction command error running for: ${message.guild.name} id: ${message.guild.id}. \n ${error}`, "err");
             }
         }
     },

@@ -35,7 +35,7 @@ module.exports = {
                 await role.setName(name);
                 log(`Rolename command successfully set name of role to ${name}`, "info");
             } catch (error) {
-                log(`Rolename command error setting role name: ${message.guild.name} for the user: ${message.member.displayName}.\n${error}`, "err");
+                log(`Rolename command error setting role name: ${message.guild.name} for the user: ${message.member.displayName}.\n ${error}`, "err");
             }
         } else {
             try {
@@ -48,7 +48,7 @@ module.exports = {
                 await message.member.roles.add(role);
                 log(`Rolename command successfully created a new role and added it to user: ${message.member.displayName}.`, "info");
             } catch (error) {
-                log(`Rolename command error setting role name: ${message.guild.name} for the user: ${message.member.displayName}.\n${error}`, "err");
+                log(`Rolename command error setting role name: ${message.guild.name} for the user: ${message.member.displayName}.\n ${error}`, "err");
             }
         }
     },
