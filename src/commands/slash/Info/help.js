@@ -41,6 +41,8 @@ module.exports = {
             switch (chosen.name) {
                 case 'slash':
                     command = client.applicationcommandsArray.find((c) => c.name.startsWith(chosen.value));
+                    if (!command)
+                        return await interaction.followUp(`The slash command entered does not exist. Please select one from the given choices.`);
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Slash command: \`${(command.type === 2 || command.type === 3) ? '' : '/'}${command.name}\``)
                         .setColor("e91e63")
@@ -51,6 +53,8 @@ module.exports = {
                     break;
                 case 'prefix':
                     command = client.collection.prefixcommands.find((c) => c.structure.name.startsWith(chosen.value));
+                    if (!command)
+                        return await interaction.followUp(`The prefix command entered does not exist. Please select one from the given choices.`);
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Prefix command: \`${prefix}${command.structure.name}\``)
                         .setColor("e91e63")
@@ -63,6 +67,8 @@ module.exports = {
                     break;
                 case 'reaction':
                     command = client.collection.reactions.find((c) => c.structure.name.startsWith(chosen.value));
+                    if (!command)
+                        return await interaction.followUp(`The reaction command entered does not exist. Please select one from the given choices.`);
                     embeds.push(new EmbedBuilder()
                         .setTitle(`Reaction command: <:${command.structure.name}:${command.structure.emojiId}>`)
                         .setColor("e91e63")
