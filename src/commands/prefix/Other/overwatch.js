@@ -26,51 +26,42 @@ module.exports = {
         }
 
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
-        let overwatch = message.client.overwatch;
+        const overwatch = message.client.overwatch;
         if (!overwatch)
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache.`);
 
-        let cachedheroes = overwatch.get(`heroes`);
+        const cachedheroes = overwatch.get(`heroes`);
         if (typeof cachedheroes === "undefined")
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes.`);
 
         let heroes = JSON.parse(JSON.stringify(cachedheroes));
-        const argumentslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
-        for (const arg of argumentslower) { //update our remained and reserved roles before we start assigning them
+        const argslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
+        for (const arg of argslower) { //update our remained and reserved roles before we start assigning them
             const index = roles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
             if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
-                const role = roles[index];
-                roles.splice(index, 1);
-                reservedroles.push(role);
+                reservedroles.push(roles.splice(index, 1)[0]);
             }
         }
 
         let embeds = [];
-        while (argumentslower.length > 0) {
+        while (argslower.length > 0) {
             for (let [key, value] of Object.entries(heroes)) { //shuffling roles and heroes inside while loop instead of outside for extra randomness
                 heroes[key] = shuffleArray(value)
             }
-            const arg = argumentslower[0]; //since we shift at end of loop this will always be the current word
-            if (reservedroles.includes(arg)) { //if the message is a role and there's still roles of that type left to use
-                let embed = new EmbedBuilder()
-                    .setDescription(`${arg}\n${heroes[arg][0][0]}`)
-                    .setThumbnail(heroes[arg][0][1])
-                    .setColor("f06414");
-                embeds.push(embed);
-                heroes[arg].shift();
-                reservedroles.splice(reservedroles.findIndex(x => x == arg), 1); //remove the first instance of the role
+            const arg = argslower.shift();
+            const embed = new EmbedBuilder().setColor("f06414");
+            if (reservedroles.splice(reservedroles.findIndex(x => x == arg), 1)?.length) { //if the message is a role and there's still roles of that type left to use
+                const hero = heroes[arg].shift();
+                embed.setDescription(`${arg}\n${hero[0]}`) //arg is an ow role here
+                embed.setThumbnail(hero[1])
             } else {
                 roles = shuffleArray(roles);
-                let role = roles[0];
-                let embed = new EmbedBuilder()
-                    .setDescription(`**${arg}**\n${role}\n${heroes[role][0][0]}`)
-                    .setThumbnail(heroes[role][0][1])
-                    .setColor("f06414");
-                embeds.push(embed);
-                heroes[roles[0]].shift();
-                roles.shift();
+                const role = roles.shift();
+                const hero = heroes[role].shift();
+                embed.setDescription(`**${arg}**\n${role}\n${hero[0]}`) //arg is a username here
+                embed.setThumbnail(hero[1])
             }
-            argumentslower.shift();
+            embeds.push(embed);
         }
 
         return await message.channel.send({ embeds: embeds })

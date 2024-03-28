@@ -15,7 +15,7 @@ module.exports = {
             try { // If the message this reaction belongs to was removed fetching might result in an API error
                 await reaction.fetch();
             } catch (error) {
-                log(`Bub reaction command error when fetching the partial message for a reaction: \n ${error}`, "err");
+                log(error, "err");
                 return;
             }
         } //message is cached and available now
@@ -25,7 +25,7 @@ module.exports = {
             try {
                 react.run(client, reaction, user);
             } catch (error) {
-                log(`Bub reaction command error running for: ${message.guild.name} id: ${message.guild.id}. \n ${error}`, "err");
+                log(error, "err");
             }
         }
     },

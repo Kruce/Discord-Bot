@@ -18,7 +18,7 @@ module.exports = {
      */
     run: async (client, message, args) => {
         const observances = observancesToday();
-        if (observances && observances.length) { //if any observances exist, create a new embed message and add each observance to its description
+        if (observances?.length) { //if any observances exist, create a new embed message and add each observance to its description
             let description = ``;
             for (var i = 0; i < observances.length; ++i) {
                 if (i > 0) description += `\n`; //add to a new line unless it is the first one
