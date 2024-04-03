@@ -73,7 +73,7 @@ module.exports = {
                 } else if ([`set`, `all`].indexOf(key.toLowerCase()) > -1) {
                     return await message.channel.send(`that key is restricted, please try again with a different key.`);
                 } else {
-                    let json = await GetBookmarks(message);
+                    let json = await GetBookmarks(message.client);
                     json[key] = value;
                     if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
                         await message.channel.send(`key already exists. would you like to update its value?`);
@@ -101,7 +101,7 @@ module.exports = {
             }
             default:
                 try {
-                    let json = await GetBookmarks(message);
+                    let json = await GetBookmarks(message.client);
                     if (cmd in json) {
                         return await message.channel.send(json[cmd]);
                     } else {

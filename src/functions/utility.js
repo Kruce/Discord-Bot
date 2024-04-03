@@ -81,8 +81,6 @@ const decimalString = (number) => {
     return (commaString(Number(numb).toFixed(len)));
 }
 
-
-
 module.exports = {
     log,
     time,
