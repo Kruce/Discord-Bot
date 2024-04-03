@@ -1,5 +1,5 @@
 const { Message, ChannelType, EmbedBuilder } = require('discord.js');
-const { log } = require('../../../functions');
+const { log } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 
 module.exports = {

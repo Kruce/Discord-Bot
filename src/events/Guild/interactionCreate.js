@@ -1,5 +1,5 @@
 const config = require("../../config");
-const { log } = require("../../functions");
+const { log } = require("../../functions/utility");
 const ExtendedClient = require("../../class/ExtendedClient");
 
 const cooldown = new Map();

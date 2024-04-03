@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const { Collection } = require("discord.js");
-const { log } = require('../functions');
+const { log } = require('../functions/utility');
 const ExtendedClient = require('../class/ExtendedClient');
 
 /**

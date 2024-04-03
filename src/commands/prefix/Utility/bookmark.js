@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const { Message, Collection } = require('discord.js');
-const { log } = require('../../../functions');
+const { log } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 const basicHeaders = {
     'Content-Type': 'application/json',
@@ -25,22 +25,22 @@ const PutBookmarksApi = async function (content) {
     return await result.json()
 };
 
-const PutBookmarks = async function (json, message) {
-    if (!message.client.bookmarks) {
-        message.client.bookmarks = new Collection();
+const PutBookmarks = async function (json, client) {
+    if (!client.bookmarks) {
+        client.bookmarks = new Collection();
     }
     await PutBookmarksApi(json);
-    message.client.bookmarks.set("all", json);
+    client.bookmarks.set("all", json);
 };
 
-const GetBookmarks = async function (message) {
-    if (!message.client.bookmarks || !message.client.bookmarks.get("all")) {
-        message.client.bookmarks = new Collection();
+const GetBookmarks = async function (client) {
+    if (!client.bookmarks || !client.bookmarks.get("all")) {
+        client.bookmarks = new Collection();
         let bookmarksApi = await GetBookmarksApi();
-        message.client.bookmarks.set("all", bookmarksApi);
+        client.bookmarks.set("all", bookmarksApi);
         return bookmarksApi;
     } else {
-        return message.client.bookmarks.get("all");
+        return client.bookmarks.get("all");
     }
 };
 
@@ -86,12 +86,12 @@ module.exports = {
                                     log(`Bookmark had no response from user when prompted for update.`, "info");
                                 });
                         if (collected) {
-                            await PutBookmarks(json, message);
+                            await PutBookmarks(json, message.client);
                             return await message.reply(`bookmark has been updated.`);
                         }
                         return;
                     } else { //add the new key/value
-                        await PutBookmarks(json, message);
+                        await PutBookmarks(json, message.client);
                         return await message.reply(`bookmark has been added.`);
                     }
                 }

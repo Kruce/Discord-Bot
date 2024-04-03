@@ -1,7 +1,8 @@
 const schedule = require('node-schedule-tz');
 const config = require("../config");
 const overwatch = require("../handlers/overwatch");
-const { log, observanceEmojisToday } = require('../functions');
+const { log } = require('../functions/utility');
+const { observanceEmojisToday } = require('../functions/observance');
 const ExtendedClient = require('../class/ExtendedClient');
 
 /**

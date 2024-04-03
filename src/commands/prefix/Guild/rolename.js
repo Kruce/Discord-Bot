@@ -1,6 +1,6 @@
 const tinycolor = require('tinycolor2');
 const { Message } = require('discord.js');
-const { log } = require('../../../functions');
+const { log } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 
 module.exports = {

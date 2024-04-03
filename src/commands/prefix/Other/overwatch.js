@@ -1,5 +1,5 @@
 const { Message, ChannelType, EmbedBuilder } = require('discord.js');
-const { log, shuffleArray } = require('../../../functions');
+const { log, shuffleArray } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 const Roles = [`tank`, `damage`, `damage`, `support`, `support`];
 

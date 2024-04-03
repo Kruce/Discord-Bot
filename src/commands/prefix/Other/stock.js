@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const { Message, EmbedBuilder } = require('discord.js');
-const { log, decimalString } = require('../../../functions');
+const { log, decimalString } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 
 module.exports = {

@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const { log, shuffleArray } = require('../../functions');
+const { log, shuffleArray } = require('../../functions/utility');
 const ExtendedClient = require('../../class/ExtendedClient');
 
 module.exports = {

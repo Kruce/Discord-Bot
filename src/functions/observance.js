@@ -252,10 +252,66 @@ const occurrenceOfWeekDay = (startDate, dayOfWeek, endDate, dayOfWeekCount) => {
     return total;
 }
 
+/**
+ * Check whether today's date is any observance and return an observance array indicating observances as [`observance emoji`, `observance name`, `observance link`].
+ */
+const observancesToday = () => {
+    const date = new Date();
+    date.setHours(date.getHours() - 4); //update hours to est for coordinated universal time
+    log(`ObservancesToday function date/time requested: ${date}`, "info");
+    const currentYear = date.getFullYear(); //extract current date info
+    const currentMonth = date.getMonth();
+    const currentDayOfWeek = date.getDay();
+    const currentDayOfMonth = date.getDate();
+
+    const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay(); //get the week day of the first day of the month
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //get the last day of the month for the current month
+
+    const occurrence = occurrenceOfWeekDay(1, firstDayOfWeek, currentDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st up to the current date for the month 
+    const totalOccurrence = occurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
+
+    let observance = []; //create new observance array and add all observance emojis if they exist in our predefined arrays
+    let keys = [ //each array within this multidimensional array has two values. The first value is the key that is used to get the applicable observances sub-array in the 'observances' multidimensional array, and the second is today's generated key to check if any observances match within that sub-array
+        [0, `${currentMonth},${occurrence},${currentDayOfWeek}`],
+        [1, `${currentMonth},${currentDayOfMonth}`],
+        [2, `${islamicDate(date, -1)}`],
+    ];
+
+    //if today is the last occurence of this day in the month, check for those observances using -1 that was described in the observances multidimensional array above
+    if (occurrence == totalOccurrence) keys.push([0, `${currentMonth},-1,${currentDayOfWeek}`]);
+
+    for (let i = 0; i < keys.length; ++i) { //for each of our keys, check their applicable observance array to see if any observances exist
+        const array = observances[keys[i][0]];
+        const key = keys[i][1];
+        const values = array[key];
+        if (values !== undefined) {
+            for (let x = 0; x < values.length; ++x) {
+                observance.push(values[x])
+            }
+        }
+    }
+
+    return observance;
+}
+
+/**
+* Check whether today's date is any observance and return a string of all emojis indicating observances if any.
+*/
+const observanceEmojisToday = () => {
+    const observance = observancesToday();
+    let emojis = ``;
+    for (let i = 0; i < observance.length; ++i) {
+        emojis += observance[i][0];
+    }
+    return emojis;
+}
+
 module.exports = {
     observances,
     gmod,
     kuwaitiCalendar,
     islamicDate,
     occurrenceOfWeekDay,
+    observancesToday,
+    observanceEmojisToday
 };
