@@ -1,3 +1,5 @@
+const { log } = require('../functions/utility');
+
 function cambodianNewYearEmoji() {
     const year = new Date().getFullYear();
     const key = ((year - 4) % 12);
@@ -307,11 +309,6 @@ const observanceEmojisToday = () => {
 }
 
 module.exports = {
-    observances,
-    gmod,
-    kuwaitiCalendar,
-    islamicDate,
-    occurrenceOfWeekDay,
     observancesToday,
     observanceEmojisToday
 };
