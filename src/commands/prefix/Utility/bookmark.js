@@ -74,8 +74,8 @@ module.exports = {
                     return await message.channel.send(`that key is restricted, please try again with a different key.`);
                 } else {
                     let json = await GetBookmarks(message.client);
-                    json[key] = value;
                     if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
+                        json[key] = value;
                         await message.channel.send(`key already exists. would you like to update its value?`);
                         const filter = response => {
                             return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
@@ -91,6 +91,7 @@ module.exports = {
                         }
                         return;
                     } else { //add the new key/value
+                        json[key] = value;
                         await PutBookmarks(json, message.client);
                         return await message.reply(`bookmark has been added.`);
                     }
