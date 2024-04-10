@@ -30,11 +30,10 @@ module.exports = {
         if (!overwatch)
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache.`);
 
-        const cachedheroes = overwatch.get(`heroes`);
-        if (typeof cachedheroes === "undefined")
+        const heroes = overwatch.get(`heroes`);
+        if (typeof heroes === "undefined")
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes.`);
 
-        let heroes = JSON.parse(JSON.stringify(cachedheroes));
         const argslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
         for (const arg of argslower) { //update our remained and reserved roles before we start assigning them
             const index = roles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
