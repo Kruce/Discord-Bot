@@ -7,6 +7,8 @@ const components = require("../handlers/components");
 const reactions = require("../handlers/reactions");
 const schedule = require("../handlers/schedule");
 const overwatch = require("../handlers/overwatch");
+const bookmarks = require("../handlers/bookmarks");
+const mongoose = require("../handlers/mongoose");
 
 module.exports = class extends Client {
     collection = {
@@ -44,6 +46,9 @@ module.exports = class extends Client {
         components(this);
         schedule(this);
         overwatch(this);
+        bookmarks(this);
+
+        if (config.handler.mongodb.enabled) mongoose();
 
         await this.login(process.env.CLIENT_TOKEN || config.client.token);
 

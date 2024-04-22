@@ -1,46 +1,23 @@
-const fetch = require('node-fetch');
-const { Message, Collection } = require('discord.js');
+const { Message } = require('discord.js');
 const { log } = require('../../../functions/utility');
+const { fetch } = require('node-fetch');
 const ExtendedClient = require('../../../class/ExtendedClient');
-const basicHeaders = {
-    'Content-Type': 'application/json',
-    'ApiKey': process.env.KRUCEBLAKE_API_KEY,
-};
+const BookmarkSchema = require('../../../schemas/BookmarkSchema');
+const config = require('../../../config');
 
-const GetBookmarksApi = async function () {
-    const result = await fetch(`https://api.kruceblake.com/discordbot/getbookmarks`, {
-        headers: basicHeaders,
-    })
-    if (!result.ok) throw new Error('kruce api error: ' + (await result.text()))
-    return await result.json();
-};
+const upsertBookmark = async function (client, key, value) {
+    await BookmarkSchema.findOneAndUpdate({ key: key }, { value: value }, { upsert: true });
+    let cache = client.bookmarks.get(`cache`);
+    cache.set(key, value);
+}
 
-const PutBookmarksApi = async function (content) {
-    const result = await fetch(`https://api.kruceblake.com/discordbot/putbookmarks`, {
-        method: 'PUT',
-        body: JSON.stringify(content),
-        headers: basicHeaders,
-    })
-    if (!result.ok) throw new Error('kruce api error: ' + (await result.text()))
-    return await result.json()
-};
-
-const PutBookmarks = async function (json, client) {
-    if (!client.bookmarks) {
-        client.bookmarks = new Collection();
-    }
-    await PutBookmarksApi(json);
-    client.bookmarks.set("all", json);
-};
-
-const GetBookmarks = async function (client) {
-    if (!client.bookmarks || !client.bookmarks.get("all")) {
-        client.bookmarks = new Collection();
-        let bookmarksApi = await GetBookmarksApi();
-        client.bookmarks.set("all", bookmarksApi);
-        return bookmarksApi;
-    } else {
-        return client.bookmarks.get("all");
+const getBookmark = async function (client, key) {
+    let bookmarks = client?.bookmarks?.get(`cache`);
+    if (bookmarks)
+        return bookmarks.get(key);
+    else {
+        log(`Bookmark issue finding ${key} in cache`, "warn");
+        return await BookmarkSchema.findOne({ key: key }).lean()?.value;
     }
 };
 
@@ -59,6 +36,9 @@ module.exports = {
      * @param {string[]} args 
      */
     run: async (client, message, args) => {
+        if (!config.handler?.mongodb?.enabled) {
+            return await message.reply({ content: 'database is not ready, this command cannot be executed.' });
+        };
         const cmd = (args[0]) ? args[0].toLowerCase() : ``;
         switch (cmd) {
             case `set`: {
@@ -73,26 +53,23 @@ module.exports = {
                 } else if ([`set`, `all`].indexOf(key.toLowerCase()) > -1) {
                     return await message.channel.send(`that key is restricted, please try again with a different key.`);
                 } else {
-                    let json = await GetBookmarks(message.client);
-                    if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
-                        json[key] = value;
+                    const bookmark = await getBookmark(message.client, key);
+                    if (bookmark) {
                         await message.channel.send(`key already exists. would you like to update its value?`);
                         const filter = response => {
                             return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
                         };
-                        const collected =
-                            await message.channel.awaitMessages({ filter: filter, max: 1, time: 30000, errors: ['time'] })
-                                .catch((e) => {
-                                    log(`Bookmark had no response from user when prompted for update.`, "info");
-                                });
+                        const collected = await message.channel.awaitMessages({ filter: filter, max: 1, time: 30000, errors: ['time'] })
+                            .catch((e) => {
+                                return log(`Bookmark had no yes response from user when prompted for update.`, "info");
+                            });
                         if (collected) {
-                            await PutBookmarks(json, message.client);
+                            await upsertBookmark(client, key, value);
                             return await message.reply(`bookmark has been updated.`);
                         }
                         return;
-                    } else { //add the new key/value
-                        json[key] = value;
-                        await PutBookmarks(json, message.client);
+                    } else {
+                        await upsertBookmark(client, key, value);
                         return await message.reply(`bookmark has been added.`);
                     }
                 }
@@ -102,12 +79,11 @@ module.exports = {
             }
             default:
                 try {
-                    let json = await GetBookmarks(message.client);
-                    if (cmd in json) {
-                        return await message.channel.send(json[cmd]);
-                    } else {
-                        return await message.reply(`that key does not exist.`)
-                    }
+                    const bookmark = await getBookmark(message.client, cmd);
+                    if (bookmark)
+                        return await message.channel.send(bookmark);
+                    else
+                        return await message.reply(`that key does not exist.`);
                 } catch (error) {
                     log(`Bookmark command error while attempting to get for: ${message.guild.name} id: ${message.guild.id}. \n ${error}`, "err");
                     return await message.reply(`there was an error getting that bookmark.`);

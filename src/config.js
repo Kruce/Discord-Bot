@@ -20,12 +20,16 @@ module.exports = {
             message: false,
         },
         reactions: true,
+        mongodb: {
+            enabled: true,
+            uri: ""
+        },
     },
     users: {
         developers: [process.env.DEVELOPER_IDS],
     },
     development: { 
-        enabled: false,
+        enabled: true,
         guild: process.env.GUILD_ID,
     }, 
     messageSettings: {
