@@ -10,6 +10,7 @@
   "keywords": [],
   "dependencies": {
     "chalk": "^2.4.2",
+    "date-fns": "^4.1.0",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "node-fetch": "^2.6.1",

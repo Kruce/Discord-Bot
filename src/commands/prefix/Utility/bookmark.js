@@ -87,13 +87,13 @@ module.exports = {
                                 });
                         if (collected) {
                             await PutBookmarks(json, message.client);
-                            return await message.reply(`bookmark has been updated.`);
+                            return await message.reply(`bookmark '${key}' has been updated.`);
                         }
                         return;
                     } else { //add the new key/value
                         json[key] = value;
                         await PutBookmarks(json, message.client);
-                        return await message.reply(`bookmark has been added.`);
+                        return await message.reply(`bookmark '${key}' has been added.`);
                     }
                 }
             }
