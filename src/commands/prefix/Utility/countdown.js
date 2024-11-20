@@ -80,7 +80,7 @@ module.exports = {
                         return await message.channel.send(`Please enter a valid date/time in the format of '05/29/1453, 12:00 AM'.`);
                     let json = await GetCountdowns(message.client);
                     if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
-                        json[key] = parsedDate;
+                        json[key] = value;
                         await message.channel.send(`key already exists. would you like to update its value?`);
                         const filter = response => {
                             return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
@@ -108,7 +108,7 @@ module.exports = {
                     if (cmd in json) {
                         const todayDate = new Date();
                         const parsedDate = new Date(json[cmd]);
-                        const formattedDate = format(parsedDate, "Pp", { locale: enUS });
+                        const formattedDate = json[cmd];
                         const distance = intlFormatDistance(parsedDate, todayDate, { numeric: 'always' });
                         const distanceDays = intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' });
                         if (parsedDate < todayDate) {
