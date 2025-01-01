@@ -51,7 +51,7 @@ module.exports = {
         name: 'countdown',
         description: `Get or set a countdown value.`,
         aliases: ['cd'],
-        usage: `Enter arguments in the format of *set [countdown key] [countdown date (format: '05/29/1453, 12:00 AM')]* to set a new countdown or replace a countdown with the same key argument. Enter a countdown key argument to retrieve the countdown.`,
+        usage: `Enter arguments in the format of *set [countdown key] [countdown date (format: '05/29/1453' or '05/29/1453, 12:00 AM')]* to set a new countdown or replace a countdown with the same key argument. Enter a countdown key argument to retrieve the countdown.`,
         permissions: 'SendMessages',
         cooldown: 1
     },
@@ -75,9 +75,10 @@ module.exports = {
                 } else if ([`set`].indexOf(key.toLowerCase()) > -1) {
                     return await message.channel.send(`that key is restricted, please try again with a different key.`);
                 } else {
-                    const parsedDate = parse(value, 'Pp', new Date(), { locale: enUS });
-                    if (!isValid(parsedDate))
-                        return await message.channel.send(`Please enter a valid date/time in the format of '05/29/1453, 12:00 AM'.`);
+                    const parsedPpDate = parse(value, 'Pp', new Date(), { locale: enUS });
+                    const parsedPDate = parse(value, 'P', new Date(), { locale: enUS });
+                    if (!isValid(parsedPpDate) && !isValid(parsedPDate))
+                        return await message.channel.send(`Please enter a valid date/time in the format of '05/29/1453' or '05/29/1453, 12:00 AM' if a specific time is required.`);
                     let json = await GetCountdowns(message.client);
                     if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
                         json[key] = value;
@@ -106,12 +107,18 @@ module.exports = {
                 try {
                     let json = await GetCountdowns(message.client);
                     if (cmd in json) {
-                        const todayDate = new Date();
                         const parsedDate = new Date(json[cmd]);
+                        const todayDate = new Date();
                         const formattedDate = json[cmd];
-                        const distance = intlFormatDistance(parsedDate, todayDate, { numeric: 'always' });
+                        if (formattedDate.indexOf(`,`) == -1) { //date only, no time
+                            const hours = todayDate.getHours();
+                            const minutes = todayDate.getMinutes();
+                            const seconds = todayDate.getSeconds();
+                            parsedDate.setHours(hours, minutes, seconds);
+                        }
+                        const distance = intlFormatDistance(parsedDate, todayDate);
                         const distanceDays = intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' });
-                        if (parsedDate < todayDate) {
+                        if (!distance.includes(`now`) && parsedDate < todayDate) {
                             return await message.channel.send(`${formattedDate} was ${distance} (${distanceDays})`);
                         } 
                         if (distance.includes(`day`)) {
