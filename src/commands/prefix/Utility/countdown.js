@@ -111,10 +111,7 @@ module.exports = {
                         const todayDate = new Date();
                         const formattedDate = json[cmd];
                         if (formattedDate.indexOf(`,`) == -1) { //date only, no time
-                            const hours = todayDate.getHours();
-                            const minutes = todayDate.getMinutes();
-                            const seconds = todayDate.getSeconds();
-                            parsedDate.setHours(hours, minutes, seconds);
+                            parsedDate.setHours(todayDate.getHours(), todayDate.getMinutes(), todayDate.getSeconds());
                         }
                         const distance = intlFormatDistance(parsedDate, todayDate);
                         const distanceDays = intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' });
