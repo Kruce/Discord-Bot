@@ -109,6 +109,7 @@ module.exports = {
                     if (cmd in json) {
                         const parsedDate = new Date(json[cmd]);
                         const todayDate = new Date();
+                        todayDate.setHours(todayDate.getHours() - process.env.HOUR_OFFSET); //update hours to est for coordinated universal time
                         const formattedDate = json[cmd];
                         if (formattedDate.indexOf(`,`) == -1) { //date only, no time
                             parsedDate.setHours(todayDate.getHours(), todayDate.getMinutes(), todayDate.getSeconds());

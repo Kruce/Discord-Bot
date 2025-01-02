@@ -259,7 +259,7 @@ const occurrenceOfWeekDay = (startDate, dayOfWeek, endDate, dayOfWeekCount) => {
  */
 const observancesToday = () => {
     const date = new Date();
-    date.setHours(date.getHours() - 4); //update hours to est for coordinated universal time
+    date.setHours(date.getHours() - process.env.HOUR_OFFSET); //update hours to est for coordinated universal time
     log(`ObservancesToday function date/time requested: ${date}`, "info");
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
