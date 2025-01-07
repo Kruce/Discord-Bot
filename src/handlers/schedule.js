@@ -1,6 +1,7 @@
 const schedule = require('node-schedule-tz');
 const config = require("../config");
 const overwatch = require("../handlers/overwatch");
+const rivals = require("../handlers/rivals");
 const { log } = require('../functions/utility');
 const { observanceEmojisToday } = require('../functions/observance');
 const ExtendedClient = require('../class/ExtendedClient');
@@ -19,6 +20,7 @@ module.exports = async (client) => {
                 name = `${emojis} ${name} ${emojis}`;
             client.guilds.cache.get(process.env.GUILD_ID).setName(name);
             await overwatch(client);
+            await rivals(client);
             log(`.. Daily job has finished!`, "info");
         } catch (error) {
             log(`.. Daily job has finished with errors.\n${error}`, "err")

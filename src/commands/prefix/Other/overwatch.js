@@ -30,7 +30,7 @@ module.exports = {
         if (!overwatch)
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache.`);
 
-        const heroes = overwatch.get(`heroes`);
+        const heroes = structuredClone(overwatch.get(`heroes`));
         if (typeof heroes === "undefined")
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes.`);
 

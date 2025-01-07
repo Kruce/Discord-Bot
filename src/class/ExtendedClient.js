@@ -7,6 +7,7 @@ const components = require("../handlers/components");
 const reactions = require("../handlers/reactions");
 const schedule = require("../handlers/schedule");
 const overwatch = require("../handlers/overwatch");
+const rivals = require("../handlers/rivals");
 
 module.exports = class extends Client {
     collection = {
@@ -44,6 +45,7 @@ module.exports = class extends Client {
         components(this);
         schedule(this);
         overwatch(this);
+        rivals(this);
 
         await this.login(process.env.CLIENT_TOKEN || config.client.token);
 
