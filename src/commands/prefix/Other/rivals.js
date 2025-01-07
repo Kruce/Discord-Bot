@@ -27,7 +27,7 @@ module.exports = {
         const rivals = message.client.rivals;
         if (!rivals)
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache. there is no marvels api, therefore data for this command is scraped directly from the marvel rivals web page. if changes were made to the web page, this scrape may need to be updated to reflect them.`);
-
+        
         const heroes = structuredClone(rivals.get(`heroes`));
         if (typeof heroes === "undefined")
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes. there is no marvels api, therefore data for this command is scraped directly from the marvel rivals web page. if changes were made to the web page, this scrape may need to be updated to reflect them.`);
@@ -35,7 +35,7 @@ module.exports = {
         let roles = Object.keys(heroes);
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
         const argslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
-        for (const arg of argslower) { //update our remained and reserved roles before we start assigning them
+        for (const arg of argslower) { //update our reserved roles before we start assigning them
             if (roles.includes(arg)) { //if it exists, remove it from remained roles and add it to reserved roles
                 reservedroles.push(arg);
             }
@@ -48,9 +48,10 @@ module.exports = {
             }
             const arg = argslower.shift();
             const embed = new EmbedBuilder().setColor("fadb29");
-            if (reservedroles.splice(reservedroles.findIndex(x => x == arg), 1)?.length) { //if the message is a role and there's still roles of that type left to use
-                const hero = heroes[arg].shift();
-                embed.setDescription(`${arg}\n${hero[0]}`) //arg is a rivals role here
+            const reserveRoleIndex = reservedroles.findIndex(x => x == arg);
+            if (reserveRoleIndex != -1) { //arg is a rivals role here
+                const hero = heroes[reservedroles.splice(reserveRoleIndex, 1)].shift();
+                embed.setDescription(`${arg}\n${hero[0]}`)
                 embed.setThumbnail(hero[1])
             } else {
                 roles = shuffleArray(roles);

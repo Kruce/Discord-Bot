@@ -26,6 +26,17 @@ module.exports = {
         }
 
         let reservedroles = []; //if they are just requesting a hero change, the role gets reserved
+        const argslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
+        for (const arg of argslower) { //update our remained and reserved roles before we start assigning them
+            const index = roles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
+            if (reservedroles.includes(arg) && index == -1) {
+                return await message.channel.send(`${message.author}, you can only assign the ${arg} role ${reservedroles.filter(role => role.includes(arg)).length} times per team.`);
+            }
+            if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
+                reservedroles.push(roles.splice(index, 1)[0]);
+            }
+        }
+
         const overwatch = message.client.overwatch;
         if (!overwatch)
             return await message.channel.send(`${message.author}, there is an issue retrieving heroes from the cache.`);
@@ -34,14 +45,6 @@ module.exports = {
         if (typeof heroes === "undefined")
             return await message.channel.send(`${message.author}, there is an issue with the cached heroes.`);
 
-        const argslower = args.map(v => v.toLowerCase()); //convert all user input to lower case to help match any roles
-        for (const arg of argslower) { //update our remained and reserved roles before we start assigning them
-            const index = roles.indexOf(arg); //check if the current word is equal to a role and there are any remaining
-            if (index > -1) { //if it exists, remove it from remained roles and add it to reserved roles
-                reservedroles.push(roles.splice(index, 1)[0]);
-            }
-        }
-
         let embeds = [];
         while (argslower.length > 0) {
             for (let [key, value] of Object.entries(heroes)) { //shuffling roles and heroes inside while loop instead of outside for extra randomness
@@ -49,9 +52,10 @@ module.exports = {
             }
             const arg = argslower.shift();
             const embed = new EmbedBuilder().setColor("f06414");
-            if (reservedroles.splice(reservedroles.findIndex(x => x == arg), 1)?.length) { //if the message is a role and there's still roles of that type left to use
-                const hero = heroes[arg].shift();
-                embed.setDescription(`${arg}\n${hero[0]}`) //arg is an ow role here
+            const reserveRoleIndex = reservedroles.findIndex(x => x == arg);
+            if (reserveRoleIndex != -1) { //arg is an ow role here
+                const hero = heroes[reservedroles.splice(reserveRoleIndex, 1)].shift();
+                embed.setDescription(`${arg}\n${hero[0]}`) 
                 embed.setThumbnail(hero[1])
             } else {
                 roles = shuffleArray(roles);
