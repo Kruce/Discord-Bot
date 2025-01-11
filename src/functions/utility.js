@@ -79,11 +79,23 @@ const decimalString = (number) => {
     return (commaString(Number(numb).toFixed(len)));
 }
 
+/**
+ * Get the current date/time minus the given hours.
+ * @param {number} hours amount of hours to subtract from the current server time 
+ * @returns {Date}
+ */
+const dateTimeNowOffset = (hours) => {
+    const date = new Date();
+    date.setHours(date.getHours() - hours);
+    return date;
+};
+
 module.exports = {
     log,
     time,
     isSnowflake,
     shuffleArray,
     commaString,
-    decimalString
+    decimalString,
+    dateTimeNowOffset
 };

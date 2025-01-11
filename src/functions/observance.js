@@ -1,4 +1,4 @@
-const { log } = require('../functions/utility');
+const { log, dateTimeNowOffset } = require('../functions/utility');
 
 function cambodianNewYearEmoji() {
     const year = new Date().getFullYear();
@@ -258,8 +258,7 @@ const occurrenceOfWeekDay = (startDate, dayOfWeek, endDate, dayOfWeekCount) => {
  * Check whether today's date is any observance and return an observance array indicating observances as [`observance emoji`, `observance name`, `observance link`].
  */
 const observancesToday = () => {
-    const date = new Date();
-    date.setHours(date.getHours() - process.env.HOUR_OFFSET); //update hours to est for coordinated universal time
+    const date = dateTimeNowOffset(process.env.HOUR_OFFSET); //update hours to est from server time
     log(`ObservancesToday function date/time requested: ${date}`, "info");
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();
