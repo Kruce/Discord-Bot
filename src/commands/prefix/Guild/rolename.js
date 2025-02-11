@@ -23,12 +23,14 @@ module.exports = {
             name = name.replace(r, '');
         });
 
+        const serverBooster = message.guild.roles.premiumSubscriberRole;
+        const everyone = message.guild.roles.everyone;
         if (name.length < 1 || name.length > 30)
             return await message.channel.send(`role name must be at least 1 to 30 characters only.`);
-        if ([`everyone`, `discordtag`, `here`, `server booster`].indexOf(name.toLowerCase()) > -1)
+        if ([everyone.name.toLowerCase(), `discordtag`, `here`, serverBooster.name.toLowerCase()].indexOf(name.toLowerCase()) > -1)
             return await message.channel.send(`that name is restricted, please choose another name.`);
 
-        const restrictedRoleIds = [`232319112141996032`, `674393490423021568`]; //`everyone` and `Server Booster` roles are restricted from role name change
+        const restrictedRoleIds = [everyone.id, serverBooster.id]; //`everyone` and `Server Booster` roles are restricted from role name change
         const role = message.member.roles.cache.filter(r => !restrictedRoleIds.includes(r.id)).first(); //filter out restricted roles and set the role to the only one (users have one role)
         if (role) { //if a role exists, change role name as expected, otherwise create a new role with role name
             try {
