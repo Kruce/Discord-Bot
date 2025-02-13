@@ -1,51 +1,53 @@
 const { log, dateTimeNowOffset } = require('../functions/utility');
 
-function cambodianNewYearEmoji() {
-    const year = new Date().getFullYear();
-    const key = ((year - 4) % 12);
-    const emojis = [`🐀`, `🐂`, `🐅`, `🐇`, `🐉`, `🐍`, `🐎`, `🐐`, `🐒`, `🐓`, `🐕`, `🐖`];
-    return emojis[key];
+const getEmoji = (name, emojis) => {
+    if (name === `Cambodian new year begins`)
+        return emojis[(new Date().getFullYear() - 4) % 12];
+    else
+        return emojis[Math.floor(Math.random() * emojis.length)];
 }
 
 // type: 0 keys are gregorian observances formatted as "month (using zero based), occurrence (or week), day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence and zero starts sunday for day of week
 // type: 1 keys are gregorian observances formatted as "month (using zero based), day of the month" 
 // type: 2 keys are islamic observances formatted as "day, islamic month"
 const observances = [
-    { type: 0, key: "0,3,1", values: [[`☮️`, `Martin Luther King Jr. day`, `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`]] },
-    { type: 0, key: "1,3,1", values: [[`🎩`, `President's day`, `https://en.wikipedia.org/wiki/Washington%27s_Birthday`]] },
-    { type: 0, key: "2,2,0", values: [[`🌞`, `Daylight savings time begins`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`]] },
-    { type: 0, key: "4,-1,1", values: [[`🎖️`, `Memorial day`, `https://en.wikipedia.org/wiki/Memorial_Day`]] },
-    { type: 0, key: "8,1,1", values: [[`🔨`, `Labor day`, `https://en.wikipedia.org/wiki/Labor_Day`]] },
-    { type: 0, key: "9,2,1", values: [
-        [`🍁`, `Thanksgiving (Canada)`, `https://en.wikipedia.org/wiki/Thanksgiving_(Canada)`],
-        [`🌄`, `Indigenous Peoples' Day`, `https://en.wikipedia.org/wiki/Indigenous_Peoples%27_Day_(United_States)`]
-    ] },
-    { type: 0, key: "10,1,0", values: [[`🌝`, `Daylight savings time ends`, `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`]] },
-    { type: 0, key: "10,4,4", values: [[`🦃`, `Thanksgiving`, `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`]] },
-    { type: 1, key: "0,1", values: [[`🎉`, `New years day`, `https://en.wikipedia.org/wiki/New_Year%27s_Day`]] },
-    { type: 1, key: "1,1", values: [[`🙌🏿`, `Black history month begins`, `https://en.wikipedia.org/wiki/Black_History_Month`]] },
-    { type: 1, key: "1,2", values: [[`🐿️`, `Groundhog day`, `https://en.wikipedia.org/wiki/Groundhog_Day`]] },
-    { type: 1, key: "1,14", values: [[`💘`, `Valentine's day`, `https://en.wikipedia.org/wiki/Valentine%27s_Day`]] },
-    { type: 1, key: "2,17", values: [[`☘️`, `St. Patrick's day`, `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`]] },
-    { type: 1, key: "2,30", values: [[`🌱`, `Land day`, `https://en.wikipedia.org/wiki/Land_Day`]] },
-    { type: 1, key: "3,13", values: [[cambodianNewYearEmoji(), `Cambodian new year begins`, `https://en.wikipedia.org/wiki/Cambodian_New_Year`]] },
-    { type: 1, key: "3,22", values: [[`🌎`, `Earth day`, `https://en.wikipedia.org/wiki/Earth_Day`]] },
-    { type: 1, key: "3,24", values: [[`🇦🇲`, `Armenian genocide rememberence day`, `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`]] },
-    { type: 1, key: "4,5", values: [[`💃`, `Cinco de mayo`, `https://en.wikipedia.org/wiki/Cinco_de_Mayo`]] },
-    { type: 1, key: "4,15", values: [[`🇵🇸`, `Nakba day`, `https://en.wikipedia.org/wiki/Nakba_Day`]] },
-    { type: 1, key: "5,1", values: [[`🏳️‍🌈`, `Pride month begins`, `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`]] },
-    { type: 1, key: "5,19", values: [[`✊🏿`, `Juneteenth`, `https://en.wikipedia.org/wiki/Juneteenth`]] },
-    { type: 1, key: "6,1", values: [[`🇨🇦`, `Canada day`, `https://en.wikipedia.org/wiki/Canada_Day`]] },
-    { type: 1, key: "6,4", values: [[`🎆`, `Independence day (United States)`, `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`]] },
-    { type: 1, key: "7,26", values: [[`💪`, `Women's equality day`, `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`]] },
-    { type: 1, key: "9,31", values: [[`🎃`, `Halloween`, `https://en.wikipedia.org/wiki/Halloween`]] },
-    { type: 1, key: "11,25", values: [[`🎄`, `Christmas`, `https://en.wikipedia.org/wiki/Christmas`]] },
-    { type: 1, key: "11,26", values: [[`🕯️`, `Kwanzaa begins`, `https://en.wikipedia.org/wiki/Kwanzaa`]] },
-    { type: 2, key: "1 Muharram", values: [[`☪️`, `Islamic new year`, `https://en.wikipedia.org/wiki/Islamic_New_Year`]] },
-    { type: 2, key: "12 Rabi'ul Awwal", values: [[`🎂`, `Mawlid`, `https://en.wikipedia.org/wiki/Mawlid`]] },
-    { type: 2, key: "1 Ramadan", values: [[`🌙`, `Ramadan begins`, `https://en.wikipedia.org/wiki/Ramadan`]] },
-    { type: 2, key: "1 Shawwal", values: [[`😋`, `Eid Al-Fitr`, `https://en.wikipedia.org/wiki/Eid_al-Fitr`]] },
-    { type: 2, key: "10 Dhul Hijja", values: [[`🐑`, `Eid Al-Adha begins`, `https://en.wikipedia.org/wiki/Eid_al-Adha`]] }
+    { type: 0, key: "0,3,1", values: [{ name: `Martin Luther King Jr. day`, link: `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`, emojis: [`☮️`] }] },
+    { type: 0, key: "1,3,1", values: [{ name: `President's day`, link: `https://en.wikipedia.org/wiki/Washington%27s_Birthday`, emojis: [`🎩`] }] },
+    { type: 0, key: "2,2,0", values: [{ name: `Daylight savings time begins`, link: `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`, emojis: [`🌞`, `🌻`] }] },
+    { type: 0, key: "4,-1,1", values: [{ name: `Memorial day`, link: `https://en.wikipedia.org/wiki/Memorial_Day`, emojis: [`🎖️`, `🪖`] }] },
+    { type: 0, key: "8,1,1", values: [{ name: `Labor day`, link: `https://en.wikipedia.org/wiki/Labor_Day`, emojis: [`🔨`, `🛠`] }] },
+    {
+        type: 0, key: "9,2,1", values: [
+            { name: `Thanksgiving (Canada)`, link: `https://en.wikipedia.org/wiki/Thanksgiving_(Canada)`, emojis: [`🍁`] },
+            { name: `Indigenous Peoples' Day`, link: `https://en.wikipedia.org/wiki/Indigenous_Peoples%27_Day_(United_States)`, emojis: [`🌄`] }
+        ]
+    },
+    { type: 0, key: "10,1,0", values: [{ name: `Daylight savings time ends`, link: `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`, emojis: [`🌝`] }] },
+    { type: 0, key: "10,4,4", values: [{ name: `Thanksgiving`, link: `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`, emojis: [`🦃`, `🌽`, `🌰`, `🍗`, `🍂`, `🥧`] }] },
+    { type: 1, key: "0,1", values: [{ name: `New years day`, link: `https://en.wikipedia.org/wiki/New_Year%27s_Day`, emojis: [`🎉`, `🍾`, `🎆`, `🎊`, `🥂`] }] },
+    { type: 1, key: "1,1", values: [{ name: `Black history month begins`, link: `https://en.wikipedia.org/wiki/Black_History_Month`, emojis: [`🙌🏿`] }] },
+    { type: 1, key: "1,2", values: [{ name: `Groundhog day`, link: `https://en.wikipedia.org/wiki/Groundhog_Day`, emojis: [`🐿️`] }] },
+    { type: 1, key: "1,14", values: [{ name: `Valentine's day`, link: `https://en.wikipedia.org/wiki/Valentine%27s_Day`, emojis: [`💘`, `💋`, `🌹`, `💕`, `💝`] }] },
+    { type: 1, key: "2,17", values: [{ name: `St. Patrick's day`, link: `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`, emojis: [`☘️`, `🍻`, `🍀`, `🍺`] }] },
+    { type: 1, key: "2,30", values: [{ name: `Land day`, link: `https://en.wikipedia.org/wiki/Land_Day`, emojis: [`🌱`] }] },
+    { type: 1, key: "3,13", values: [{ name: `Cambodian new year begins`, link: `https://en.wikipedia.org/wiki/Cambodian_New_Year`, emojis: [`🐀`, `🐂`, `🐅`, `🐇`, `🐉`, `🐍`, `🐎`, `🐐`, `🐒`, `🐓`, `🐕`, `🐖`] }] },
+    { type: 1, key: "3,22", values: [{ name: `Earth day`, link: `https://en.wikipedia.org/wiki/Earth_Day`, emojis: [`🌎`, `🌍`, `🌏`, `🗺️`] }] },
+    { type: 1, key: "3,24", values: [{ name: `Armenian genocide rememberence day`, link: `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`, emojis: [`🇦🇲`] }] },
+    { type: 1, key: "4,5", values: [{ name: `Cinco de mayo`, link: `https://en.wikipedia.org/wiki/Cinco_de_Mayo`, emojis: [`💃`, `🇲🇽`, `🪅`] }] },
+    { type: 1, key: "4,15", values: [{ name: `Nakba day`, link: `https://en.wikipedia.org/wiki/Nakba_Day`, emojis: [`🇵🇸`] }] },
+    { type: 1, key: "5,1", values: [{ name: `Pride month begins`, link: `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`, emojis: [`🏳️‍🌈`, `🌈`] }] },
+    { type: 1, key: "5,19", values: [{ name: `Juneteenth`, link: `https://en.wikipedia.org/wiki/Juneteenth`, emojis: [`✊🏿`, `⛓️‍💥`] }] },
+    { type: 1, key: "6,1", values: [{ name: `Canada day`, link: `https://en.wikipedia.org/wiki/Canada_Day`, emojis: [`🇨🇦`] }] },
+    { type: 1, key: "6,4", values: [{ name: `Independence day (United States)`, link: `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`, emojis: [`🎆`, `🎇`, `🇺🇸`, `🗽`, `🦅`] }] },
+    { type: 1, key: "7,26", values: [{ name: `Women's equality day`, link: `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`, emojis: [`💪`, `♀️`] }] },
+    { type: 1, key: "9,31", values: [{ name: `Halloween`, link: `https://en.wikipedia.org/wiki/Halloween`, emojis: [`🎃`, `👻`, `💀`, `🦇`, `🍬`, `🕷️`] }] },
+    { type: 1, key: "11,25", values: [{ name: `Christmas`, link: `https://en.wikipedia.org/wiki/Christmas`, emojis: [`🎅`, `🎄`, `🤶`, `🎁`, `⛄`, `☃️`] }] },
+    { type: 1, key: "11,26", values: [{ name: `Kwanzaa begins`, link: `https://en.wikipedia.org/wiki/Kwanzaa`, emojis: [`🕯️`] }] },
+    { type: 2, key: "1 Muharram", values: [{ name: `Islamic new year`, link: `https://en.wikipedia.org/wiki/Islamic_New_Year`, emojis: [`☪️`] }] },
+    { type: 2, key: "12 Rabi'ul Awwal", values: [{ name: `Mawlid`, link: `https://en.wikipedia.org/wiki/Mawlid`, emojis: [`🎂`] }] },
+    { type: 2, key: "1 Ramadan", values: [{ name: `Ramadan begins`, link: `https://en.wikipedia.org/wiki/Ramadan`, emojis: [`🌙`, `🕌`] }] },
+    { type: 2, key: "1 Shawwal", values: [{ name: `Eid Al-Fitr`, link: `https://en.wikipedia.org/wiki/Eid_al-Fitr`, emojis: [`😋`] }] },
+    { type: 2, key: "10 Dhul Hijja", values: [{ name: `Eid Al-Adha begins`, link: `https://en.wikipedia.org/wiki/Eid_al-Adha`, emojis: [`🐑`] }] }
 ];
 
 const gmod = (n, m) => {
@@ -175,7 +177,7 @@ const observancesToday = () => {
     const totalOccurrence = occurrenceOfWeekDay(1, firstDayOfWeek, lastDayOfMonth, currentDayOfWeek); //get total occurrence of the current date's day from the 1st in the entire month 
 
     let observancesToday = []; //create new observance array and add all observance emojis if they exist in our predefined arrays
-    
+
     let keys = [
         { type: 0, key: `${currentMonth},${occurrence},${currentDayOfWeek}` },
         { type: 1, key: `${currentMonth},${currentDayOfMonth}` },
@@ -183,14 +185,15 @@ const observancesToday = () => {
     ];
 
     //if today is the last occurence of this day in the month, check for those observances using -1 that was described in the observances multidimensional array above
-    if (occurrence == totalOccurrence) 
-        keys.push({ type: 0, key: `${currentMonth},-1,${currentDayOfWeek}`});
+    if (occurrence == totalOccurrence)
+        keys.push({ type: 0, key: `${currentMonth},-1,${currentDayOfWeek}` });
 
     for (let i = 0; i < keys.length; ++i) {
         const values = observances.find(o => o.type == keys[i].type && o.key === keys[i].key)?.values;
         if (values !== undefined) {
             for (let x = 0; x < values.length; ++x) {
-                observancesToday.push(values[x]);
+                const observance = values[x];
+                observancesToday.push({ name: observance.name, link: observance.link, emoji: getEmoji(observance.name, observance.emojis) });
             }
         }
     }
@@ -205,7 +208,7 @@ const observanceEmojisToday = () => {
     const observance = observancesToday();
     let emojis = ``;
     for (let i = 0; i < observance.length; ++i) {
-        emojis += observance[i][0];
+        emojis += observance[i].emoji;
     }
     return emojis;
 }
