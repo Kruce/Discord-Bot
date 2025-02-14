@@ -1,54 +1,57 @@
 const { log, dateTimeNowOffset } = require('../functions/utility');
 
-const getEmoji = (name, emojis) => {
-    if (name === `Cambodian new year begins`)
-        return emojis[(new Date().getFullYear() - 4) % 12];
-    else
-        return emojis[Math.floor(Math.random() * emojis.length)];
-}
-
 // type: 0 keys are gregorian observances formatted as "month (using zero based), occurrence (or week), day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence and zero starts sunday for day of week
 // type: 1 keys are gregorian observances formatted as "month (using zero based), day of the month" 
 // type: 2 keys are islamic observances formatted as "day, islamic month"
+// type: 3 keys are dates that need to be calculated first and returned as .toDateString()
 const observances = [
-    { type: 0, key: "0,3,1", values: [{ name: `Martin Luther King Jr. day`, link: `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`, emojis: [`☮️`] }] },
-    { type: 0, key: "1,3,1", values: [{ name: `President's day`, link: `https://en.wikipedia.org/wiki/Washington%27s_Birthday`, emojis: [`🎩`] }] },
-    { type: 0, key: "2,2,0", values: [{ name: `Daylight savings time begins`, link: `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`, emojis: [`🌞`, `🌻`] }] },
-    { type: 0, key: "4,-1,1", values: [{ name: `Memorial day`, link: `https://en.wikipedia.org/wiki/Memorial_Day`, emojis: [`🎖️`, `🪖`] }] },
-    { type: 0, key: "8,1,1", values: [{ name: `Labor day`, link: `https://en.wikipedia.org/wiki/Labor_Day`, emojis: [`🔨`, `🛠`] }] },
+    { type: 0, key: function () { return "0,3,1"; }, values: [{ name: `Martin Luther King Jr. day`, link: `https://en.wikipedia.org/wiki/Martin_Luther_King_Jr._Day`, emojis: function () { return getEmoji([`☮️`]) } }] },
+    { type: 0, key: function () { return "1,3,1"; }, values: [{ name: `President's day`, link: `https://en.wikipedia.org/wiki/Washington%27s_Birthday`, emojis: function () { return getEmoji([`🎩`]) } }] },
+    { type: 0, key: function () { return "2,2,0"; }, values: [{ name: `Daylight savings time begins`, link: `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`, emojis: function () { return getEmoji([`🌞`, `🌻`]) } }] },
+    { type: 0, key: function () { return "4,-1,1"; }, values: [{ name: `Memorial day`, link: `https://en.wikipedia.org/wiki/Memorial_Day`, emojis: function () { return getEmoji([`🎖️`, `🪖`]) } }] },
+    { type: 0, key: function () { return "8,1,1"; }, values: [{ name: `Labor day`, link: `https://en.wikipedia.org/wiki/Labor_Day`, emojis: function () { return getEmoji([`🔨`, `🛠`]) } }] },
     {
-        type: 0, key: "9,2,1", values: [
-            { name: `Thanksgiving (Canada)`, link: `https://en.wikipedia.org/wiki/Thanksgiving_(Canada)`, emojis: [`🍁`] },
-            { name: `Indigenous Peoples' Day`, link: `https://en.wikipedia.org/wiki/Indigenous_Peoples%27_Day_(United_States)`, emojis: [`🌄`] }
+        type: 0, key: function () { return "9,2,1"; }, values: [
+            { name: `Thanksgiving (Canada)`, link: `https://en.wikipedia.org/wiki/Thanksgiving_(Canada)`, emojis: function () { return getEmoji([`🍁`]) } },
+            { name: `Indigenous Peoples' Day`, link: `https://en.wikipedia.org/wiki/Indigenous_Peoples%27_Day_(United_States)`, emojis: function () { return getEmoji([`🌄`]) } }
         ]
     },
-    { type: 0, key: "10,1,0", values: [{ name: `Daylight savings time ends`, link: `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`, emojis: [`🌝`] }] },
-    { type: 0, key: "10,4,4", values: [{ name: `Thanksgiving`, link: `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`, emojis: [`🦃`, `🌽`, `🌰`, `🍗`, `🍂`, `🥧`] }] },
-    { type: 1, key: "0,1", values: [{ name: `New years day`, link: `https://en.wikipedia.org/wiki/New_Year%27s_Day`, emojis: [`🎉`, `🍾`, `🎆`, `🎊`, `🥂`] }] },
-    { type: 1, key: "1,1", values: [{ name: `Black history month begins`, link: `https://en.wikipedia.org/wiki/Black_History_Month`, emojis: [`🙌🏿`] }] },
-    { type: 1, key: "1,2", values: [{ name: `Groundhog day`, link: `https://en.wikipedia.org/wiki/Groundhog_Day`, emojis: [`🐿️`] }] },
-    { type: 1, key: "1,14", values: [{ name: `Valentine's day`, link: `https://en.wikipedia.org/wiki/Valentine%27s_Day`, emojis: [`💘`, `💋`, `🌹`, `💕`, `💝`] }] },
-    { type: 1, key: "2,17", values: [{ name: `St. Patrick's day`, link: `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`, emojis: [`☘️`, `🍻`, `🍀`, `🍺`] }] },
-    { type: 1, key: "2,30", values: [{ name: `Land day`, link: `https://en.wikipedia.org/wiki/Land_Day`, emojis: [`🌱`] }] },
-    { type: 1, key: "3,13", values: [{ name: `Cambodian new year begins`, link: `https://en.wikipedia.org/wiki/Cambodian_New_Year`, emojis: [`🐀`, `🐂`, `🐅`, `🐇`, `🐉`, `🐍`, `🐎`, `🐐`, `🐒`, `🐓`, `🐕`, `🐖`] }] },
-    { type: 1, key: "3,22", values: [{ name: `Earth day`, link: `https://en.wikipedia.org/wiki/Earth_Day`, emojis: [`🌎`, `🌍`, `🌏`, `🗺️`] }] },
-    { type: 1, key: "3,24", values: [{ name: `Armenian genocide rememberence day`, link: `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`, emojis: [`🇦🇲`] }] },
-    { type: 1, key: "4,5", values: [{ name: `Cinco de mayo`, link: `https://en.wikipedia.org/wiki/Cinco_de_Mayo`, emojis: [`💃`, `🇲🇽`, `🪅`] }] },
-    { type: 1, key: "4,15", values: [{ name: `Nakba day`, link: `https://en.wikipedia.org/wiki/Nakba_Day`, emojis: [`🇵🇸`] }] },
-    { type: 1, key: "5,1", values: [{ name: `Pride month begins`, link: `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`, emojis: [`🏳️‍🌈`, `🌈`] }] },
-    { type: 1, key: "5,19", values: [{ name: `Juneteenth`, link: `https://en.wikipedia.org/wiki/Juneteenth`, emojis: [`✊🏿`, `⛓️‍💥`] }] },
-    { type: 1, key: "6,1", values: [{ name: `Canada day`, link: `https://en.wikipedia.org/wiki/Canada_Day`, emojis: [`🇨🇦`] }] },
-    { type: 1, key: "6,4", values: [{ name: `Independence day (United States)`, link: `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`, emojis: [`🎆`, `🎇`, `🇺🇸`, `🗽`, `🦅`] }] },
-    { type: 1, key: "7,26", values: [{ name: `Women's equality day`, link: `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`, emojis: [`💪`, `♀️`] }] },
-    { type: 1, key: "9,31", values: [{ name: `Halloween`, link: `https://en.wikipedia.org/wiki/Halloween`, emojis: [`🎃`, `👻`, `💀`, `🦇`, `🍬`, `🕷️`] }] },
-    { type: 1, key: "11,25", values: [{ name: `Christmas`, link: `https://en.wikipedia.org/wiki/Christmas`, emojis: [`🎅`, `🎄`, `🤶`, `🎁`, `⛄`, `☃️`] }] },
-    { type: 1, key: "11,26", values: [{ name: `Kwanzaa begins`, link: `https://en.wikipedia.org/wiki/Kwanzaa`, emojis: [`🕯️`] }] },
-    { type: 2, key: "1 Muharram", values: [{ name: `Islamic new year`, link: `https://en.wikipedia.org/wiki/Islamic_New_Year`, emojis: [`☪️`] }] },
-    { type: 2, key: "12 Rabi'ul Awwal", values: [{ name: `Mawlid`, link: `https://en.wikipedia.org/wiki/Mawlid`, emojis: [`🎂`] }] },
-    { type: 2, key: "1 Ramadan", values: [{ name: `Ramadan begins`, link: `https://en.wikipedia.org/wiki/Ramadan`, emojis: [`🌙`, `🕌`] }] },
-    { type: 2, key: "1 Shawwal", values: [{ name: `Eid Al-Fitr`, link: `https://en.wikipedia.org/wiki/Eid_al-Fitr`, emojis: [`😋`] }] },
-    { type: 2, key: "10 Dhul Hijja", values: [{ name: `Eid Al-Adha begins`, link: `https://en.wikipedia.org/wiki/Eid_al-Adha`, emojis: [`🐑`] }] }
+    { type: 0, key: function () { return "10,1,0"; }, values: [{ name: `Daylight savings time ends`, link: `https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States`, emojis: function () { return getEmoji([`🌝`, `🍂`]) } }] },
+    { type: 0, key: function () { return "10,4,4"; }, values: [{ name: `Thanksgiving`, link: `https://en.wikipedia.org/wiki/Thanksgiving_(United_States)`, emojis: function () { return getEmoji([`🦃`, `🌽`, `🌰`, `🍗`, `🥧`]) } }] },
+    { type: 1, key: function () { return "0,1"; }, values: [{ name: `New years day`, link: `https://en.wikipedia.org/wiki/New_Year%27s_Day`, emojis: function () { return getEmoji([`🎉`, `🍾`, `🎆`, `🎊`, `🥂`]) } }] },
+    { type: 1, key: function () { return "1,1"; }, values: [{ name: `Black history month begins`, link: `https://en.wikipedia.org/wiki/Black_History_Month`, emojis: function () { return getEmoji([`🙌🏿`, `🙌🏾`]) } }] },
+    { type: 1, key: function () { return "1,2"; }, values: [{ name: `Groundhog day`, link: `https://en.wikipedia.org/wiki/Groundhog_Day`, emojis: function () { return getEmoji([`🐿️`]) } }] },
+    { type: 1, key: function () { return "1,14"; }, values: [{ name: `Valentine's day`, link: `https://en.wikipedia.org/wiki/Valentine%27s_Day`, emojis: function () { return getEmoji([`💘`, `💋`, `🌹`, `💕`, `💝`]) } }] },
+    { type: 1, key: function () { return "2,17"; }, values: [{ name: `St. Patrick's day`, link: `https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day`, emojis: function () { return getEmoji([`☘️`, `🍻`, `🍀`, `🍺`]) } }] },
+    { type: 1, key: function () { return "2,30"; }, values: [{ name: `Land day`, link: `https://en.wikipedia.org/wiki/Land_Day`, emojis: function () { return getEmoji([`🌱`]) } }] },
+    { type: 1, key: function () { return "3,13"; }, values: [{ name: `Cambodian new year begins`, link: `https://en.wikipedia.org/wiki/Cambodian_New_Year`, emojis: function () { return getKhmerOrChineseZodiacAnimalEmoji() } }] },
+    { type: 1, key: function () { return "3,22"; }, values: [{ name: `Earth day`, link: `https://en.wikipedia.org/wiki/Earth_Day`, emojis: function () { return getEmoji([`🌎`, `🌍`, `🌏`, `🗺️`]) } }] },
+    { type: 1, key: function () { return "3,24"; }, values: [{ name: `Armenian genocide rememberence day`, link: `https://en.wikipedia.org/wiki/Armenian_Genocide_Remembrance_Day`, emojis: function () { return getEmoji([`🇦🇲`]) } }] },
+    { type: 1, key: function () { return "4,5"; }, values: [{ name: `Cinco de mayo`, link: `https://en.wikipedia.org/wiki/Cinco_de_Mayo`, emojis: function () { return getEmoji([`💃`, `🇲🇽`, `🪅`]) } }] },
+    { type: 1, key: function () { return "4,15"; }, values: [{ name: `Nakba day`, link: `https://en.wikipedia.org/wiki/Nakba_Day`, emojis: function () { return getEmoji([`🇵🇸`]) } }] },
+    { type: 1, key: function () { return "5,1"; }, values: [{ name: `Pride month begins`, link: `https://en.wikipedia.org/wiki/Gay_pride#LGBT_Pride_Month`, emojis: function () { return getEmoji([`🏳️‍🌈`, `🌈`]) } }] },
+    { type: 1, key: function () { return "5,19"; }, values: [{ name: `Juneteenth`, link: `https://en.wikipedia.org/wiki/Juneteenth`, emojis: function () { return getEmoji([`✊🏿`, `⛓️‍💥`]) } }] },
+    { type: 1, key: function () { return "6,1"; }, values: [{ name: `Canada day`, link: `https://en.wikipedia.org/wiki/Canada_Day`, emojis: function () { return getEmoji([`🇨🇦`]) } }] },
+    { type: 1, key: function () { return "6,4"; }, values: [{ name: `Independence day (United States)`, link: `https://en.wikipedia.org/wiki/Independence_Day_(United_States)`, emojis: function () { return getEmoji([`🎆`, `🎇`, `🇺🇸`, `🗽`, `🦅`]) } }] },
+    { type: 1, key: function () { return "7,26"; }, values: [{ name: `Women's equality day`, link: `https://en.wikipedia.org/wiki/Women%27s_Equality_Day`, emojis: function () { return getEmoji([`💪`, `♀️`]) } }] },
+    { type: 1, key: function () { return "9,31"; }, values: [{ name: `Halloween`, link: `https://en.wikipedia.org/wiki/Halloween`, emojis: function () { return getEmoji([`🎃`, `👻`, `💀`, `🦇`, `🍬`, `🕷️`]) } }] },
+    { type: 1, key: function () { return "11,25"; }, values: [{ name: `Christmas`, link: `https://en.wikipedia.org/wiki/Christmas`, emojis: function () { return getEmoji([`🎅`, `🎄`, `🤶`, `🎁`, `⛄`, `☃️`]) } }] },
+    { type: 1, key: function () { return "11,26"; }, values: [{ name: `Kwanzaa begins`, link: `https://en.wikipedia.org/wiki/Kwanzaa`, emojis: function () { return getEmoji([`🕯️`]) } }] },
+    { type: 2, key: function () { return "1 Muharram"; }, values: [{ name: `Islamic new year`, link: `https://en.wikipedia.org/wiki/Islamic_New_Year`, emojis: function () { return getEmoji([`☪️`]) } }] },
+    { type: 2, key: function () { return "12 Rabi'ul Awwal"; }, values: [{ name: `Mawlid`, link: `https://en.wikipedia.org/wiki/Mawlid`, emojis: function () { return getEmoji([`🎂`]) } }] },
+    { type: 2, key: function () { return "1 Ramadan"; }, values: [{ name: `Ramadan begins`, link: `https://en.wikipedia.org/wiki/Ramadan`, emojis: function () { return getEmoji([`🌙`, `🕌`]) } }] },
+    { type: 2, key: function () { return "1 Shawwal"; }, values: [{ name: `Eid Al-Fitr`, link: `https://en.wikipedia.org/wiki/Eid_al-Fitr`, emojis: function () { return getEmoji([`😋`]) } }] },
+    { type: 2, key: function () { return "10 Dhul Hijja"; }, values: [{ name: `Eid Al-Adha begins`, link: `https://en.wikipedia.org/wiki/Eid_al-Adha`, emojis: function () { return getEmoji([`🐑`]) } }] },
+    { type: 3, key: function () { return getLunarNewYear(); }, values: [{ name: `Lunar New Year begins`, link: `https://en.wikipedia.org/wiki/Lunar_New_Year`, emojis: function () { return `🧧${getKhmerOrChineseZodiacAnimalEmoji()}`; } }] }
 ];
+
+const getKhmerOrChineseZodiacAnimalEmoji = () => {
+    return [`🐀`, `🐂`, `🐅`, `🐇`, `🐉`, `🐍`, `🐎`, `🐐`, `🐒`, `🐓`, `🐕`, `🐖`][(new Date().getFullYear() - 4) % 12];
+}
+
+const getEmoji = (emojis) => {
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
 
 const gmod = (n, m) => {
     return ((n % m) + m) % m;
@@ -159,6 +162,41 @@ const occurrenceOfWeekDay = (startDate, dayOfWeek, endDate, dayOfWeekCount) => {
     return total;
 }
 
+const getNewMoons = (date) => {
+    const LUNAR_MONTH = 29.5305888531
+    let y = date.getFullYear()
+    let m = date.getMonth() + 1
+    let d = date.getDate()
+
+    if (m <= 2) {
+        y -= 1
+        m += 12
+    }
+    a = Math.floor(y / 100)
+    b = Math.floor(a / 4)
+    c = 2 - a + b
+    e = Math.floor(365.25 * (y + 4716))
+    f = Math.floor(30.6001 * (m + 1))
+    julianDay = c + d + e + f - 1524.5
+    daysSinceLastNewMoon = julianDay - 2451549.5
+    newMoons = daysSinceLastNewMoon / LUNAR_MONTH
+    daysIntoCycle = (newMoons % 1) * LUNAR_MONTH
+    return newMoons
+}
+
+const inLunarNewYear = (date) => {
+    return Math.floor(getNewMoons(date)) > Math.floor(getNewMoons(new Date(date.getFullYear(), 0, 20))) ? 1 : 0
+}
+
+const getLunarNewYear = () => {
+    const year = new Date().getFullYear();
+    for (let i = 0; i <= 30; ++i) {
+        let start = new Date(year, 0, 1)
+        start.setDate(21 + i)
+        if (inLunarNewYear(start)) return start.toDateString()
+    }
+}
+
 /**
  * Check whether today's date is any observance and return an observance array indicating observances as [`observance emoji`, `observance name`, `observance link`].
  */
@@ -181,7 +219,8 @@ const observancesToday = () => {
     let keys = [
         { type: 0, key: `${currentMonth},${occurrence},${currentDayOfWeek}` },
         { type: 1, key: `${currentMonth},${currentDayOfMonth}` },
-        { type: 2, key: `${islamicDate(date, -1)}` }
+        { type: 2, key: `${islamicDate(date, -1)}` },
+        { type: 3, key: `${date.toDateString()}` } //note: if there are multiple type: 3 keys and their calculated dates are the same, it will only get the first one because of array.find below. leaving for now since there is only one and no more planned.
     ];
 
     //if today is the last occurence of this day in the month, check for those observances using -1 that was described in the observances multidimensional array above
@@ -189,11 +228,11 @@ const observancesToday = () => {
         keys.push({ type: 0, key: `${currentMonth},-1,${currentDayOfWeek}` });
 
     for (let i = 0; i < keys.length; ++i) {
-        const values = observances.find(o => o.type == keys[i].type && o.key === keys[i].key)?.values;
+        const values = observances.find(o => o.type == keys[i].type && o.key() === keys[i].key)?.values;
         if (values !== undefined) {
             for (let x = 0; x < values.length; ++x) {
                 const observance = values[x];
-                observancesToday.push({ name: observance.name, link: observance.link, emoji: getEmoji(observance.name, observance.emojis) });
+                observancesToday.push({ name: observance.name, link: observance.link, emoji: observance.emojis() });
             }
         }
     }
