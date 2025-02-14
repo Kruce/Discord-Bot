@@ -220,19 +220,21 @@ const observancesToday = () => {
         { type: 0, key: `${currentMonth},${occurrence},${currentDayOfWeek}` },
         { type: 1, key: `${currentMonth},${currentDayOfMonth}` },
         { type: 2, key: `${islamicDate(date, -1)}` },
-        { type: 3, key: `${date.toDateString()}` } //note: if there are multiple type: 3 keys and their calculated dates are the same, it will only get the first one because of array.find below. leaving for now since there is only one and no more planned.
+        { type: 3, key: `${date.toDateString()}` }
     ];
 
     //if today is the last occurence of this day in the month, check for those observances using -1 that was described in the observances multidimensional array above
     if (occurrence == totalOccurrence)
         keys.push({ type: 0, key: `${currentMonth},-1,${currentDayOfWeek}` });
 
-    for (let i = 0; i < keys.length; ++i) {
-        const values = observances.find(o => o.type == keys[i].type && o.key() === keys[i].key)?.values;
-        if (values !== undefined) {
-            for (let x = 0; x < values.length; ++x) {
-                const observance = values[x];
-                observancesToday.push({ name: observance.name, link: observance.link, emoji: observance.emojis() });
+    for (let i = 0; i < observances.length; ++i) {
+        const observance = observances[i];
+        if (keys.find(k => k.type == observance.type && k.key === observance.key())) {
+            if (observance.values?.length > 0) {
+                for (let x = 0; x < observance.values.length; ++x) {
+                    const value = observance.values[x];
+                    observancesToday.push({ name: value.name, link: value.link, emoji: value.emojis() });
+                }
             }
         }
     }
