@@ -114,13 +114,14 @@ module.exports = {
                             parsedDate.setHours(todayDate.getHours(), todayDate.getMinutes(), todayDate.getSeconds());
                         }
                         let distance = intlFormatDistance(parsedDate, todayDate);
-                        const inDays = distance.includes(`day`) ? `` : ` (${intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' })})`;
-                        const isClose = [`days`, `hours`, `minutes`, `seconds`].some(x => distance.includes(x));
-                        if (distance.includes(` ago`) && !isClose) {
-                            distance = `about ${distance}`;
-                        }
-                        else if (distance.includes(`in `) && !isClose) {
-                            distance = distance.replace(`in `, `in about `);
+                        const inDays = distance.includes(`day`) ? `` : ` (${intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' })})`; //if distance is only days away, don't display days twice
+                        if (![`days`, `hours`, `minutes`, `seconds`].some(x => distance.includes(x))) { //if distance is not days, hours, minutes, seconds 
+                            if (distance.includes(` ago`)) { //add `about`
+                                distance = `about ${distance}`;
+                            }
+                            else if (distance.includes(`in `)) {
+                                distance = distance.replace(`in `, `in about `);
+                            }
                         }
                         if (!distance.includes(`now`) && parsedDate < todayDate) {
                             return await message.channel.send(`${formattedDate} was ${distance}${inDays}`);
