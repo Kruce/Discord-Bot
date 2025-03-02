@@ -114,20 +114,18 @@ module.exports = {
                             parsedDate.setHours(todayDate.getHours(), todayDate.getMinutes(), todayDate.getSeconds());
                         }
                         let distance = intlFormatDistance(parsedDate, todayDate);
-                        const distanceDays = intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' });
-                        if (distance.includes(` ago`)) {
+                        const inDays = distance.includes(`day`) ? `` : ` (${intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' })})`;
+                        const isClose = [`days`, `hours`, `minutes`, `seconds`].some(x => distance.includes(x));
+                        if (distance.includes(` ago`) && !isClose) {
                             distance = `about ${distance}`;
                         }
-                        else if (distance.includes(`in `)) {
+                        else if (distance.includes(`in `) && !isClose) {
                             distance = distance.replace(`in `, `in about `);
                         }
                         if (!distance.includes(`now`) && parsedDate < todayDate) {
-                            return await message.channel.send(`${formattedDate} was ${distance} (${distanceDays})`);
+                            return await message.channel.send(`${formattedDate} was ${distance}${inDays}`);
                         }
-                        if (distance.includes(`day`)) {
-                            return await message.channel.send(`${formattedDate} is ${distance}`);
-                        }
-                        return await message.channel.send(`${formattedDate} is ${distance} (${distanceDays})`);
+                        return await message.channel.send(`${formattedDate} is ${distance}${inDays}`);
                     } else {
                         return await message.reply(`that key does not exist.`)
                     }
