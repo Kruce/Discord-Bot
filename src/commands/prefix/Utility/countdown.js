@@ -113,11 +113,17 @@ module.exports = {
                         if (formattedDate.indexOf(`,`) == -1) { //date only, no time
                             parsedDate.setHours(todayDate.getHours(), todayDate.getMinutes(), todayDate.getSeconds());
                         }
-                        const distance = intlFormatDistance(parsedDate, todayDate);
+                        let distance = intlFormatDistance(parsedDate, todayDate);
                         const distanceDays = intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' });
+                        if (distance.includes(` ago`)) {
+                            distance = `about ${distance}`;
+                        }
+                        else if (distance.includes(`in `)) {
+                            distance = distance.replace(`in `, `in about `);
+                        }
                         if (!distance.includes(`now`) && parsedDate < todayDate) {
                             return await message.channel.send(`${formattedDate} was ${distance} (${distanceDays})`);
-                        } 
+                        }
                         if (distance.includes(`day`)) {
                             return await message.channel.send(`${formattedDate} is ${distance}`);
                         }
