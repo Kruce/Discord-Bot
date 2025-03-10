@@ -117,10 +117,10 @@ module.exports = {
                         const inDays = distance.includes(`day`) ? `` : ` (${intlFormatDistance(parsedDate, todayDate, { unit: 'day', numeric: 'always' })})`; //if distance is only days away, don't display days twice
                         if (![`days`, `hours`, `minutes`, `seconds`].some(x => distance.includes(x))) { //if distance is not days, hours, minutes, seconds 
                             if (distance.includes(` ago`)) { //add `about`
-                                distance = `about ${distance}`;
+                                distance = `around ${distance}`;
                             }
                             else if (distance.includes(`in `)) {
-                                distance = distance.replace(`in `, `in about `);
+                                distance = distance.replace(`in `, `in around `);
                             }
                         }
                         if (!distance.includes(`now`) && parsedDate < todayDate) {
