@@ -1,4 +1,4 @@
-const { log, dateTimeNowOffset } = require('../functions/utility');
+const { log, dateTimeUsaTimezone } = require('../functions/utility');
 
 // type: 0 keys are gregorian observances formatted as "month (using zero based), occurrence (or week), day of the week". Use -1 for `last`, such as `the last monday of month` in the occurrence and zero starts sunday for day of week
 // type: 1 keys are gregorian observances formatted as "month (using zero based), day of the month" 
@@ -201,7 +201,7 @@ const getLunarNewYear = () => {
  * Check whether today's date is any observance and return an observance array indicating observances as [`observance emoji`, `observance name`, `observance link`].
  */
 const observancesToday = () => {
-    const date = dateTimeNowOffset(process.env.HOUR_OFFSET); //update hours to est from server time
+    const date = dateTimeUsaTimezone(process.env.TIMEZONE); //update hours to est from server time
     log(`ObservancesToday function date/time requested: ${date}`, "info");
     const currentYear = date.getFullYear(); //extract current date info
     const currentMonth = date.getMonth();

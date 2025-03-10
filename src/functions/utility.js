@@ -84,10 +84,8 @@ const decimalString = (number) => {
  * @param {number} hours amount of hours to subtract from the current server time 
  * @returns {Date}
  */
-const dateTimeNowOffset = (hours) => {
-    const date = new Date();
-    date.setHours(date.getHours() - hours);
-    return date;
+const dateTimeUsaTimezone = (timezone) => {
+    return new Date(new Date().toLocaleString(`en-US`, { timeZone: timezone }));
 };
 
 module.exports = {
@@ -97,5 +95,5 @@ module.exports = {
     shuffleArray,
     commaString,
     decimalString,
-    dateTimeNowOffset
+    dateTimeUsaTimezone
 };

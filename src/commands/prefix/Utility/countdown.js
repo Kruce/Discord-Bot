@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
-const { intlFormatDistance, format, parse, isValid } = require('date-fns');
+const { intlFormatDistance, parse, isValid } = require('date-fns');
 const { enUS } = require('date-fns/locale');
 const { Message, Collection } = require('discord.js');
-const { log, dateTimeNowOffset } = require('../../../functions/utility');
+const { log, dateTimeUsaTimezone } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 const basicHeaders = {
     'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ module.exports = {
                     let json = await GetCountdowns(message.client);
                     if (cmd in json) {
                         const parsedDate = new Date(json[cmd]);
-                        const todayDate = dateTimeNowOffset(process.env.HOUR_OFFSET); //update hours to est from server time
+                        const todayDate = dateTimeUsaTimezone(process.env.TIMEZONE); //update hours to est from server time
                         const formattedDate = json[cmd];
                         if (formattedDate.indexOf(`,`) == -1) { //date only, no time
                             parsedDate.setHours(todayDate.getHours(), todayDate.getMinutes(), todayDate.getSeconds());
