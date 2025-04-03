@@ -81,17 +81,17 @@ module.exports = {
                         return await message.channel.send(`Please enter a valid date/time in the format of '05/29/1453' or '05/29/1453, 12:00 AM' if a specific time is required.`);
                     let json = await GetCountdowns(message.client);
                     if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
-                        json[key] = value;
                         await message.channel.send(`key already exists. would you like to update its value?`);
                         const filter = response => {
-                            return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
+                            return response.author.id === message.author.id && [`y`, `yes`].some(r => r === response.content.toLowerCase());
                         };
                         const collected =
                             await message.channel.awaitMessages({ filter: filter, max: 1, time: 30000, errors: ['time'] })
                                 .catch((e) => {
-                                    log(`Countdown had no response from user when prompted for update.`, "info");
+                                    log(`Countdown had no 'y' or 'yes' response from user when prompted for update.`, "info");
                                 });
                         if (collected) {
+                            json[key] = value;
                             await PutCountdowns(json, message.client);
                             return await message.reply(`countdown '${key}' has been updated.`);
                         }

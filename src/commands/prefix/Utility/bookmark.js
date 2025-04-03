@@ -75,17 +75,17 @@ module.exports = {
                 } else {
                     let json = await GetBookmarks(message.client);
                     if (key in json) { //if key exists, ask if they want to replace value. If they do, update value.
-                        json[key] = value;
                         await message.channel.send(`key already exists. would you like to update its value?`);
                         const filter = response => {
-                            return response.author == message.author && [`y`, `yes`].some(r => r === response.content.toLowerCase());
+                            return response.author.id === message.author.id && [`y`, `yes`].some(r => r === response.content.toLowerCase());
                         };
                         const collected =
                             await message.channel.awaitMessages({ filter: filter, max: 1, time: 30000, errors: ['time'] })
                                 .catch((e) => {
-                                    log(`Bookmark had no response from user when prompted for update.`, "info");
+                                    log(`Bookmark had no 'y' or 'yes' response from user when prompted for update.`, "info");
                                 });
                         if (collected) {
+                            json[key] = value;
                             await PutBookmarks(json, message.client);
                             return await message.reply(`bookmark '${key}' has been updated.`);
                         }
