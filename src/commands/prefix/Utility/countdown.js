@@ -6,7 +6,7 @@ const { log, dateTimeUsaTimezone } = require('../../../functions/utility');
 const ExtendedClient = require('../../../class/ExtendedClient');
 const basicHeaders = {
     'Content-Type': 'application/json',
-    'ApiKey': process.env.KRUCEBLAKE_API_KEY,
+    'X-KruceBlake-Api-Key': process.env.KRUCEBLAKE_API_KEY,
 };
 
 const GetCountdownsApi = async function () {
